@@ -63,31 +63,8 @@
     background:var(--card); border:1px solid var(--line); border-radius:16px; padding:30px 32px; margin:26px 0 60px;
     box-shadow:var(--shadow);
   }
-  .field{ margin-bottom:20px; }
-  .field label{ display:block; font-size:13px; font-weight:700; color:var(--ink); margin-bottom:6px; }
-  .field .hint{ display:block; font-size:12px; color:var(--ink-soft); font-weight:400; margin-top:3px; }
-  .field input[type=text], .field input[type=url], .field select, .field textarea{
-    width:100%; border:1px solid var(--line); border-radius:8px; padding:10px 12px;
-    font-size:14.5px; color:var(--ink); background:#fff;
-  }
-  .field textarea{ min-height:90px; resize:vertical; }
-  .field input:focus, .field select:focus, .field textarea:focus{ outline:2px solid var(--teal); outline-offset:1px; border-color:var(--teal); }
-  .radio-row{ display:flex; gap:10px; }
-  .radio-opt{
-    flex:1; text-align:center; padding:10px; border:1.5px solid var(--line); border-radius:8px; cursor:pointer;
-    font-size:13.5px; font-weight:600; color:var(--ink-soft);
-  }
-  .radio-opt.selected{ background:var(--teal); border-color:var(--teal); color:#fff; }
-  .row-2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-  .char-count{ font-size:11px; color:var(--ink-soft); text-align:right; margin-top:4px; font-family:'IBM Plex Mono',monospace; }
-
-  .btn{ font-family:'Inter',sans-serif; font-weight:600; font-size:14.5px; padding:12px 22px; border-radius:9px; text-decoration:none; cursor:pointer; border:none; display:inline-flex; align-items:center; gap:8px; }
-  .btn.primary{ background:var(--ink); color:#fff; }
-  .btn.primary:hover{ background:#3a4a34; }
-  .btn.primary:disabled{ background:#b9c0af; cursor:not-allowed; }
-  .btn.ghost{ background:transparent; color:var(--ink); border:1.5px solid var(--line); }
-  .draft-note{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); }
-  .form-foot{ display:flex; align-items:center; justify-content:space-between; margin-top:26px; flex-wrap:wrap; gap:12px; }
+  .form-embed-wrap{ border-radius:12px; overflow:hidden; border:1px solid var(--line); }
+  .form-embed-wrap iframe{ display:block; }
 
   .info-box{
     background:var(--teal-soft); border-radius:12px; padding:16px 18px; margin-bottom:26px; font-size:13.5px; color:var(--ink);
@@ -99,7 +76,6 @@
 
   @media (max-width: 700px){
     nav.primary{ display:none; }
-    .row-2{ grid-template-columns:1fr; }
     .form-card{ padding:22px 20px; }
   }
   @media (prefers-reduced-motion: reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
@@ -155,76 +131,18 @@
     <div class="form-card">
 
       <div class="info-box" id="submitInfoBox">
-        <b>How this works right now</b>
-        <span id="submitInfoText">Submitting opens a pre-filled email to the Innovation Lead for review &mdash; nothing is published automatically. Once approved, it'll be added to the Idea Exchange.</span>
+        <b>How this works</b>
+        <span id="submitInfoText">Fill in the form below. A member of the Innovation team reviews every submission before it's added to the Idea Exchange &mdash; nothing goes live automatically.</span>
       </div>
 
-      <div class="field">
-        <label>Your name</label>
-        <input type="text" id="f_name" placeholder="Full name">
+      <div class="form-embed-wrap">
+        <iframe
+          src="https://docs.google.com/forms/d/e/1FAIpQLSdNv2DduA90BRxDUg275AJ9_AJq56awWO6bvmbIQCwvk8mxsg/viewform?embedded=true"
+          width="100%" height="1400" frameborder="0" marginheight="0" marginwidth="0">
+          Loading the form&hellip;
+        </iframe>
       </div>
 
-      <div class="row-2">
-        <div class="field">
-          <label>I am a...</label>
-          <div class="radio-row" id="audienceRow">
-            <div class="radio-opt" data-value="Student">Student</div>
-            <div class="radio-opt" data-value="Teacher">Teacher</div>
-          </div>
-        </div>
-        <div class="field" id="yearGroupField">
-          <label>Year Group</label>
-          <select id="f_yeargroup">
-            <option value="">Select...</option>
-            <option>Year 7</option><option>Year 8</option><option>Year 9</option>
-            <option>Year 10</option><option>Year 11</option><option>Year 12</option><option>Year 13</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="row-2">
-        <div class="field">
-          <label>Subject / Area</label>
-          <input type="text" id="f_subject" placeholder="e.g. Science, Art, Cross-Curricular">
-        </div>
-        <div class="field">
-          <label>Type</label>
-          <select id="f_type">
-            <option value="">Select...</option>
-            <option>EdTech</option>
-            <option>Project-Based</option>
-            <option>Assessment Innovation</option>
-            <option>Cross-Curricular</option>
-            <option>Other</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Title</label>
-        <input type="text" id="f_title" placeholder="A short, clear name for the idea">
-      </div>
-
-      <div class="field">
-        <label>One-line hook <span class="hint">— the short version that appears on the card in the Idea Exchange</span></label>
-        <input type="text" id="f_hook" maxlength="140" placeholder="Sum it up in one sentence">
-        <div class="char-count"><span id="hookCount">0</span> / 140</div>
-      </div>
-
-      <div class="field">
-        <label>Tell us more</label>
-        <textarea id="f_description" placeholder="What did you actually do? What happened? What would you tell someone trying this themselves?"></textarea>
-      </div>
-
-      <div class="field">
-        <label>Link to more (optional) <span class="hint">— photos, a document, a video, anything that shows it in action</span></label>
-        <input type="url" id="f_link" placeholder="https://...">
-      </div>
-
-      <div class="form-foot">
-        <button class="btn primary" id="submitBtn" onclick="submitIdea()">Submit for review</button>
-        <span class="draft-note" id="draftIndicator">Draft saved automatically</span>
-      </div>
     </div>
   </div>
 </section>
@@ -241,8 +159,6 @@
 <script>
 const GOOGLE_CLIENT_ID = "596461951047-qsh9m58i6rmv6u0eelcsv2f2rndv59k1.apps.googleusercontent.com";
 const ALLOWED_DOMAIN = "pepsschool.ae";
-/* Replace with the real Innovation Lead's address once decided. */
-const INNOVATION_LEAD_EMAIL = "math.hod@pepsschool.ae";
 
 function decodeJwt(token){
   try {
@@ -258,7 +174,6 @@ function handleCredentialResponse(response){
     return;
   }
   showSite(payload.name || payload.email, payload.picture || null, false);
-  if(payload.name){ state.name = payload.name; document.getElementById('f_name').value = payload.name; }
 }
 function showSite(name, pictureUrl, isPreview){
   document.getElementById('gateScreen').style.display = 'none';
@@ -269,7 +184,6 @@ function showSite(name, pictureUrl, isPreview){
   else { avatar.textContent = (name || 'P').charAt(0).toUpperCase(); }
   if(isPreview){ document.getElementById('previewBanner').classList.add('show'); }
   window.scrollTo(0,0);
-  initForm();
 }
 function enterPreviewMode(){ showSite('Preview mode', null, true); }
 let googleScriptReady = false;
@@ -313,115 +227,6 @@ window.addEventListener('load', function(){
 setTimeout(function(){
   if(!googleScriptReady && GOOGLE_CLIENT_ID !== "YOUR_CLIENT_ID_HERE"){ showSignInUnavailable(); }
 }, 6000);
-
-/* ======================= SUBMIT AN IDEA FORM ======================= */
-const STORAGE_KEY = "peps-innovation-hub-submit-draft";
-const FIELD_IDS = ["name","audience","yeargroup","subject","type","title","hook","description","link"];
-
-function defaultState(){
-  const s = {};
-  FIELD_IDS.forEach(f => { s[f] = ""; });
-  return s;
-}
-let state = defaultState();
-let formInitialized = false;
-
-function loadDraft(){
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if(raw){ state = Object.assign(defaultState(), JSON.parse(raw)); }
-  } catch(e){}
-}
-function saveDraft(){
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e){}
-  const ind = document.getElementById('draftIndicator');
-  if(ind){ ind.textContent = "Draft saved " + new Date().toLocaleTimeString(); }
-}
-function clearDraft(){
-  try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
-}
-
-function applyStateToForm(){
-  document.getElementById('f_name').value = state.name || "";
-  document.getElementById('f_yeargroup').value = state.yeargroup || "";
-  document.getElementById('f_subject').value = state.subject || "";
-  document.getElementById('f_type').value = state.type || "";
-  document.getElementById('f_title').value = state.title || "";
-  document.getElementById('f_hook').value = state.hook || "";
-  document.getElementById('f_description').value = state.description || "";
-  document.getElementById('f_link').value = state.link || "";
-  document.getElementById('hookCount').textContent = (state.hook || "").length;
-  document.querySelectorAll('#audienceRow .radio-opt').forEach(el => {
-    el.classList.toggle('selected', el.dataset.value === state.audience);
-  });
-  document.getElementById('yearGroupField').style.display = state.audience === 'Teacher' ? 'none' : 'block';
-}
-
-function initForm(){
-  if(formInitialized) return;
-  formInitialized = true;
-  loadDraft();
-  applyStateToForm();
-
-  document.getElementById('f_name').addEventListener('input', e => { state.name = e.target.value; saveDraft(); });
-  document.getElementById('f_yeargroup').addEventListener('change', e => { state.yeargroup = e.target.value; saveDraft(); });
-  document.getElementById('f_subject').addEventListener('input', e => { state.subject = e.target.value; saveDraft(); });
-  document.getElementById('f_type').addEventListener('change', e => { state.type = e.target.value; saveDraft(); });
-  document.getElementById('f_title').addEventListener('input', e => { state.title = e.target.value; saveDraft(); });
-  document.getElementById('f_hook').addEventListener('input', e => {
-    state.hook = e.target.value;
-    document.getElementById('hookCount').textContent = e.target.value.length;
-    saveDraft();
-  });
-  document.getElementById('f_description').addEventListener('input', e => { state.description = e.target.value; saveDraft(); });
-  document.getElementById('f_link').addEventListener('input', e => { state.link = e.target.value; saveDraft(); });
-
-  document.querySelectorAll('#audienceRow .radio-opt').forEach(el => {
-    el.addEventListener('click', () => {
-      state.audience = (state.audience === el.dataset.value) ? "" : el.dataset.value;
-      applyStateToForm();
-      saveDraft();
-    });
-  });
-}
-
-function validateSubmission(){
-  const missing = [];
-  if(!state.name) missing.push("your name");
-  if(!state.audience) missing.push("whether you're a student or teacher");
-  if(state.audience === 'Student' && !state.yeargroup) missing.push("your year group");
-  if(!state.title) missing.push("a title");
-  if(!state.hook) missing.push("a one-line hook");
-  if(!state.description) missing.push("a bit more detail");
-  return missing;
-}
-
-function submitIdea(){
-  const missing = validateSubmission();
-  if(missing.length){
-    alert("Just need a few more things before this can be submitted: " + missing.join(", ") + ".");
-    return;
-  }
-  const subject = encodeURIComponent("Innovation Hub submission: " + state.title);
-  const bodyLines = [
-    "New Idea Exchange submission for review:",
-    "",
-    "Title: " + state.title,
-    "Submitted by: " + state.name + " (" + state.audience + (state.audience === 'Student' ? ", " + state.yeargroup : "") + ")",
-    "Subject / Area: " + state.subject,
-    "Type: " + state.type,
-    "",
-    "One-line hook: " + state.hook,
-    "",
-    "Description:",
-    state.description,
-    "",
-    state.link ? ("Link: " + state.link) : ""
-  ];
-  const body = encodeURIComponent(bodyLines.join("\n"));
-  window.location.href = "mailto:" + INNOVATION_LEAD_EMAIL + "?subject=" + subject + "&body=" + body;
-  clearDraft();
-}
 </script>
 <script src="https://accounts.google.com/gsi/client" async defer onload="onGoogleScriptLoaded()" onerror="onGoogleScriptFailed()"></script>
 </body>
