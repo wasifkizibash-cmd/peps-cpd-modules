@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Challenges — Innovation & Creativity Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#23301F; --ink-soft:#5B6552;
+    --paper:#FBF6EA; --card:#FFFFFF; --line:#E7DFC9;
+    --amber:#E8A33D; --amber-soft:#FBEBD1;
+    --teal:#2F6E4F; --teal-soft:#E1EDE6;
+    --shadow: 0 10px 26px -12px rgba(35,48,31,.20);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3{font-family:'Fraunces',serif; color:var(--ink); margin:0;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  button, select, input{font-family:inherit;}
+  *:focus-visible{outline:3px solid var(--teal); outline-offset:2px;}
+  body{ background-image: radial-gradient(circle, #00000009 1px, transparent 1.4px); background-size: 22px 22px; }
+
+  #gateScreen{ position:fixed; inset:0; z-index:100; background:var(--paper); display:flex; align-items:center; justify-content:center; padding:24px; }
+  .gate-card{ background:var(--card); border-radius:18px; box-shadow:var(--shadow); max-width:440px; width:100%; padding:44px 36px; text-align:center; border:1px solid var(--line); }
+  .gate-mark{ width:56px; height:56px; margin:0 auto 20px; border-radius:14px; background:linear-gradient(135deg,var(--amber),var(--teal)); display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-weight:900; font-size:26px; color:#fff; }
+  .gate-card h1{ font-size:24px; margin-bottom:10px; }
+  .gate-card p.gate-sub{ color:var(--ink-soft); font-size:14.5px; margin:0 0 26px; }
+  .gsi-btn-wrap{ display:flex; justify-content:center; margin-bottom:14px; min-height:44px; align-items:center; }
+  .gate-domain-note{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin-top:10px; }
+  .gate-preview-link{ display:block; margin-top:22px; font-size:12.5px; color:var(--ink-soft); text-decoration:underline; cursor:pointer; background:none; border:none; }
+  .gate-config-warning{ margin-top:18px; text-align:left; font-size:12px; line-height:1.5; color:#8a5a1f; background:var(--amber-soft); border:1px dashed var(--amber); border-radius:10px; padding:12px 14px; }
+  .preview-banner{ position:fixed; top:0; left:0; right:0; z-index:90; background:var(--ink); color:#fff; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:12px; padding:9px 14px; display:none; }
+  .preview-banner.show{ display:block; }
+  .preview-banner b{ color:var(--amber); }
+
+  header.topbar{ position:sticky; top:0; z-index:50; background:rgba(251,246,234,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  .topbar-inner{ max-width:1180px; margin:0 auto; padding:15px 32px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .brand-mark{ width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,var(--amber),var(--teal)); display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Fraunces',serif; font-weight:900; font-size:16px; }
+  .brand-text .b1{ font-family:'Fraunces',serif; font-weight:700; font-size:16.5px; }
+  .brand-text .b2{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); }
+  nav.primary{ display:flex; align-items:center; gap:24px; }
+  nav.primary a{ text-decoration:none; color:var(--ink); font-size:14px; font-weight:600; padding:5px 0; margin-right:24px; border-bottom:2px solid transparent; }
+  nav.primary a:last-child{ margin-right:0; }
+  nav.primary a:hover, nav.primary a.active{ border-bottom-color:var(--amber); }
+  .who-badge{ display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:5px 12px 5px 5px; }
+  .who-badge .avatar{ width:24px; height:24px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; }
+
+  section.page-head{ padding:44px 0 8px; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--teal); margin-bottom:14px; }
+  .eyebrow .dot{ width:6px; height:6px; border-radius:50%; background:var(--amber); }
+  h1.page-title{ font-size:36px; }
+  p.page-sub{ margin:12px 0 0; color:var(--ink-soft); font-size:15.5px; max-width:600px; }
+  .sample-note{ display:inline-flex; align-items:center; gap:8px; margin-top:16px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#8a5a1f; background:var(--amber-soft); border:1px dashed var(--amber); border-radius:8px; padding:8px 12px; }
+
+  section.current-challenge{ padding:24px 0 10px; }
+  .challenge-hero{
+    background:linear-gradient(135deg,var(--ink),#3a4a34); color:#fff; border-radius:20px; padding:38px 40px; position:relative; overflow:hidden;
+  }
+  .challenge-hero::after{
+    content:''; position:absolute; top:-40px; right:-40px; width:180px; height:180px; border-radius:50%;
+    background:radial-gradient(circle, var(--amber) 0%, transparent 70%); opacity:.35;
+  }
+  .challenge-badge{
+    display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em;
+    background:var(--amber); color:var(--ink); padding:5px 12px; border-radius:20px; font-weight:700; margin-bottom:16px;
+  }
+  .challenge-hero h2{ color:#fff; font-size:28px; max-width:620px; position:relative; z-index:1; }
+  .challenge-hero p{ color:rgba(255,255,255,.82); font-size:15px; max-width:600px; margin:14px 0 0; position:relative; z-index:1; }
+  .challenge-meta{ display:flex; gap:24px; margin-top:22px; position:relative; z-index:1; }
+  .challenge-meta div{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:rgba(255,255,255,.7); }
+  .challenge-meta b{ display:block; color:#fff; font-family:'Inter',sans-serif; font-size:14px; font-weight:700; }
+  .btn{ font-family:'Inter',sans-serif; font-weight:600; font-size:14.5px; padding:12px 22px; border-radius:9px; text-decoration:none; cursor:pointer; border:none; display:inline-flex; align-items:center; gap:8px; margin-top:24px; position:relative; z-index:1; }
+  .btn.on-dark{ background:#fff; color:var(--ink); }
+  .btn.on-dark:hover{ background:var(--amber-soft); }
+
+  section.archive{ padding:50px 0 70px; }
+  .section-head{ max-width:600px; margin-bottom:28px; }
+  h2.section-title{ font-size:24px; }
+  .archive-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .archive-card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px 22px; }
+  .archive-card .term-tag{ font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; color:var(--ink-soft); margin-bottom:8px; display:block; }
+  .archive-card h3{ font-size:15.5px; margin-bottom:8px; }
+  .archive-card p{ font-size:13px; color:var(--ink-soft); margin:0; line-height:1.5; }
+
+  footer{ background:var(--ink); color:rgba(255,255,255,.75); padding:44px 0 26px; margin-top:20px; }
+  .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; font-size:12.5px; }
+
+  @media (max-width: 980px){ .archive-grid{ grid-template-columns:1fr 1fr; } nav.primary{ display:none; } }
+  @media (max-width: 620px){
+    .wrap{ padding:0 20px; } .archive-grid{ grid-template-columns:1fr; } h1.page-title{ font-size:28px; }
+    .challenge-hero{ padding:28px 24px; } .challenge-meta{ flex-wrap:wrap; row-gap:12px; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
+</style>
+</head>
+<body>
+
+<div class="preview-banner" id="previewBanner">Viewing in <b>Preview Mode</b> — sign-in is not yet enforced. Add a real Google OAuth Client ID to make this gate live.</div>
+
+<div id="gateScreen">
+  <div class="gate-card">
+    <div class="gate-mark">P</div>
+    <h1>Innovation &amp; Creativity Hub</h1>
+    <p class="gate-sub">For PEPS students (Year 7&ndash;13) and staff. Sign in with your school account to enter.</p>
+    <div class="gsi-btn-wrap" id="gsiButtonContainer"></div>
+    <button class="gate-preview-link" onclick="enterPreviewMode()">Continue in preview mode &rarr;</button>
+    <div class="gate-domain-note">Restricted to @pepsschool.ae accounts only</div>
+    <div class="gate-config-warning" id="configWarning">
+      <b>Setup needed:</b> this Sign-In button won't appear until a real Google OAuth Client ID is added in the script below (search for <code>YOUR_CLIENT_ID_HERE</code>). Until then, use &ldquo;Continue in preview mode&rdquo; above to review the site.
+    </div>
+  </div>
+</div>
+
+<div id="siteContent" style="display:none;">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="Innovation_Hub_Home.html">
+      <div class="brand-mark">P</div>
+      <div class="brand-text"><div class="b1">Innovation &amp; Creativity Hub</div><div class="b2">Providence English School</div></div>
+    </a>
+    <nav class="primary">
+      <a href="Idea_Exchange.html">Idea Exchange</a>
+      <a href="Submit_Idea.html">Submit an Idea</a>
+      <a href="EdTech_Toolkit.html">EdTech Toolkit</a>
+      <a href="Spotlight.html">Spotlight</a>
+      <a class="active" href="Challenges.html">Challenges</a>
+    </nav>
+    <div class="who-badge"><div class="avatar" id="whoAvatar">?</div><span id="whoName">Guest</span></div>
+  </div>
+</header>
+
+<section class="page-head">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>A Reason to Try Something</div>
+    <h1 class="page-title">Challenges</h1>
+    <p class="page-sub">A termly prompt for anyone who wants a reason to try something, even without a big idea yet.</p>
+    <div class="sample-note">&#9998; Example challenge shown &mdash; the Innovation Lead sets the real one each term</div>
+  </div>
+</section>
+
+<section class="current-challenge">
+  <div class="wrap">
+    <div class="challenge-hero">
+      <span class="challenge-badge">This term's challenge</span>
+      <h2>Try one AI-assisted lesson &mdash; then tell us what you'd change.</h2>
+      <p>Doesn't need to be ambitious. Use an AI tool for one small part of one lesson, with your students knowing it's a trial &mdash; then submit what worked, what didn't, and what you'd do differently next time.</p>
+      <div class="challenge-meta">
+        <div><b>Open to</b>All staff</div>
+        <div><b>Closes</b>End of term</div>
+        <div><b>Submit via</b>Idea Exchange</div>
+      </div>
+      <a class="btn on-dark" href="Submit_Idea.html">Submit your attempt &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section class="archive">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow"><span class="dot"></span>Previous Terms</div>
+      <h2 class="section-title">Challenge archive</h2>
+    </div>
+    <div class="archive-grid">
+      <div class="archive-card">
+        <span class="term-tag">Last term</span>
+        <h3>The One-Question Lesson</h3>
+        <p>Build a whole lesson around a single genuinely open question, with no predetermined right answer.</p>
+      </div>
+      <div class="archive-card">
+        <span class="term-tag">Two terms ago</span>
+        <h3>Swap a Worksheet for a Choice</h3>
+        <p>Take one existing worksheet task and rebuild it so students have real choice in how they show understanding.</p>
+      </div>
+      <div class="archive-card">
+        <span class="term-tag">Three terms ago</span>
+        <h3>Student-Led Five Minutes</h3>
+        <p>Hand five minutes of a lesson to students to teach a concept back to their peers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>Innovation &amp; Creativity Hub &middot; Providence English School</span>
+    <span>Access restricted to @pepsschool.ae accounts</span>
+  </div>
+</footer>
+
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer onload="onGoogleScriptLoaded()" onerror="onGoogleScriptFailed()"></script>
+<script>
+const GOOGLE_CLIENT_ID = "596461951047-qsh9m58i6rmv6u0eelcsv2f2rndv59k1.apps.googleusercontent.com";
+const ALLOWED_DOMAIN = "pepsschool.ae";
+
+function decodeJwt(token){
+  try {
+    const base64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+    return JSON.parse(decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')));
+  } catch(e){ return null; }
+}
+function handleCredentialResponse(response){
+  const payload = decodeJwt(response.credential);
+  if(!payload){ alert('Sign-in failed. Please try again.'); return; }
+  if(payload.hd !== ALLOWED_DOMAIN && !(payload.email && payload.email.endsWith('@' + ALLOWED_DOMAIN))){
+    alert('This hub is only available to @' + ALLOWED_DOMAIN + ' accounts. You signed in with ' + payload.email + '.');
+    return;
+  }
+  showSite(payload.name || payload.email, payload.picture || null, false);
+}
+function showSite(name, pictureUrl, isPreview){
+  document.getElementById('gateScreen').style.display = 'none';
+  document.getElementById('siteContent').style.display = 'block';
+  document.getElementById('whoName').textContent = isPreview ? 'Preview mode' : name;
+  const avatar = document.getElementById('whoAvatar');
+  if(pictureUrl){ avatar.style.backgroundImage = 'url(' + pictureUrl + ')'; avatar.style.backgroundSize = 'cover'; avatar.textContent = ''; }
+  else { avatar.textContent = (name || 'P').charAt(0).toUpperCase(); }
+  if(isPreview){ document.getElementById('previewBanner').classList.add('show'); }
+  window.scrollTo(0,0);
+}
+function enterPreviewMode(){ showSite('Preview mode', null, true); }
+let googleScriptReady = false;
+let pageLoadFired = false;
+
+function onGoogleScriptLoaded(){
+  googleScriptReady = true;
+  tryInitGoogleSignIn();
+}
+function onGoogleScriptFailed(){
+  console.error('Google Sign-In script failed to load \u2014 likely a network or firewall issue blocking accounts.google.com, not a problem with this page.');
+  showSignInUnavailable();
+}
+function showSignInUnavailable(){
+  const warning = document.getElementById('configWarning');
+  if(!warning) return;
+  warning.style.display = 'block';
+  warning.innerHTML = '<b>Sign-in temporarily unavailable.</b> The Google Sign-In script could not be loaded, usually a network or firewall issue rather than a problem with this page. Please check your connection, or use \u201cContinue in preview mode\u201d above.';
+}
+function tryInitGoogleSignIn(){
+  if(!pageLoadFired || !googleScriptReady) return;
+  if(GOOGLE_CLIENT_ID === "YOUR_CLIENT_ID_HERE"){ document.getElementById('gsiButtonContainer').style.display = 'none'; return; }
+  document.getElementById('configWarning').style.display = 'none';
+  try {
+    google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleCredentialResponse, hosted_domain: ALLOWED_DOMAIN });
+    google.accounts.id.renderButton(document.getElementById('gsiButtonContainer'), { theme: 'outline', size: 'large', shape: 'pill', text: 'signin_with' });
+  } catch(e){
+    console.error('Google Sign-In failed to initialize:', e);
+    showSignInUnavailable();
+  }
+}
+window.addEventListener('load', function(){
+  pageLoadFired = true;
+  tryInitGoogleSignIn();
+});
+setTimeout(function(){
+  if(!googleScriptReady && GOOGLE_CLIENT_ID !== "YOUR_CLIENT_ID_HERE"){ showSignInUnavailable(); }
+}, 6000);
+</script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit an Idea — Innovation & Creativity Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#23301F; --ink-soft:#5B6552;
+    --paper:#FBF6EA; --card:#FFFFFF; --line:#E7DFC9;
+    --amber:#E8A33D; --amber-soft:#FBEBD1;
+    --teal:#2F6E4F; --teal-soft:#E1EDE6;
+    --shadow: 0 10px 26px -12px rgba(35,48,31,.20);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3{font-family:'Fraunces',serif; color:var(--ink); margin:0;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  .wrap{max-width:760px; margin:0 auto; padding:0 32px;}
+  button, select, input, textarea{font-family:inherit;}
+  *:focus-visible{outline:3px solid var(--teal); outline-offset:2px;}
+  body{ background-image: radial-gradient(circle, #00000009 1px, transparent 1.4px); background-size: 22px 22px; }
+
+  #gateScreen{ position:fixed; inset:0; z-index:100; background:var(--paper); display:flex; align-items:center; justify-content:center; padding:24px; }
+  .gate-card{ background:var(--card); border-radius:18px; box-shadow:var(--shadow); max-width:440px; width:100%; padding:44px 36px; text-align:center; border:1px solid var(--line); }
+  .gate-mark{ width:56px; height:56px; margin:0 auto 20px; border-radius:14px; background:linear-gradient(135deg,var(--amber),var(--teal)); display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-weight:900; font-size:26px; color:#fff; }
+  .gate-card h1{ font-size:24px; margin-bottom:10px; }
+  .gate-card p.gate-sub{ color:var(--ink-soft); font-size:14.5px; margin:0 0 26px; }
+  .gsi-btn-wrap{ display:flex; justify-content:center; margin-bottom:14px; min-height:44px; align-items:center; }
+  .gate-domain-note{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin-top:10px; }
+  .gate-preview-link{ display:block; margin-top:22px; font-size:12.5px; color:var(--ink-soft); text-decoration:underline; cursor:pointer; background:none; border:none; }
+  .gate-config-warning{ margin-top:18px; text-align:left; font-size:12px; line-height:1.5; color:#8a5a1f; background:var(--amber-soft); border:1px dashed var(--amber); border-radius:10px; padding:12px 14px; }
+  .preview-banner{ position:fixed; top:0; left:0; right:0; z-index:90; background:var(--ink); color:#fff; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:12px; padding:9px 14px; display:none; }
+  .preview-banner.show{ display:block; }
+  .preview-banner b{ color:var(--amber); }
+
+  header.topbar{ position:sticky; top:0; z-index:50; background:rgba(251,246,234,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  .topbar-inner{ max-width:1180px; margin:0 auto; padding:15px 32px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .brand-mark{ width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,var(--amber),var(--teal)); display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Fraunces',serif; font-weight:900; font-size:16px; }
+  .brand-text .b1{ font-family:'Fraunces',serif; font-weight:700; font-size:16.5px; }
+  .brand-text .b2{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); }
+  nav.primary{ display:flex; align-items:center; gap:24px; }
+  nav.primary a{ text-decoration:none; color:var(--ink); font-size:14px; font-weight:600; padding:5px 0; margin-right:24px; border-bottom:2px solid transparent; }
+  nav.primary a:last-child{ margin-right:0; }
+  nav.primary a:hover, nav.primary a.active{ border-bottom-color:var(--amber); }
+  .who-badge{ display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:5px 12px 5px 5px; }
+  .who-badge .avatar{ width:24px; height:24px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; }
+
+  section.page-head{ padding:44px 0 8px; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--teal); margin-bottom:14px; }
+  .eyebrow .dot{ width:6px; height:6px; border-radius:50%; background:var(--amber); }
+  h1.page-title{ font-size:34px; }
+  p.page-sub{ margin:12px 0 0; color:var(--ink-soft); font-size:15.5px; }
+
+  .form-card{
+    background:var(--card); border:1px solid var(--line); border-radius:16px; padding:30px 32px; margin:26px 0 60px;
+    box-shadow:var(--shadow);
+  }
+  .field{ margin-bottom:20px; }
+  .field label{ display:block; font-size:13px; font-weight:700; color:var(--ink); margin-bottom:6px; }
+  .field .hint{ display:block; font-size:12px; color:var(--ink-soft); font-weight:400; margin-top:3px; }
+  .field input[type=text], .field input[type=url], .field select, .field textarea{
+    width:100%; border:1px solid var(--line); border-radius:8px; padding:10px 12px;
+    font-size:14.5px; color:var(--ink); background:#fff;
+  }
+  .field textarea{ min-height:90px; resize:vertical; }
+  .field input:focus, .field select:focus, .field textarea:focus{ outline:2px solid var(--teal); outline-offset:1px; border-color:var(--teal); }
+  .radio-row{ display:flex; gap:10px; }
+  .radio-opt{
+    flex:1; text-align:center; padding:10px; border:1.5px solid var(--line); border-radius:8px; cursor:pointer;
+    font-size:13.5px; font-weight:600; color:var(--ink-soft);
+  }
+  .radio-opt.selected{ background:var(--teal); border-color:var(--teal); color:#fff; }
+  .row-2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .char-count{ font-size:11px; color:var(--ink-soft); text-align:right; margin-top:4px; font-family:'IBM Plex Mono',monospace; }
+
+  .btn{ font-family:'Inter',sans-serif; font-weight:600; font-size:14.5px; padding:12px 22px; border-radius:9px; text-decoration:none; cursor:pointer; border:none; display:inline-flex; align-items:center; gap:8px; }
+  .btn.primary{ background:var(--ink); color:#fff; }
+  .btn.primary:hover{ background:#3a4a34; }
+  .btn.primary:disabled{ background:#b9c0af; cursor:not-allowed; }
+  .btn.ghost{ background:transparent; color:var(--ink); border:1.5px solid var(--line); }
+  .draft-note{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); }
+  .form-foot{ display:flex; align-items:center; justify-content:space-between; margin-top:26px; flex-wrap:wrap; gap:12px; }
+
+  .info-box{
+    background:var(--teal-soft); border-radius:12px; padding:16px 18px; margin-bottom:26px; font-size:13.5px; color:var(--ink);
+  }
+  .info-box b{ display:block; margin-bottom:4px; }
+
+  footer{ background:var(--ink); color:rgba(255,255,255,.75); padding:44px 0 26px; margin-top:20px; }
+  .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; font-size:12.5px; max-width:1180px; margin:0 auto; padding:0 32px; }
+
+  @media (max-width: 700px){
+    nav.primary{ display:none; }
+    .row-2{ grid-template-columns:1fr; }
+    .form-card{ padding:22px 20px; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
+</style>
+</head>
+<body>
+
+<div class="preview-banner" id="previewBanner">Viewing in <b>Preview Mode</b> — sign-in is not yet enforced. Add a real Google OAuth Client ID to make this gate live.</div>
+
+<div id="gateScreen">
+  <div class="gate-card">
+    <div class="gate-mark">P</div>
+    <h1>Innovation &amp; Creativity Hub</h1>
+    <p class="gate-sub">For PEPS students (Year 7&ndash;13) and staff. Sign in with your school account to enter.</p>
+    <div class="gsi-btn-wrap" id="gsiButtonContainer"></div>
+    <button class="gate-preview-link" onclick="enterPreviewMode()">Continue in preview mode &rarr;</button>
+    <div class="gate-domain-note">Restricted to @pepsschool.ae accounts only</div>
+    <div class="gate-config-warning" id="configWarning">
+      <b>Setup needed:</b> this Sign-In button won't appear until a real Google OAuth Client ID is added in the script below (search for <code>YOUR_CLIENT_ID_HERE</code>). Until then, use &ldquo;Continue in preview mode&rdquo; above to review the site.
+    </div>
+  </div>
+</div>
+
+<div id="siteContent" style="display:none;">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="Innovation_Hub_Home.html">
+      <div class="brand-mark">P</div>
+      <div class="brand-text"><div class="b1">Innovation &amp; Creativity Hub</div><div class="b2">Providence English School</div></div>
+    </a>
+    <nav class="primary">
+      <a href="Idea_Exchange.html">Idea Exchange</a>
+      <a class="active" href="Submit_Idea.html">Submit an Idea</a>
+      <a href="EdTech_Toolkit.html">EdTech Toolkit</a>
+      <a href="Spotlight.html">Spotlight</a>
+      <a href="Challenges.html">Challenges</a>
+    </nav>
+    <div class="who-badge"><div class="avatar" id="whoAvatar">?</div><span id="whoName">Guest</span></div>
+  </div>
+</header>
+
+<section class="page-head">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>Pin Something Up</div>
+    <h1 class="page-title">Submit an Idea</h1>
+    <p class="page-sub">Something you tried, built, or discovered &mdash; even if it was small. Takes about two minutes.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="form-card">
+
+      <div class="info-box" id="submitInfoBox">
+        <b>How this works right now</b>
+        <span id="submitInfoText">Submitting opens a pre-filled email to the Innovation Lead for review &mdash; nothing is published automatically. Once approved, it'll be added to the Idea Exchange.</span>
+      </div>
+
+      <div class="field">
+        <label>Your name</label>
+        <input type="text" id="f_name" placeholder="Full name">
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label>I am a...</label>
+          <div class="radio-row" id="audienceRow">
+            <div class="radio-opt" data-value="Student">Student</div>
+            <div class="radio-opt" data-value="Teacher">Teacher</div>
+          </div>
+        </div>
+        <div class="field" id="yearGroupField">
+          <label>Year Group</label>
+          <select id="f_yeargroup">
+            <option value="">Select...</option>
+            <option>Year 7</option><option>Year 8</option><option>Year 9</option>
+            <option>Year 10</option><option>Year 11</option><option>Year 12</option><option>Year 13</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label>Subject / Area</label>
+          <input type="text" id="f_subject" placeholder="e.g. Science, Art, Cross-Curricular">
+        </div>
+        <div class="field">
+          <label>Type</label>
+          <select id="f_type">
+            <option value="">Select...</option>
+            <option>EdTech</option>
+            <option>Project-Based</option>
+            <option>Assessment Innovation</option>
+            <option>Cross-Curricular</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Title</label>
+        <input type="text" id="f_title" placeholder="A short, clear name for the idea">
+      </div>
+
+      <div class="field">
+        <label>One-line hook <span class="hint">— the short version that appears on the card in the Idea Exchange</span></label>
+        <input type="text" id="f_hook" maxlength="140" placeholder="Sum it up in one sentence">
+        <div class="char-count"><span id="hookCount">0</span> / 140</div>
+      </div>
+
+      <div class="field">
+        <label>Tell us more</label>
+        <textarea id="f_description" placeholder="What did you actually do? What happened? What would you tell someone trying this themselves?"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Link to more (optional) <span class="hint">— photos, a document, a video, anything that shows it in action</span></label>
+        <input type="url" id="f_link" placeholder="https://...">
+      </div>
+
+      <div class="form-foot">
+        <button class="btn primary" id="submitBtn" onclick="submitIdea()">Submit for review</button>
+        <span class="draft-note" id="draftIndicator">Draft saved automatically</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span>Innovation &amp; Creativity Hub &middot; Providence English School</span>
+    <span>Access restricted to @pepsschool.ae accounts</span>
+  </div>
+</footer>
+
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer onload="onGoogleScriptLoaded()" onerror="onGoogleScriptFailed()"></script>
+<script>
+const GOOGLE_CLIENT_ID = "596461951047-qsh9m58i6rmv6u0eelcsv2f2rndv59k1.apps.googleusercontent.com";
+const ALLOWED_DOMAIN = "pepsschool.ae";
+/* Replace with the real Innovation Lead's address once decided. */
+const INNOVATION_LEAD_EMAIL = "math.hod@pepsschool.ae";
+
+function decodeJwt(token){
+  try {
+    const base64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+    return JSON.parse(decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')));
+  } catch(e){ return null; }
+}
+function handleCredentialResponse(response){
+  const payload = decodeJwt(response.credential);
+  if(!payload){ alert('Sign-in failed. Please try again.'); return; }
+  if(payload.hd !== ALLOWED_DOMAIN && !(payload.email && payload.email.endsWith('@' + ALLOWED_DOMAIN))){
+    alert('This hub is only available to @' + ALLOWED_DOMAIN + ' accounts. You signed in with ' + payload.email + '.');
+    return;
+  }
+  showSite(payload.name || payload.email, payload.picture || null, false);
+  if(payload.name){ state.name = payload.name; document.getElementById('f_name').value = payload.name; }
+}
+function showSite(name, pictureUrl, isPreview){
+  document.getElementById('gateScreen').style.display = 'none';
+  document.getElementById('siteContent').style.display = 'block';
+  document.getElementById('whoName').textContent = isPreview ? 'Preview mode' : name;
+  const avatar = document.getElementById('whoAvatar');
+  if(pictureUrl){ avatar.style.backgroundImage = 'url(' + pictureUrl + ')'; avatar.style.backgroundSize = 'cover'; avatar.textContent = ''; }
+  else { avatar.textContent = (name || 'P').charAt(0).toUpperCase(); }
+  if(isPreview){ document.getElementById('previewBanner').classList.add('show'); }
+  window.scrollTo(0,0);
+  initForm();
+}
+function enterPreviewMode(){ showSite('Preview mode', null, true); }
+let googleScriptReady = false;
+let pageLoadFired = false;
+
+function onGoogleScriptLoaded(){
+  googleScriptReady = true;
+  tryInitGoogleSignIn();
+}
+function onGoogleScriptFailed(){
+  console.error('Google Sign-In script failed to load \u2014 likely a network or firewall issue blocking accounts.google.com, not a problem with this page.');
+  showSignInUnavailable();
+}
+function showSignInUnavailable(){
+  const warning = document.getElementById('configWarning');
+  if(!warning) return;
+  warning.style.display = 'block';
+  warning.innerHTML = '<b>Sign-in temporarily unavailable.</b> The Google Sign-In script could not be loaded, usually a network or firewall issue rather than a problem with this page. Please check your connection, or use \u201cContinue in preview mode\u201d above.';
+}
+function tryInitGoogleSignIn(){
+  if(!pageLoadFired || !googleScriptReady) return;
+  if(GOOGLE_CLIENT_ID === "YOUR_CLIENT_ID_HERE"){ document.getElementById('gsiButtonContainer').style.display = 'none'; return; }
+  document.getElementById('configWarning').style.display = 'none';
+  try {
+    google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleCredentialResponse, hosted_domain: ALLOWED_DOMAIN });
+    google.accounts.id.renderButton(document.getElementById('gsiButtonContainer'), { theme: 'outline', size: 'large', shape: 'pill', text: 'signin_with' });
+  } catch(e){
+    console.error('Google Sign-In failed to initialize:', e);
+    showSignInUnavailable();
+  }
+}
+window.addEventListener('load', function(){
+  pageLoadFired = true;
+  tryInitGoogleSignIn();
+});
+setTimeout(function(){
+  if(!googleScriptReady && GOOGLE_CLIENT_ID !== "YOUR_CLIENT_ID_HERE"){ showSignInUnavailable(); }
+}, 6000);
+
+/* ======================= SUBMIT AN IDEA FORM ======================= */
+const STORAGE_KEY = "peps-innovation-hub-submit-draft";
+const FIELD_IDS = ["name","audience","yeargroup","subject","type","title","hook","description","link"];
+
+function defaultState(){
+  const s = {};
+  FIELD_IDS.forEach(f => { s[f] = ""; });
+  return s;
+}
+let state = defaultState();
+let formInitialized = false;
+
+function loadDraft(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){ state = Object.assign(defaultState(), JSON.parse(raw)); }
+  } catch(e){}
+}
+function saveDraft(){
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e){}
+  const ind = document.getElementById('draftIndicator');
+  if(ind){ ind.textContent = "Draft saved " + new Date().toLocaleTimeString(); }
+}
+function clearDraft(){
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+}
+
+function applyStateToForm(){
+  document.getElementById('f_name').value = state.name || "";
+  document.getElementById('f_yeargroup').value = state.yeargroup || "";
+  document.getElementById('f_subject').value = state.subject || "";
+  document.getElementById('f_type').value = state.type || "";
+  document.getElementById('f_title').value = state.title || "";
+  document.getElementById('f_hook').value = state.hook || "";
+  document.getElementById('f_description').value = state.description || "";
+  document.getElementById('f_link').value = state.link || "";
+  document.getElementById('hookCount').textContent = (state.hook || "").length;
+  document.querySelectorAll('#audienceRow .radio-opt').forEach(el => {
+    el.classList.toggle('selected', el.dataset.value === state.audience);
+  });
+  document.getElementById('yearGroupField').style.display = state.audience === 'Teacher' ? 'none' : 'block';
+}
+
+function initForm(){
+  if(formInitialized) return;
+  formInitialized = true;
+  loadDraft();
+  applyStateToForm();
+
+  document.getElementById('f_name').addEventListener('input', e => { state.name = e.target.value; saveDraft(); });
+  document.getElementById('f_yeargroup').addEventListener('change', e => { state.yeargroup = e.target.value; saveDraft(); });
+  document.getElementById('f_subject').addEventListener('input', e => { state.subject = e.target.value; saveDraft(); });
+  document.getElementById('f_type').addEventListener('change', e => { state.type = e.target.value; saveDraft(); });
+  document.getElementById('f_title').addEventListener('input', e => { state.title = e.target.value; saveDraft(); });
+  document.getElementById('f_hook').addEventListener('input', e => {
+    state.hook = e.target.value;
+    document.getElementById('hookCount').textContent = e.target.value.length;
+    saveDraft();
+  });
+  document.getElementById('f_description').addEventListener('input', e => { state.description = e.target.value; saveDraft(); });
+  document.getElementById('f_link').addEventListener('input', e => { state.link = e.target.value; saveDraft(); });
+
+  document.querySelectorAll('#audienceRow .radio-opt').forEach(el => {
+    el.addEventListener('click', () => {
+      state.audience = (state.audience === el.dataset.value) ? "" : el.dataset.value;
+      applyStateToForm();
+      saveDraft();
+    });
+  });
+}
+
+function validateSubmission(){
+  const missing = [];
+  if(!state.name) missing.push("your name");
+  if(!state.audience) missing.push("whether you're a student or teacher");
+  if(state.audience === 'Student' && !state.yeargroup) missing.push("your year group");
+  if(!state.title) missing.push("a title");
+  if(!state.hook) missing.push("a one-line hook");
+  if(!state.description) missing.push("a bit more detail");
+  return missing;
+}
+
+function submitIdea(){
+  const missing = validateSubmission();
+  if(missing.length){
+    alert("Just need a few more things before this can be submitted: " + missing.join(", ") + ".");
+    return;
+  }
+  const subject = encodeURIComponent("Innovation Hub submission: " + state.title);
+  const bodyLines = [
+    "New Idea Exchange submission for review:",
+    "",
+    "Title: " + state.title,
+    "Submitted by: " + state.name + " (" + state.audience + (state.audience === 'Student' ? ", " + state.yeargroup : "") + ")",
+    "Subject / Area: " + state.subject,
+    "Type: " + state.type,
+    "",
+    "One-line hook: " + state.hook,
+    "",
+    "Description:",
+    state.description,
+    "",
+    state.link ? ("Link: " + state.link) : ""
+  ];
+  const body = encodeURIComponent(bodyLines.join("\n"));
+  window.location.href = "mailto:" + INNOVATION_LEAD_EMAIL + "?subject=" + subject + "&body=" + body;
+  clearDraft();
+}
+</script>
+</body>
+</html>

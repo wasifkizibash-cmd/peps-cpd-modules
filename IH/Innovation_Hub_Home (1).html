@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Innovation & Creativity Hub — PEPS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#23301F; --ink-soft:#5B6552;
+    --paper:#FBF6EA; --card:#FFFFFF; --line:#E7DFC9;
+    --amber:#E8A33D; --amber-soft:#FBEBD1;
+    --teal:#2F6E4F; --teal-soft:#E1EDE6;
+    --shadow: 0 10px 26px -12px rgba(35,48,31,.20);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Inter',sans-serif; font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif; color:var(--ink); margin:0;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  img{max-width:100%; display:block;}
+  button{font-family:inherit;}
+  *:focus-visible{outline:3px solid var(--teal); outline-offset:2px;}
+
+  /* subtle paper texture: faint dot grid, evokes a notebook page without being STEM/blueprint-specific */
+  body{
+    background-image: radial-gradient(circle, #00000009 1px, transparent 1.4px);
+    background-size: 22px 22px;
+  }
+
+  /* ============ SIGN-IN GATE ============ */
+  #gateScreen{
+    position:fixed; inset:0; z-index:100; background:var(--paper);
+    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  .gate-card{
+    background:var(--card); border-radius:18px; box-shadow:var(--shadow);
+    max-width:440px; width:100%; padding:44px 36px; text-align:center;
+    border:1px solid var(--line);
+  }
+  .gate-mark{
+    width:56px; height:56px; margin:0 auto 20px; border-radius:14px;
+    background:linear-gradient(135deg,var(--amber),var(--teal));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-weight:900; font-size:26px; color:#fff;
+  }
+  .gate-card h1{ font-size:24px; margin-bottom:10px; }
+  .gate-card p.gate-sub{ color:var(--ink-soft); font-size:14.5px; margin:0 0 26px; }
+  .gsi-btn-wrap{ display:flex; justify-content:center; margin-bottom:14px; min-height:44px; align-items:center; }
+  .gate-domain-note{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft);
+    background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin-top:10px;
+  }
+  .gate-preview-link{
+    display:block; margin-top:22px; font-size:12.5px; color:var(--ink-soft);
+    text-decoration:underline; cursor:pointer; background:none; border:none;
+  }
+  .gate-config-warning{
+    margin-top:18px; text-align:left; font-size:12px; line-height:1.5; color:#8a5a1f;
+    background:var(--amber-soft); border:1px dashed var(--amber); border-radius:10px; padding:12px 14px;
+  }
+  .preview-banner{
+    position:fixed; top:0; left:0; right:0; z-index:90; background:var(--ink); color:#fff;
+    text-align:center; font-family:'IBM Plex Mono',monospace; font-size:12px; padding:9px 14px;
+    display:none;
+  }
+  .preview-banner.show{ display:block; }
+  .preview-banner b{ color:var(--amber); }
+
+  /* ============ TOPBAR ============ */
+  header.topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(251,246,234,.92); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    max-width:1180px; margin:0 auto; padding:15px 32px;
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .brand-mark{
+    width:34px; height:34px; border-radius:9px;
+    background:linear-gradient(135deg,var(--amber),var(--teal));
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-family:'Fraunces',serif; font-weight:900; font-size:16px;
+  }
+  .brand-text .b1{ font-family:'Fraunces',serif; font-weight:700; font-size:16.5px; }
+  .brand-text .b2{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); }
+  nav.primary{ display:flex; align-items:center; gap:24px; }
+  nav.primary a{ text-decoration:none; color:var(--ink); font-size:14px; font-weight:600; padding:5px 0; margin-right:24px; border-bottom:2px solid transparent; }
+  nav.primary a:last-child{ margin-right:0; }
+  nav.primary a:hover{ border-bottom-color:var(--amber); }
+  .who-badge{
+    display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600;
+    background:var(--card); border:1px solid var(--line); border-radius:24px; padding:5px 12px 5px 5px;
+  }
+  .who-badge .avatar{ width:24px; height:24px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; }
+
+  /* ============ HERO ============ */
+  section.hero{ padding:64px 0 20px; }
+  .hero-grid{ display:grid; grid-template-columns:1.05fr .95fr; gap:52px; align-items:center; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--teal); margin-bottom:16px; }
+  .eyebrow .dot{ width:6px; height:6px; border-radius:50%; background:var(--amber); }
+  h1.hero-title{ font-size:44px; line-height:1.08; font-weight:700; letter-spacing:-.01em; max-width:540px; }
+  h1.hero-title em{ font-style:italic; color:var(--teal); font-weight:600; }
+  p.hero-sub{ margin:20px 0 0; font-size:16.5px; color:var(--ink-soft); max-width:460px; }
+  .hero-actions{ display:flex; align-items:center; gap:16px; margin-top:30px; flex-wrap:wrap; }
+  .btn{ font-family:'Inter',sans-serif; font-weight:600; font-size:14.5px; padding:12px 22px; border-radius:9px; text-decoration:none; cursor:pointer; border:none; display:inline-flex; align-items:center; gap:8px; }
+  .btn.primary{ background:var(--ink); color:#fff; }
+  .btn.primary:hover{ background:#3a4a34; }
+  .btn.ghost{ background:transparent; color:var(--ink); border:1.5px solid var(--line); }
+  .btn.ghost:hover{ border-color:var(--ink); }
+  .hero-stats{ display:flex; gap:26px; margin-top:34px; }
+  .hero-stats div{ margin-right:26px; }
+  .hero-stats div:last-child{ margin-right:0; }
+  .hero-stats div b{ display:block; font-family:'Fraunces',serif; font-size:22px; }
+  .hero-stats div span{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-soft); text-transform:uppercase; }
+
+  /* pinboard spotlight card stack */
+  .pinboard{ position:relative; height:420px; }
+  .pin-card{
+    position:absolute; width:78%; background:var(--card); border-radius:4px 14px 4px 14px;
+    box-shadow:var(--shadow); padding:20px 22px 22px; border:1px solid var(--line);
+  }
+  .pin-card::before{
+    content:''; position:absolute; top:-9px; left:24px; width:16px; height:16px; border-radius:50%;
+    background:var(--amber); box-shadow:0 2px 4px rgba(0,0,0,.25);
+  }
+  .pin-card.p1{ top:0; right:0; transform:rotate(-3deg); z-index:3; }
+  .pin-card.p2{ top:150px; left:0; transform:rotate(2.5deg); z-index:2; background:var(--teal-soft); }
+  .pin-card.p3{ top:290px; right:30px; transform:rotate(-1.5deg); z-index:1; background:var(--amber-soft); }
+  .pin-tag{ font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--teal); font-weight:700; margin-bottom:8px; display:block; }
+  .pin-card h3{ font-size:16.5px; margin-bottom:6px; }
+  .pin-card p{ font-size:12.5px; color:var(--ink-soft); margin:0; }
+  .pin-by{ margin-top:10px; font-size:11px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; }
+
+  /* ============ SECTIONS GRID ============ */
+  section.sections{ padding:70px 0; }
+  .section-head{ max-width:600px; margin-bottom:40px; }
+  h2.section-title{ font-size:30px; }
+  p.section-sub{ margin:12px 0 0; color:var(--ink-soft); font-size:15px; }
+  .link-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .link-card{
+    background:var(--card); border:1px solid var(--line); border-radius:14px; padding:24px;
+    text-decoration:none; color:var(--ink); display:flex; flex-direction:column; gap:10px;
+    transition:transform .15s, box-shadow .15s;
+  }
+  .link-card:hover{ transform:translateY(-4px); box-shadow:var(--shadow); }
+  .link-card .lc-icon{ width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; }
+  .link-card h3{ font-size:17px; }
+  .link-card p{ font-size:13px; color:var(--ink-soft); margin:0; line-height:1.5; }
+
+  footer{ background:var(--ink); color:rgba(255,255,255,.75); padding:44px 0 26px; margin-top:20px; }
+  .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; font-size:12.5px; }
+
+  @media (max-width: 980px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .pinboard{ max-width:420px; }
+    .link-grid{ grid-template-columns:1fr 1fr; }
+    nav.primary{ display:none; }
+  }
+  @media (max-width: 620px){
+    .wrap{ padding:0 20px; }
+    h1.hero-title{ font-size:32px; }
+    .link-grid{ grid-template-columns:1fr; }
+    .hero-stats{ flex-wrap:wrap; row-gap:14px; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
+</style>
+</head>
+<body>
+
+<div class="preview-banner" id="previewBanner">Viewing in <b>Preview Mode</b> — sign-in is not yet enforced. Add a real Google OAuth Client ID to make this gate live.</div>
+
+<!-- ============ SIGN-IN GATE ============ -->
+<div id="gateScreen">
+  <div class="gate-card">
+    <div class="gate-mark">P</div>
+    <h1>Innovation &amp; Creativity Hub</h1>
+    <p class="gate-sub">For PEPS students (Year 7&ndash;13) and staff. Sign in with your school account to enter.</p>
+
+    <div class="gsi-btn-wrap" id="gsiButtonContainer">
+      <!-- Google renders its Sign-In button here once a real Client ID is configured -->
+    </div>
+
+    <button class="gate-preview-link" id="previewModeBtn" onclick="enterPreviewMode()">Continue in preview mode &rarr;</button>
+
+    <div class="gate-domain-note">Restricted to @pepsschool.ae accounts only</div>
+
+    <div class="gate-config-warning" id="configWarning">
+      <b>Setup needed:</b> this Sign-In button won't appear until a real Google OAuth Client ID is added in the script below (search for <code>YOUR_CLIENT_ID_HERE</code>), with <code>https://your-github-username.github.io</code> added as an authorized JavaScript origin in Google Cloud Console. Until then, use &ldquo;Continue in preview mode&rdquo; above to review the site.
+    </div>
+  </div>
+</div>
+
+<!-- ============ SITE (hidden until signed in / preview mode) ============ -->
+<div id="siteContent" style="display:none;">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#top">
+      <div class="brand-mark">P</div>
+      <div class="brand-text">
+        <div class="b1">Innovation &amp; Creativity Hub</div>
+        <div class="b2">Providence English School</div>
+      </div>
+    </a>
+    <nav class="primary">
+      <a href="Idea_Exchange.html">Idea Exchange</a>
+      <a href="Submit_Idea.html">Submit an Idea</a>
+      <a href="EdTech_Toolkit.html">EdTech Toolkit</a>
+      <a href="Spotlight.html">Spotlight</a>
+      <a href="Challenges.html">Challenges</a>
+    </nav>
+    <div class="who-badge" id="whoBadge">
+      <div class="avatar" id="whoAvatar">?</div>
+      <span id="whoName">Guest</span>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>Students Year 7&ndash;13 &middot; Staff</div>
+      <h1 class="hero-title">Where PEPS ideas get <em>pinned up</em>, not filed away.</h1>
+      <p class="hero-sub">A shared board for real projects, experiments, and classroom ideas from across the school &mdash; browse what others have tried, or pin up your own.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="Idea_Exchange.html">Browse the board &rarr;</a>
+        <a class="btn ghost" href="Submit_Idea.html">Submit an idea</a>
+      </div>
+      <div class="hero-stats">
+        <div><b>0</b><span>ideas pinned</span></div>
+        <div><b>Y7&ndash;13</b><span>+ all staff</span></div>
+        <div><b>New</b><span>hub just launched</span></div>
+      </div>
+    </div>
+
+    <div class="pinboard">
+      <div class="pin-card p1">
+        <span class="pin-tag">Example &middot; Science</span>
+        <h3>Sample idea card</h3>
+        <p>This is a placeholder &mdash; once real ideas are approved, they'll appear here automatically.</p>
+        <div class="pin-by">Sample entry</div>
+      </div>
+      <div class="pin-card p2">
+        <span class="pin-tag">Example &middot; Art</span>
+        <h3>Sample idea card</h3>
+        <p>Approved submissions will replace these placeholder cards.</p>
+        <div class="pin-by">Sample entry</div>
+      </div>
+      <div class="pin-card p3">
+        <span class="pin-tag">Example &middot; Business</span>
+        <h3>Sample idea card</h3>
+        <p>This board fills up as students and staff start pinning ideas.</p>
+        <div class="pin-by">Sample entry</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sections">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow"><span class="dot"></span>Find your way in</div>
+      <h2 class="section-title">Everything on the board</h2>
+      <p class="section-sub">The hub is still being built out section by section &mdash; this is what's planned.</p>
+    </div>
+    <div class="link-grid">
+      <a class="link-card" href="Idea_Exchange.html">
+        <div class="lc-icon" style="background:var(--amber-soft);">&#128204;</div>
+        <h3>Idea Exchange</h3>
+        <p>Browse real projects and classroom ideas shared by students and staff, filterable by subject and year group.</p>
+      </a>
+      <a class="link-card" href="Submit_Idea.html">
+        <div class="lc-icon" style="background:var(--teal-soft);">&#9998;</div>
+        <h3>Submit an Idea</h3>
+        <p>Pin up something you've tried &mdash; a quick form, reviewed before it goes live on the board.</p>
+      </a>
+      <a class="link-card" href="EdTech_Toolkit.html">
+        <div class="lc-icon" style="background:var(--amber-soft);">&#128295;</div>
+        <h3>EdTech Toolkit</h3>
+        <p>A curated, actually-useful list of tools worth trying &mdash; with a quick how-to for each.</p>
+      </a>
+      <a class="link-card" href="Spotlight.html">
+        <div class="lc-icon" style="background:var(--teal-soft);">&#11088;</div>
+        <h3>Spotlight &amp; Recognition</h3>
+        <p>A rolling wall celebrating students and teachers who've tried something genuinely new.</p>
+      </a>
+      <a class="link-card" href="Challenges.html">
+        <div class="lc-icon" style="background:var(--amber-soft);">&#127919;</div>
+        <h3>Challenges</h3>
+        <p>Termly prompts to spark contributions &mdash; a reason to try something even without a big idea yet.</p>
+      </a>
+      <a class="link-card" href="#inspiration">
+        <div class="lc-icon" style="background:var(--teal-soft);">&#128218;</div>
+        <h3>Inspiration</h3>
+        <p>Curated articles and talks on creative teaching and learning, grouped by theme.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>Innovation &amp; Creativity Hub &middot; Providence English School</span>
+    <span>Access restricted to @pepsschool.ae accounts</span>
+  </div>
+</footer>
+
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer onload="onGoogleScriptLoaded()" onerror="onGoogleScriptFailed()"></script>
+<script>
+/* =====================================================================
+   GOOGLE SIGN-IN CONFIGURATION
+   =====================================================================
+   1. Replace YOUR_CLIENT_ID_HERE below with a real OAuth Client ID from
+      Google Cloud Console (Google Auth Platform > Clients > Web application).
+   2. Add this site's real hosted URL (e.g. https://yourusername.github.io)
+      as an Authorized JavaScript origin for that Client ID.
+   3. That's it — once a real Client ID is present, the button above
+      renders for real and only @pepsschool.ae accounts are accepted.
+   ===================================================================== */
+const GOOGLE_CLIENT_ID = "596461951047-qsh9m58i6rmv6u0eelcsv2f2rndv59k1.apps.googleusercontent.com";
+const ALLOWED_DOMAIN = "pepsschool.ae";
+
+function decodeJwt(token){
+  try {
+    const base64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+    return JSON.parse(decodeURIComponent(atob(base64).split('').map(c =>
+      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join('')));
+  } catch(e){ return null; }
+}
+
+function handleCredentialResponse(response){
+  const payload = decodeJwt(response.credential);
+  if(!payload){ alert('Sign-in failed. Please try again.'); return; }
+  if(payload.hd !== ALLOWED_DOMAIN && !(payload.email && payload.email.endsWith('@' + ALLOWED_DOMAIN))){
+    alert('This hub is only available to @' + ALLOWED_DOMAIN + ' accounts. You signed in with ' + payload.email + '.');
+    return;
+  }
+  showSite(payload.name || payload.email, payload.picture || null, false);
+}
+
+function showSite(name, pictureUrl, isPreview){
+  document.getElementById('gateScreen').style.display = 'none';
+  document.getElementById('siteContent').style.display = 'block';
+  document.getElementById('whoName').textContent = isPreview ? 'Preview mode' : name;
+  const avatar = document.getElementById('whoAvatar');
+  if(pictureUrl){
+    avatar.style.backgroundImage = 'url(' + pictureUrl + ')';
+    avatar.style.backgroundSize = 'cover';
+    avatar.textContent = '';
+  } else {
+    avatar.textContent = (name || 'P').charAt(0).toUpperCase();
+  }
+  if(isPreview){ document.getElementById('previewBanner').classList.add('show'); }
+  window.scrollTo(0,0);
+}
+
+function enterPreviewMode(){
+  showSite('Preview mode', null, true);
+}
+
+let googleScriptReady = false;
+let pageLoadFired = false;
+
+function onGoogleScriptLoaded(){
+  googleScriptReady = true;
+  tryInitGoogleSignIn();
+}
+function onGoogleScriptFailed(){
+  console.error('Google Sign-In script failed to load \u2014 likely a network or firewall issue blocking accounts.google.com, not a problem with this page.');
+  showSignInUnavailable();
+}
+function showSignInUnavailable(){
+  const warning = document.getElementById('configWarning');
+  if(!warning) return;
+  warning.style.display = 'block';
+  warning.innerHTML = '<b>Sign-in temporarily unavailable.</b> The Google Sign-In script could not be loaded, usually a network or firewall issue rather than a problem with this page. Please check your connection, or use \u201cContinue in preview mode\u201d above.';
+}
+function tryInitGoogleSignIn(){
+  if(!pageLoadFired || !googleScriptReady) return;
+  if(GOOGLE_CLIENT_ID === "YOUR_CLIENT_ID_HERE"){ document.getElementById('gsiButtonContainer').style.display = 'none'; return; }
+  document.getElementById('configWarning').style.display = 'none';
+  try {
+    google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleCredentialResponse, hosted_domain: ALLOWED_DOMAIN });
+    google.accounts.id.renderButton(document.getElementById('gsiButtonContainer'), { theme: 'outline', size: 'large', shape: 'pill', text: 'signin_with' });
+  } catch(e){
+    console.error('Google Sign-In failed to initialize:', e);
+    showSignInUnavailable();
+  }
+}
+window.addEventListener('load', function(){
+  pageLoadFired = true;
+  tryInitGoogleSignIn();
+});
+setTimeout(function(){
+  if(!googleScriptReady && GOOGLE_CLIENT_ID !== "YOUR_CLIENT_ID_HERE"){ showSignInUnavailable(); }
+}, 6000);
+</script>
+</body>
+</html>
