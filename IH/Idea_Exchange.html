@@ -292,7 +292,7 @@ setTimeout(function(){
 }, 6000);
 
 /* ======================= IDEA EXCHANGE GALLERY ======================= */
-const SAMPLE_IDEAS = [
+let IDEAS = [
   { title: "Peer-Reviewed Podcast Debates", audience: "Student", yearGroup: "Year 10", subject: "English", type: "Project-Based", by: "Year 10 English class", hook: "Students research, script, and record a 6-minute debate podcast, then peer-review each other's arguments using a shared rubric." },
   { title: "AI-Assisted First Drafts, Human-Led Edits", audience: "Teacher", yearGroup: "", subject: "English", type: "EdTech", by: "Ms. Hassan", hook: "Students use an AI tool for a rough first draft, then the real work is a structured critique of what the AI got wrong or missed." },
   { title: "Live pH Sensor Garden Project", audience: "Student", yearGroup: "Year 8", subject: "Science", type: "Project-Based", by: "Year 8 Green Club", hook: "A student-built soil sensor network monitoring the school garden, with live data feeding into a shared dashboard." },
@@ -307,10 +307,12 @@ let activeFilters = { audience: '', subject: '', type: '', search: '' };
 let galleryInitialized = false;
 
 function populateFilterOptions(){
-  const subjects = [...new Set(SAMPLE_IDEAS.map(i => i.subject))].sort();
-  const types = [...new Set(SAMPLE_IDEAS.map(i => i.type))].sort();
+  const subjects = [...new Set(IDEAS.map(i => i.subject))].sort();
+  const types = [...new Set(IDEAS.map(i => i.type))].sort();
   const subjSel = document.getElementById('fSubject');
   const typeSel = document.getElementById('fType');
+  subjSel.innerHTML = '<option value="">Any subject</option>';
+  typeSel.innerHTML = '<option value="">Any type</option>';
   subjects.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; subjSel.appendChild(o); });
   types.forEach(t => { const o = document.createElement('option'); o.value = t; o.textContent = t; typeSel.appendChild(o); });
 }
@@ -319,7 +321,7 @@ function escapeHtml(str){ const d = document.createElement('div'); d.textContent
 
 function renderGallery(){
   const grid = document.getElementById('cardGrid');
-  const filtered = SAMPLE_IDEAS.filter(idea => {
+  const filtered = IDEAS.filter(idea => {
     if(activeFilters.audience && idea.audience !== activeFilters.audience) return false;
     if(activeFilters.subject && idea.subject !== activeFilters.subject) return false;
     if(activeFilters.type && idea.type !== activeFilters.type) return false;
@@ -330,7 +332,7 @@ function renderGallery(){
     return true;
   });
 
-  document.getElementById('resultCount').textContent = filtered.length + ' of ' + SAMPLE_IDEAS.length + ' ideas shown';
+  document.getElementById('resultCount').textContent = filtered.length + ' of ' + IDEAS.length + ' ideas shown';
 
   if(filtered.length === 0){
     grid.innerHTML = '<div class="empty-state">No ideas match those filters yet &mdash; try clearing a filter, or be the first to submit one for this combination.</div>';
@@ -371,6 +373,47 @@ function initGallery(){
   document.getElementById('fType').addEventListener('change', e => { activeFilters.type = e.target.value; renderGallery(); });
   document.getElementById('fSearch').addEventListener('input', e => { activeFilters.search = e.target.value; renderGallery(); });
   renderGallery();
+  loadLiveIdeas();
+}
+
+/* ======================= LIVE DATA (Google Sheet, via Apps Script) =======================
+   Replace LIVE_SCRIPT_URL below with your deployed Apps Script /exec URL once ready.
+   Until then, this quietly does nothing and the sample cards above keep showing \u2014
+   the page never breaks either way. */
+const LIVE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzj2TKFIDEB9a-wvdfBSbKy1fNR18Caa7zqu1BdxSNCxR5Mk1p8U3vwkfdobi5hydYT/exec";
+
+function normaliseLiveIdea(row){
+  return {
+    title: row.title || "Untitled idea",
+    audience: row.audience || "Teacher",
+    yearGroup: row.yearGroup || "",
+    subject: row.subject || "General",
+    type: row.type || "Other",
+    by: row.by || "PEPS staff/student",
+    hook: row.hook || (row.description ? String(row.description).slice(0,140) : "")
+  };
+}
+
+function loadLiveIdeas(){
+  if(LIVE_SCRIPT_URL === "YOUR_APPS_SCRIPT_URL_HERE") return; // not configured yet \u2014 keep showing samples
+  const noteEl = document.querySelector('.sample-note');
+  fetch(LIVE_SCRIPT_URL)
+    .then(res => { if(!res.ok) throw new Error('Bad response'); return res.json(); })
+    .then(rows => {
+      if(!Array.isArray(rows)) throw new Error('Unexpected response shape');
+      if(rows.length === 0){
+        if(noteEl) noteEl.innerHTML = '&#9998; No approved ideas yet \\u2014 showing sample cards until the first one is approved';
+        return; // keep samples visible rather than showing an empty board
+      }
+      IDEAS = rows.map(normaliseLiveIdea);
+      if(noteEl){ noteEl.remove(); } // real data needs no "sample" disclaimer
+      populateFilterOptions();
+      clearFilters();
+    })
+    .catch(err => {
+      console.error('Could not load live ideas, keeping sample cards:', err);
+      if(noteEl) noteEl.innerHTML = '&#9998; Could not reach the live board right now \\u2014 showing sample cards';
+    });
 }
 </script>
 <script src="https://accounts.google.com/gsi/client" async defer onload="onGoogleScriptLoaded()" onerror="onGoogleScriptFailed()"></script>
