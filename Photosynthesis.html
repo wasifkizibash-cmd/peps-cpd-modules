@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Year 8 Photosynthesis Virtual Lab</title>
+<style>
+:root{--bg:#f5f7f4;--panel:#fff;--ink:#17301f;--muted:#607064;--line:#d9e2da;--accent:#238b45;--accent2:#7abf4b;--blue:#3d7fc4;--orange:#e59a35;--danger:#b94a48}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+header{background:linear-gradient(135deg,#153d24,#2e7d45);color:#fff;padding:24px 20px}
+.wrap{max-width:1180px;margin:auto}.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+h1{margin:5px 0;font-size:30px}header p{margin:6px 0 0;max-width:850px;opacity:.92}
+main{padding:20px}.grid{display:grid;grid-template-columns:340px 1fr;gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 3px 12px rgba(20,50,30,.05)}
+h2,h3{margin-top:0}.control{margin:16px 0}.control label{display:flex;justify-content:space-between;font-weight:700;font-size:14px}
+input[type=range]{width:100%;accent-color:var(--accent);margin-top:8px}
+select,button{font:inherit;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;color:var(--ink)}
+button{cursor:pointer;font-weight:700}.primary{background:var(--accent);color:white;border-color:var(--accent)}
+button:hover{filter:brightness(.96)}
+.readouts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}
+.readout{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fbfcfb}.readout small{display:block;color:var(--muted)}.big{font-size:24px;font-weight:800}
+.lab{min-height:410px;position:relative;overflow:hidden;background:linear-gradient(#eaf6ff 0 55%,#d8efc7 55%);border-radius:14px;border:1px solid #cbdacb}
+.sun{position:absolute;right:35px;top:30px;width:72px;height:72px;border-radius:50%;background:#ffd65b;box-shadow:0 0 35px rgba(255,214,91,.65)}
+.plant{position:absolute;left:50%;bottom:45px;transform:translateX(-50%);width:260px;height:310px}
+.pot{position:absolute;bottom:0;left:82px;width:100px;height:65px;background:#b86d43;clip-path:polygon(8% 0,92% 0,78% 100%,22% 100%);border-radius:4px}
+.stem{position:absolute;bottom:55px;left:126px;width:8px;height:210px;background:#3f8a3c;border-radius:8px}
+.leaf{position:absolute;width:105px;height:58px;background:#55a943;border-radius:100% 0 100% 0;transform-origin:10% 50%;border:2px solid #3d8c38}
+.leaf.l1{left:22px;bottom:170px;transform:rotate(-22deg)}.leaf.l2{left:128px;bottom:205px;transform:scaleX(-1) rotate(-18deg)}
+.leaf.l3{left:18px;bottom:235px;transform:rotate(-12deg)}.leaf.l4{left:130px;bottom:135px;transform:scaleX(-1) rotate(-28deg)}
+.venation{position:absolute;left:12%;right:12%;top:48%;height:2px;background:rgba(255,255,255,.55)}
+.bubble{position:absolute;bottom:95px;width:9px;height:9px;border-radius:50%;background:#fff;border:1px solid #9ac4e8;animation:rise 3s linear infinite}
+@keyframes rise{from{transform:translateY(0);opacity:.9}to{transform:translateY(-240px);opacity:0}}
+.ray{position:absolute;right:105px;top:95px;width:350px;height:4px;background:rgba(255,214,91,.55);transform:rotate(160deg);transform-origin:right center}
+.note{margin-top:12px;padding:10px 12px;border-radius:10px;background:#eef7ef;border-left:4px solid var(--accent);font-size:14px}
+.status{font-weight:800}.limited{color:#a35d00}.high{color:#238b45}
+.tabs{display:flex;gap:8px;margin:18px 0 0;flex-wrap:wrap}.tab{background:#eef3ee}.tab.active{background:var(--accent);color:#fff}
+.panel{display:none;margin-top:14px}.panel.active{display:block}
+.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px solid var(--line);text-align:left;font-size:14px}
+canvas{width:100%;height:260px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.question{padding:12px;border:1px solid var(--line);border-radius:12px;margin:10px 0}.feedback{margin-top:8px;font-weight:700}
+footer{padding:20px;color:var(--muted);text-align:center;font-size:13px}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.readouts{grid-template-columns:1fr}.lab{min-height:390px}.ray{width:220px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="eyebrow">PEPS Science Simulation • Cambridge-style Year 8</div>
+<h1>Photosynthesis Virtual Laboratory</h1>
+<p>Investigate how light intensity, carbon dioxide and water availability affect the rate of photosynthesis. Change one factor, observe the plant, record data and explain your evidence.</p>
+</div></header>
+
+<main class="wrap">
+<div class="grid">
+<section class="card">
+<h2>Experiment controls</h2>
+<div class="control"><label for="light">Light intensity <span id="lightOut">70%</span></label><input id="light" type="range" min="0" max="100" value="70"></div>
+<div class="control"><label for="co2">Carbon dioxide <span id="co2Out">70%</span></label><input id="co2" type="range" min="0" max="100" value="70"></div>
+<div class="control"><label for="water">Water availability <span id="waterOut">70%</span></label><input id="water" type="range" min="0" max="100" value="70"></div>
+<div class="control"><label for="duration">Observation time <span id="durationOut">30 s</span></label><input id="duration" type="range" min="10" max="60" value="30" step="5"></div>
+<button class="primary" id="record">Record result</button>
+<button id="reset">Reset experiment</button>
+<div class="note"><span class="status" id="status">All three inputs are sufficient.</span><br><span id="explain">The rate is controlled by the least available input.</span></div>
+<div class="readouts">
+<div class="readout"><small>Photosynthesis rate</small><div class="big" id="rate">70%</div></div>
+<div class="readout"><small>O₂ produced</small><div class="big" id="oxygen">21</div><small>relative units / 30 s</small></div>
+<div class="readout"><small>Limiting factor</small><div class="big" id="limit">None</div></div>
+</div>
+</section>
+
+<section class="card">
+<h2>Observe the plant</h2>
+<div class="lab" id="lab" aria-label="Animated plant simulation">
+<div class="sun"></div><div class="ray" id="ray"></div>
+<div class="plant">
+<div class="stem"></div>
+<div class="leaf l1"><div class="venation"></div></div><div class="leaf l2"><div class="venation"></div></div>
+<div class="leaf l3"><div class="venation"></div></div><div class="leaf l4"><div class="venation"></div></div>
+<div class="pot"></div>
+</div>
+</div>
+<div class="note"><strong>Think like a scientist:</strong> If you increase light but the rate stops increasing, another factor has become limiting. Try changing only one variable at a time.</div>
+</section>
+</div>
+
+<div class="tabs">
+<button class="tab active" data-tab="investigate">Investigate</button>
+<button class="tab" data-tab="data">Data & graph</button>
+<button class="tab" data-tab="challenge">Student challenge</button>
+<button class="tab" data-tab="teacher">Teacher notes</button>
+</div>
+
+<section id="investigate" class="panel active card">
+<h2>Suggested investigation</h2>
+<ol>
+<li>Set carbon dioxide and water to 70%.</li>
+<li>Change only light intensity.</li>
+<li>Record at least five results using <strong>Record result</strong>.</li>
+<li>Repeat with carbon dioxide as the independent variable.</li>
+<li>Compare the patterns and identify where another factor becomes limiting.</li>
+</ol>
+<p><strong>Key idea:</strong> photosynthesis uses light energy, carbon dioxide and water to produce glucose and oxygen. The simulation models the rate using the least available of these three inputs.</p>
+</section>
+
+<section id="data" class="panel card">
+<h2>Results</h2>
+<div class="tablewrap"><table><thead><tr><th>#</th><th>Light</th><th>CO₂</th><th>Water</th><th>Rate</th><th>Limiting factor</th></tr></thead><tbody id="rows"></tbody></table></div>
+<h3 style="margin-top:18px">Rate vs. light intensity</h3>
+<canvas id="chart" width="900" height="300"></canvas>
+</section>
+
+<section id="challenge" class="panel card">
+<h2>Student challenge</h2>
+<div class="question"><strong>1. What is the limiting factor when light = 20%, CO₂ = 80%, water = 80%?</strong><br><button class="answer" data-q="1" data-a="light">Light</button> <button class="answer" data-q="1" data-a="co2">Carbon dioxide</button> <button class="answer" data-q="1" data-a="water">Water</button><div class="feedback" id="f1"></div></div>
+<div class="question"><strong>2. If light is increased from 70% to 100% while CO₂ is only 30%, what should happen?</strong><br><button class="answer" data-q="2" data-a="increase">Rate increases greatly</button> <button class="answer" data-q="2" data-a="little">Rate changes little</button> <button class="answer" data-q="2" data-a="zero">Photosynthesis stops</button><div class="feedback" id="f2"></div></div>
+<div class="question"><strong>3. Why should a fair test change only one variable at a time?</strong><br><button class="answer" data-q="3" data-a="fair">To identify which variable caused the change</button> <button class="answer" data-q="3" data-a="fast">To make the experiment faster</button><div class="feedback" id="f3"></div></div>
+</section>
+
+<section id="teacher" class="panel card">
+<h2>Teacher notes</h2>
+<ul>
+<li><strong>Suggested level:</strong> Year 8 / lower secondary science.</li>
+<li><strong>Core concept:</strong> limiting factors and input-output relationships in photosynthesis.</li>
+<li><strong>Variables:</strong> independent = selected environmental factor; dependent = modelled photosynthesis rate; controls = remaining factors.</li>
+<li><strong>Model limitation:</strong> this is a conceptual model, not a biological measurement. It deliberately uses relative percentages to make the limiting-factor relationship visible.</li>
+<li><strong>Extension:</strong> ask students to design a fair test, predict the shape of a graph, collect five or more data points and write a conclusion using evidence.</li>
+</ul>
+</section>
+</main>
+<footer>Standalone HTML • No external libraries or internet connection required • Suitable for embedding/hosting on a school portal</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const controls=[$('light'),$('co2'),$('water')];
+let records=[];
+function calc(){
+ const vals=controls.map(x=>+x.value), rate=Math.min(...vals);
+ const names=['Light','Carbon dioxide','Water'], min=Math.min(...vals);
+ const limiting=vals.filter(v=>v===min).length>1 ? 'Multiple' : names[vals.indexOf(min)];
+ $('lightOut').textContent=vals[0]+'%'; $('co2Out').textContent=vals[1]+'%'; $('waterOut').textContent=vals[2]+'%';
+ $('durationOut').textContent=$('duration').value+' s';
+ $('rate').textContent=rate+'%'; $('oxygen').textContent=Math.round(rate*(+$('duration').value)/100);
+ $('limit').textContent=limiting;
+ $('status').textContent=limiting==='Multiple'?'More than one factor is equally limiting.':limiting==='None'?'All three inputs are sufficient.':limiting+' is the limiting factor.';
+ $('status').className='status '+(limiting==='None'?'high':'limited');
+ $('explain').textContent=limiting==='None'?'The rate is high because no input is lower than the others.':'Increasing '+limiting+' is the most likely way to increase the rate, provided another factor does not become limiting.';
+ $('ray').style.opacity=String(.15+vals[0]/125);
+ document.querySelectorAll('.bubble').forEach(b=>b.remove());
+ const lab=$('lab'), count=Math.max(0,Math.min(18,Math.round(rate/7)));
+ for(let i=0;i<count;i++){const b=document.createElement('div');b.className='bubble';b.style.left=(43+Math.random()*15)+'%';b.style.animationDelay=(-Math.random()*3)+'s';b.style.animationDuration=(2.2+Math.random()*2)+'s';lab.appendChild(b)}
+}
+function draw(){
+ const c=$('chart'),ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);
+ ctx.strokeStyle='#8b978d';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(55,20);ctx.lineTo(55,h-45);ctx.lineTo(w-25,h-45);ctx.stroke();
+ ctx.fillStyle='#607064';ctx.font='14px Arial';ctx.fillText('Rate (%)',10,25);ctx.fillText('Light intensity (%)',w-155,h-12);
+ ctx.strokeStyle='#238b45';ctx.lineWidth=3;ctx.beginPath();
+ const points=records.filter(r=>r.factor==='Light');
+ points.forEach((p,i)=>{const x=55+(p.light/100)*(w-90),y=h-45-(p.rate/100)*(h-75);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);ctx.fillStyle='#238b45';ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fill();ctx.beginPath();});
+ if(points.length) {ctx.strokeStyle='#238b45';ctx.lineWidth=2;ctx.beginPath();points.forEach((p,i)=>{const x=55+(p.light/100)*(w-90),y=h-45-(p.rate/100)*(h-75);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();}
+}
+function renderRows(){
+ $('rows').innerHTML=records.map((r,i)=>`<tr><td>${i+1}</td><td>${r.light}%</td><td>${r.co2}%</td><td>${r.water}%</td><td>${r.rate}%</td><td>${r.factor}</td></tr>`).join('');
+ draw();
+}
+controls.concat([$('duration')]).forEach(x=>x.addEventListener('input',calc));
+$('record').addEventListener('click',()=>{const vals=controls.map(x=>+x.value),min=Math.min(...vals),names=['Light','Carbon dioxide','Water'];records.push({light:vals[0],co2:vals[1],water:vals[2],rate:min,factor:names[vals.indexOf(min)]});renderRows();});
+$('reset').addEventListener('click',()=>{records=[];controls.forEach(x=>x.value=70);renderRows();calc()});
+document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');$(btn.dataset.tab).classList.add('active');if(btn.dataset.tab==='data')draw()}));
+const answers={1:['light','Correct — light is the least available factor.'],2:['little','Correct — carbon dioxide at 30% is limiting, so extra light has little effect.'],3:['fair','Correct — changing one variable lets you identify the cause of the result.']};
+document.querySelectorAll('.answer').forEach(b=>b.addEventListener('click',()=>{const q=b.dataset.q;const ok=b.dataset.a===answers[q][0];$('f'+q).textContent=ok?answers[q][1]:'Not quite. Think about the factor that is least available, or the purpose of a fair test.';$('f'+q).style.color=ok?'#238b45':'#b94a48'}));
+calc();renderRows();
+</script>
+</body>
+</html>
