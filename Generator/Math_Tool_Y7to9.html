@@ -449,6 +449,19 @@ function exportToPDF() {
     }
     window.print();
 }
+
+/* Changing any dropdown now updates the activity immediately, without
+   needing to click "Generate" again -- and keeps the printable worksheet
+   in sync with whatever is currently on screen. */
+document.getElementById('year').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
 </script>
 </body>
 </html>
