@@ -252,3 +252,43 @@ const dynamicDatabase = {
         problem: {
             title: "The Eye of the Emirates Flight Coordinates",
             strand: "Statistics & Position - Grid Systems",
+            objective: "Read, plot, and interpret coordinates in the first quadrant of a grid.",
+            instructions: "A new observation wheel is being planned for the Al Majaz Waterfront, with numbered passenger pods arranged around a coordinate grid overlay. <br><br>1. Plot the following pod positions on your grid: A (2,3), B (5,7), C (8,2). <br>2. One pod is missing from the plan at position D (4, 9) &mdash; mark it on your grid and describe, using coordinate language, how you would get from Pod A to Pod D."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+
+    // Also populate the hidden printable template, so Print/Save works immediately after generating
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate an activity first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+</script>
+</body>
+</html>
