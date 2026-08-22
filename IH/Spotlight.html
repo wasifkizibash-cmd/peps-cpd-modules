@@ -136,7 +136,7 @@
     <div class="eyebrow"><span class="dot"></span>Worth Celebrating</div>
     <h1 class="page-title">Spotlight &amp; Recognition</h1>
     <p class="page-sub">A rolling wall for students and staff who've tried something genuinely new &mdash; not a formal award, just a shout-out worth giving.</p>
-    <div class="sample-note">&#9998; Showing 6 sample entries &mdash; real spotlights are chosen from approved Idea Exchange submissions</div>
+    <div class="sample-note" id="spotSampleNote">&#9998; Real spotlights are chosen from approved Idea Exchange submissions</div>
   </div>
 </section>
 
@@ -234,8 +234,10 @@ function renderSpotlightCards(items){
 function loadSpotlighted(){
   if(spotlightLoaded) return;
   spotlightLoaded = true;
+  const noteEl = document.getElementById('spotSampleNote');
   if(LIVE_SCRIPT_URL === "YOUR_APPS_SCRIPT_URL_HERE"){
     document.getElementById('spotGrid').innerHTML = '<div class="empty-state">Spotlight is not connected yet &mdash; set LIVE_SCRIPT_URL in the page source.</div>';
+    if(noteEl) noteEl.remove();
     return;
   }
   fetch(LIVE_SCRIPT_URL)
@@ -243,10 +245,12 @@ function loadSpotlighted(){
     .then(rows => {
       if(!Array.isArray(rows)) throw new Error('Unexpected response shape');
       renderSpotlightCards(rows.filter(r => r.featured === true));
+      if(noteEl) noteEl.remove();
     })
     .catch(err => {
       console.error('Could not load spotlighted ideas:', err);
       document.getElementById('spotGrid').innerHTML = '<div class="empty-state">Could not load spotlighted ideas right now &mdash; please try again shortly.</div>';
+      if(noteEl){ noteEl.innerHTML = '&#9998; Could not reach the live board right now &mdash; showing an empty state'; }
     });
 }
 
