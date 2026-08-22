@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sharjah Year 4 Math Innovation Generator</title>
-    <!-- Include html2pdf.js library for clean, reliable PDF generation -->
-    <script src="https://cloudflare.com"></script>
     <style>
         :root {
             --primary: #007A87;
@@ -61,10 +59,6 @@
             margin-bottom: 25px;
         }
 
-        @media (max-width: 600px) {
-            .controls { grid-template-columns: 1fr; }
-        }
-
         label {
             font-weight: 600;
             display: block;
@@ -79,11 +73,7 @@
             border-radius: 6px;
             font-size: 16px;
             outline: none;
-            transition: border-color 0.3s;
-        }
-
-        select:focus {
-            border-color: var(--primary);
+            box-sizing: border-box;
         }
 
         .btn-group {
@@ -100,7 +90,7 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            transition: background 0.3s, transform 0.1s;
+            transition: background 0.3s;
         }
 
         .btn-generate {
@@ -113,17 +103,10 @@
         .btn-print {
             background-color: var(--accent);
             color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
 
         .btn-print:hover { background-color: #E08710; }
 
-        button:active { transform: scale(0.98); }
-
-        /* Output Area Styling */
         #display-area {
             border: 2px dashed #D0DEDC;
             padding: 25px;
@@ -152,16 +135,25 @@
             text-transform: uppercase;
         }
 
-        .section-heading {
-            font-weight: bold;
-            color: #444;
-            margin-top: 15px;
-            margin-bottom: 5px;
-        }
-
-        /* Printable Worksheet Formatter hidden from main UI view */
+        /* Print Layout Formatting styles */
         #print-template {
             display: none;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #print-template, #print-template * {
+                visibility: visible;
+            }
+            #print-template {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -193,7 +185,7 @@
 
     <div class="btn-group">
         <button class="btn-generate" onclick="generateActivity()">⚡ Generate Innovation Idea</button>
-        <button class="btn-print" onclick="exportToPDF()">🖨️ Download PDF Worksheet</button>
+        <button class="btn-print" onclick="exportToPDF()">🖨️ Print / Save Worksheet</button>
     </div>
 
     <div id="display-area">
@@ -201,9 +193,9 @@
     </div>
 </div>
 
-<!-- Hidden Worksheet Layout specifically tailored for the printer/PDF output engine -->
-<div id="print-template" style="padding: 30px; font-family: Arial, sans-serif; color: #222;">
-    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
+<!-- Printable Worksheet Layout View Container -->
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
         <h2 style="margin: 0; color: #007A87;">CAMBRIDGE PRIMARY MATHEMATICS - YEAR 4</h2>
         <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Sharjah Innovation Webpage Resource Bank</h3>
         <table style="width: 100%; margin-top: 20px; font-size: 14px;">
@@ -213,10 +205,10 @@
             </tr>
         </table>
     </div>
-    <div id="print-content"></div>
-    <div style="margin-top: 50px; border-top: 1px solid #CCC; padding-top: 20px;">
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
         <p style="font-weight: bold;">✍️ Student Working Space & Calculations:</p>
-        <div style="height: 250px; border: 1px solid #DDD; background-image: linear-gradient(#EEE 1px, transparent 1px); background-size: 100% 25px; border-radius: 4px;"></div>
+        <div style="height: 300px; border: 1px solid #DDD; border-radius: 4px;"></div>
     </div>
 </div>
 
@@ -233,7 +225,7 @@ const dynamicDatabase = {
             title: "The Blue Souk Textile Exchange",
             strand: "Number - Addition & Subtraction (AED Fluency)",
             objective: "Solve two-step addition and subtraction problems involving money up to 4-digits.",
-            instructions: "A merchant at the Sharjah Central Souk starts his morning with 4,520 AED in his cash box. During the first hour, he sells a beautiful silk carpet for 1,285 AED. In the second hour, he pays his shop utility bill which costs 650 AED. \n\n1. How much money does the merchant have left in his cash box? \n2. Write out your column subtraction clearly showing any renaming."
+            instructions: "A merchant at the Sharjah Central Souk starts his morning with 4,520 AED in his cash box. During the first hour, he sells a beautiful silk carpet for 1,285 AED. In the second hour, he pays his shop utility bill which costs 650 AED. <br><br>1. How much money does the merchant have left in his cash box? <br>2. Write out your column subtraction clearly showing any renaming."
         }
     },
     geometry: {
@@ -247,7 +239,7 @@ const dynamicDatabase = {
             title: "Designing the Next Sharjah Skyscraper",
             strand: "Geometry - 3D Nets & Measurement",
             objective: "Identify and visualize 3D shapes from their 2D representations.",
-            instructions: "An architect in Sharjah is designing a new futuristic building next to the Al Majaz Waterfront. The base of the building is a rectangular prism, and the roof structure is a square-based pyramid. \n\n1. Draw the 2D flat nets that the builder needs to cut out to construct models of these two architectural shapes. \n2. Label the total number of faces, edges, and vertices on the finished skyscraper model."
+            instructions: "An architect in Sharjah is designing a new futuristic building next to the Al Majaz Waterfront. The base of the building is a rectangular prism, and the roof structure is a square-based pyramid. <br><br>1. Draw the 2D flat nets that the builder needs to cut out to construct models of these two architectural shapes. <br>2. Label the total number of faces, edges, and vertices on the finished skyscraper model."
         }
     },
     statistics: {
@@ -255,3 +247,8 @@ const dynamicDatabase = {
             title: "Al Montazah Park Data Grid",
             strand: "Statistics - Data Collection & Coordinates",
             objective: "Organize, graph, and interpret discrete data using frequency tables.",
+            instructions: "Create a human bar chart on the sports court floor. Assign different lanes to standard tourist attractions in Sharjah (Al Noor Island, Desert Park, Central Souk, Al Majaz Splash Park). Have students stand in lines to vote for their favorite weekend destination. A designated student statistician must record the counts, build a frequency table on a clipboard, and determine the mode."
+        },
+        problem: {
+            title: "The Eye of the Emirates Flight Coordinates",
+            strand: "Statistics & Position - Grid Systems",
