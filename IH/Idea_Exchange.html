@@ -100,6 +100,12 @@
   .idea-card{
     background:var(--card); border:1px solid var(--line); border-radius:4px 16px 4px 16px;
     padding:22px 22px 20px; position:relative; box-shadow:var(--shadow);
+    cursor:pointer; transition:transform .15s;
+  }
+  .idea-card:hover{ transform:translateY(-3px); }
+  .idea-card .see-more{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--teal); font-weight:700;
+    margin-top:2px;
   }
   .idea-card::before{
     content:''; position:absolute; top:-8px; left:22px; width:14px; height:14px; border-radius:50%;
@@ -123,6 +129,40 @@
     text-align:center; padding:60px 20px; color:var(--ink-soft); font-size:15px;
     border:1.5px dashed var(--line); border-radius:14px; grid-column:1/-1;
   }
+
+  /* ============ IDEA DETAIL MODAL ============ */
+  .modal-backdrop{
+    position:fixed; inset:0; z-index:80; background:rgba(35,48,31,.55);
+    display:none; align-items:flex-start; justify-content:center; padding:40px 20px; overflow-y:auto;
+  }
+  .modal-backdrop.show{ display:flex; }
+  .modal-box{
+    background:var(--card); border-radius:4px 20px 4px 20px; max-width:600px; width:100%;
+    padding:32px 34px 30px; position:relative; box-shadow:0 24px 60px -12px rgba(0,0,0,.35);
+  }
+  .modal-close{
+    position:absolute; top:16px; right:18px; background:none; border:none; cursor:pointer;
+    font-size:22px; color:var(--ink-soft); line-height:1; padding:4px;
+  }
+  .modal-close:hover{ color:var(--ink); }
+  .modal-box h2{ font-size:23px; margin:6px 0 12px; padding-right:24px; line-height:1.3; }
+  .modal-hook{ font-size:14.5px; color:var(--ink-soft); font-style:italic; margin-bottom:18px; }
+  .modal-section-label{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--teal); font-weight:700; margin-bottom:6px; margin-top:20px;
+  }
+  .modal-section-label:first-of-type{ margin-top:0; }
+  .modal-box p.modal-desc{ font-size:14.5px; color:var(--ink); line-height:1.65; margin:0; white-space:pre-wrap; }
+  .modal-link{
+    display:inline-flex; align-items:center; gap:6px; font-size:14px; color:var(--teal); font-weight:600;
+    text-decoration:none; word-break:break-all;
+  }
+  .modal-link:hover{ text-decoration:underline; }
+  .modal-meta-row{
+    display:flex; gap:18px; flex-wrap:wrap; margin-top:24px; padding-top:18px; border-top:1px dashed var(--line);
+  }
+  .modal-meta-row div{ font-size:12.5px; color:var(--ink-soft); }
+  .modal-meta-row b{ display:block; color:var(--ink); font-size:13.5px; }
 
   footer{ background:var(--ink); color:rgba(255,255,255,.75); padding:44px 0 26px; margin-top:20px; }
   .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; font-size:12.5px; }
@@ -208,6 +248,13 @@
     <div class="card-grid" id="cardGrid"></div>
   </div>
 </section>
+
+<div class="modal-backdrop" id="ideaModalBackdrop" onclick="if(event.target === this) closeIdeaModal();">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeIdeaModal()" aria-label="Close">&times;</button>
+    <div id="ideaModalContent"></div>
+  </div>
+</div>
 
 <footer>
   <div class="wrap footer-inner">
@@ -331,6 +378,7 @@ function renderGallery(){
     }
     return true;
   });
+  currentFilteredIdeas = filtered;
 
   document.getElementById('resultCount').textContent = filtered.length + ' of ' + IDEAS.length + ' ideas shown';
 
@@ -339,14 +387,15 @@ function renderGallery(){
     return;
   }
 
-  grid.innerHTML = filtered.map(idea => `
-    <div class="idea-card audience-${idea.audience.toLowerCase()}">
+  grid.innerHTML = filtered.map((idea, idx) => `
+    <div class="idea-card audience-${idea.audience.toLowerCase()}" onclick="openIdeaModal(${idx})">
       <div class="idea-tags">
         <span class="idea-tag subject">${escapeHtml(idea.subject)}</span>
         <span class="idea-tag type">${escapeHtml(idea.type)}</span>
       </div>
       <h3>${escapeHtml(idea.title)}</h3>
       <p>${escapeHtml(idea.hook)}</p>
+      <div class="see-more">See full details &rarr;</div>
       <div class="idea-meta">
         <span>${escapeHtml(idea.by)}</span>
         <span>${idea.audience === 'Student' ? escapeHtml(idea.yearGroup) : 'Staff'}</span>
@@ -354,6 +403,46 @@ function renderGallery(){
     </div>
   `).join('');
 }
+
+let currentFilteredIdeas = [];
+
+function openIdeaModal(idx){
+  const idea = currentFilteredIdeas[idx];
+  if(!idea) return;
+  const bodyText = (idea.description && idea.description.trim()) ? idea.description : idea.hook;
+  let html = `
+    <div class="idea-tags">
+      <span class="idea-tag subject">${escapeHtml(idea.subject)}</span>
+      <span class="idea-tag type">${escapeHtml(idea.type)}</span>
+    </div>
+    <h2>${escapeHtml(idea.title)}</h2>
+    <div class="modal-hook">${escapeHtml(idea.hook)}</div>
+    <div class="modal-section-label">The full idea</div>
+    <p class="modal-desc">${escapeHtml(bodyText)}</p>
+  `;
+  if(idea.link && idea.link.trim()){
+    html += `
+      <div class="modal-section-label">Link</div>
+      <a class="modal-link" href="${escapeHtml(idea.link)}" target="_blank" rel="noopener">${escapeHtml(idea.link)} &#8599;</a>
+    `;
+  }
+  html += `
+    <div class="modal-meta-row">
+      <div><b>${escapeHtml(idea.by)}</b>Shared by</div>
+      <div><b>${idea.audience === 'Student' ? escapeHtml(idea.yearGroup || 'Student') : 'Staff'}</b>${idea.audience === 'Student' ? 'Year group' : 'Role'}</div>
+    </div>
+  `;
+  document.getElementById('ideaModalContent').innerHTML = html;
+  document.getElementById('ideaModalBackdrop').classList.add('show');
+}
+
+function closeIdeaModal(){
+  document.getElementById('ideaModalBackdrop').classList.remove('show');
+}
+
+document.addEventListener && document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeIdeaModal();
+});
 
 function clearFilters(){
   activeFilters = { audience: '', subject: '', type: '', search: '' };
@@ -390,7 +479,9 @@ function normaliseLiveIdea(row){
     subject: row.subject || "General",
     type: row.type || "Other",
     by: row.by || "PEPS staff/student",
-    hook: row.hook || (row.description ? String(row.description).slice(0,140) : "")
+    hook: row.hook || (row.description ? String(row.description).slice(0,140) : ""),
+    description: row.description || "",
+    link: row.link || ""
   };
 }
 
