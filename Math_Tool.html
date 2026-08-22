@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharjah Year 4 Math Innovation Generator</title>
+    <!-- Include html2pdf.js library for clean, reliable PDF generation -->
+    <script src="https://cloudflare.com"></script>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #666;
+            font-style: italic;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 600px) {
+            .controls { grid-template-columns: 1fr; }
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #DDD;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+        }
+
+        .btn-generate {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-generate:hover { background-color: var(--primary-dark); }
+
+        .btn-print {
+            background-color: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-print:hover { background-color: #E08710; }
+
+        button:active { transform: scale(0.98); }
+
+        /* Output Area Styling */
+        #display-area {
+            border: 2px dashed #D0DEDC;
+            padding: 25px;
+            border-radius: 8px;
+            background-color: #FCFDFD;
+            min-height: 150px;
+        }
+
+        .activity-title {
+            color: var(--primary-dark);
+            margin-top: 0;
+            font-size: 22px;
+            border-bottom: 1px solid #EEE;
+            padding-bottom: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #E6F2F3;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .section-heading {
+            font-weight: bold;
+            color: #444;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        /* Printable Worksheet Formatter hidden from main UI view */
+        #print-template {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Sharjah Math Innovation Lab</h1>
+        <p>Year 4 Cambridge Curriculum Activity & Worksheet Builder</p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Cambridge Math Strand:</label>
+            <select id="strand">
+                <option value="number">Number (Place Value & Fractions)</option>
+                <option value="geometry">Geometry & Measure (Shapes & Angles)</option>
+                <option value="statistics">Statistics (Data & Coordinates)</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Activity Dynamic Type:</label>
+            <select id="type">
+                <option value="active">Active Playground Game</option>
+                <option value="problem">Sharjah Localized Word Problem</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">⚡ Generate Innovation Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">🖨️ Download PDF Worksheet</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your options above and click generate to populate a localized Cambridge activity!</p>
+    </div>
+</div>
+
+<!-- Hidden Worksheet Layout specifically tailored for the printer/PDF output engine -->
+<div id="print-template" style="padding: 30px; font-family: Arial, sans-serif; color: #222;">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
+        <h2 style="margin: 0; color: #007A87;">CAMBRIDGE PRIMARY MATHEMATICS - YEAR 4</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Sharjah Innovation Webpage Resource Bank</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Student Name:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content"></div>
+    <div style="margin-top: 50px; border-top: 1px solid #CCC; padding-top: 20px;">
+        <p style="font-weight: bold;">✍️ Student Working Space & Calculations:</p>
+        <div style="height: 250px; border: 1px solid #DDD; background-image: linear-gradient(#EEE 1px, transparent 1px); background-size: 100% 25px; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    number: {
+        active: {
+            title: "The Great Desert Dune Place Value Leap",
+            strand: "Number - Place Value (Up to 10,000)",
+            objective: "To read, write, and round 4-digit numbers to the nearest 10, 100, or 1000.",
+            instructions: "Draw 4 giant blocks on the outdoor courtyard labeled Thousands, Hundreds, Tens, and Ones. Call out local Sharjah facts (e.g., 'The distance we are traveling across Mleiha desert is 2,435 meters'). Four students must rush to stand inside the correct boxes holding digit cards. The rest of the class must jump forward if the number rounds UP to the nearest thousand, or backward if it rounds DOWN."
+        },
+        problem: {
+            title: "The Blue Souk Textile Exchange",
+            strand: "Number - Addition & Subtraction (AED Fluency)",
+            objective: "Solve two-step addition and subtraction problems involving money up to 4-digits.",
+            instructions: "A merchant at the Sharjah Central Souk starts his morning with 4,520 AED in his cash box. During the first hour, he sells a beautiful silk carpet for 1,285 AED. In the second hour, he pays his shop utility bill which costs 650 AED. \n\n1. How much money does the merchant have left in his cash box? \n2. Write out your column subtraction clearly showing any renaming."
+        }
+    },
+    geometry: {
+        active: {
+            title: "Al Noor Mosque Angle Hunters",
+            strand: "Geometry - Angles & Shapes",
+            objective: "Identify, compare, and order acute, obtuse, and right angles.",
+            instructions: "Equip students with tablet cameras or paper 'angle-meters'. Take them into the courtyard or show high-resolution photos of the arches and windows of Al Noor Mosque. Students must locate 2 right angles, 2 acute angles, and 2 obtuse angles hidden within the architecture, marking them with colored chalk or stickers."
+        },
+        problem: {
+            title: "Designing the Next Sharjah Skyscraper",
+            strand: "Geometry - 3D Nets & Measurement",
+            objective: "Identify and visualize 3D shapes from their 2D representations.",
+            instructions: "An architect in Sharjah is designing a new futuristic building next to the Al Majaz Waterfront. The base of the building is a rectangular prism, and the roof structure is a square-based pyramid. \n\n1. Draw the 2D flat nets that the builder needs to cut out to construct models of these two architectural shapes. \n2. Label the total number of faces, edges, and vertices on the finished skyscraper model."
+        }
+    },
+    statistics: {
+        active: {
+            title: "Al Montazah Park Data Grid",
+            strand: "Statistics - Data Collection & Coordinates",
+            objective: "Organize, graph, and interpret discrete data using frequency tables.",
