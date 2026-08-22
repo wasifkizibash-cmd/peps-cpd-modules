@@ -76,6 +76,8 @@
   .spot-card h3{ font-size:16.5px; margin-bottom:10px; }
   .spot-card p{ font-size:13px; color:var(--ink-soft); margin:0; line-height:1.55; }
   .spot-date{ margin-top:14px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-soft); }
+  .loading-state{ text-align:center; padding:60px 20px; color:var(--ink-soft); font-size:14px; grid-column:1/-1; font-family:'IBM Plex Mono',monospace; }
+  .empty-state{ text-align:center; padding:60px 20px; color:var(--ink-soft); font-size:15px; border:1.5px dashed var(--line); border-radius:14px; grid-column:1/-1; }
 
   .how-box{
     background:var(--teal-soft); border-radius:14px; padding:22px 24px; margin-top:50px; display:flex; gap:18px; align-items:flex-start;
@@ -140,56 +142,8 @@
 
 <section class="wall">
   <div class="wrap">
-    <div class="spot-grid">
-
-      <div class="spot-card student">
-        <div class="spot-avatar">FA</div>
-        <div class="spot-role">Year 9 &middot; Humanities</div>
-        <h3>Farah A.</h3>
-        <p>Built a community interview archive, recording family stories about historical change for the whole class to draw on.</p>
-        <div class="spot-date">Spotlighted this term</div>
-      </div>
-
-      <div class="spot-card teacher">
-        <div class="spot-avatar">MO</div>
-        <div class="spot-role">Business Studies</div>
-        <h3>Mr. Okafor</h3>
-        <p>Ran a micro-enterprise pitch week where students identified real school-life problems and proposed workable solutions.</p>
-        <div class="spot-date">Spotlighted this term</div>
-      </div>
-
-      <div class="spot-card student">
-        <div class="spot-avatar">YS</div>
-        <div class="spot-role">Year 12 &middot; STEM Society</div>
-        <h3>Yusuf S.</h3>
-        <p>Led a Year 7 robotics mentoring programme, documenting what teaching the concept revealed about his own understanding.</p>
-        <div class="spot-date">Spotlighted last term</div>
-      </div>
-
-      <div class="spot-card teacher">
-        <div class="spot-avatar">AK</div>
-        <div class="spot-role">History</div>
-        <h3>Mrs. Al Ketbi</h3>
-        <p>Redesigned a unit around comparing conflicting primary sources rather than a single textbook account.</p>
-        <div class="spot-date">Spotlighted last term</div>
-      </div>
-
-      <div class="spot-card student">
-        <div class="spot-avatar">GC</div>
-        <div class="spot-role">Year 8 &middot; Green Club</div>
-        <h3>Green Club Team</h3>
-        <p>Built and maintained a live soil-sensor network for the school garden, with data feeding a shared dashboard.</p>
-        <div class="spot-date">Spotlighted last term</div>
-      </div>
-
-      <div class="spot-card teacher">
-        <div class="spot-avatar">RD</div>
-        <div class="spot-role">Mathematics</div>
-        <h3>Mr. Devine</h3>
-        <p>Introduced open-question stations with multiple valid solution paths, instead of one method to practise.</p>
-        <div class="spot-date">Spotlighted last term</div>
-      </div>
-
+    <div class="spot-grid" id="spotGrid">
+      <div class="loading-state">Loading spotlighted ideas&hellip;</div>
     </div>
 
     <div class="how-box">
@@ -239,8 +193,63 @@ function showSite(name, pictureUrl, isPreview){
   else { avatar.textContent = (name || 'P').charAt(0).toUpperCase(); }
   if(isPreview){ document.getElementById('previewBanner').classList.add('show'); }
   window.scrollTo(0,0);
+  loadSpotlighted();
 }
 function enterPreviewMode(){ showSite('Preview mode', null, true); }
+
+/* ======================= SPOTLIGHTED IDEAS (live, from the same Sheet) ======================= */
+const LIVE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzj2TKFIDEB9a-wvdfBSbKy1fNR18Caa7zqu1BdxSNCxR5Mk1p8U3vwkfdobi5hydYT/exec";
+let spotlightLoaded = false;
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function initialsOf(name){
+  const parts = String(name || '').trim().split(/[\s,]+/).filter(Boolean);
+  if(parts.length === 0) return 'P';
+  if(parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase();
+}
+
+function renderSpotlightCards(items){
+  const grid = document.getElementById('spotGrid');
+  if(items.length === 0){
+    grid.innerHTML = '<div class="empty-state">No ideas have been spotlighted yet &mdash; check back once the first ones are marked Featured.</div>';
+    return;
+  }
+  grid.innerHTML = items.map(idea => `
+    <div class="spot-card ${idea.audience.toLowerCase()}">
+      <div class="spot-avatar">${escapeHtml(initialsOf(idea.by))}</div>
+      <div class="spot-role">${idea.audience === 'Student' ? escapeHtml(idea.yearGroup || 'Student') : escapeHtml(idea.subject)}</div>
+      <h3>${escapeHtml(idea.by)}</h3>
+      <p>${escapeHtml(idea.hook)}</p>
+      <div class="spot-date">${escapeHtml(idea.title)}</div>
+    </div>
+  `).join('');
+}
+
+function loadSpotlighted(){
+  if(spotlightLoaded) return;
+  spotlightLoaded = true;
+  if(LIVE_SCRIPT_URL === "YOUR_APPS_SCRIPT_URL_HERE"){
+    document.getElementById('spotGrid').innerHTML = '<div class="empty-state">Spotlight is not connected yet &mdash; set LIVE_SCRIPT_URL in the page source.</div>';
+    return;
+  }
+  fetch(LIVE_SCRIPT_URL)
+    .then(res => { if(!res.ok) throw new Error('Bad response'); return res.json(); })
+    .then(rows => {
+      if(!Array.isArray(rows)) throw new Error('Unexpected response shape');
+      renderSpotlightCards(rows.filter(r => r.featured === true));
+    })
+    .catch(err => {
+      console.error('Could not load spotlighted ideas:', err);
+      document.getElementById('spotGrid').innerHTML = '<div class="empty-state">Could not load spotlighted ideas right now &mdash; please try again shortly.</div>';
+    });
+}
+
 let googleScriptReady = false;
 let pageLoadFired = false;
 
