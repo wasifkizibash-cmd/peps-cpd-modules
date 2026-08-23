@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 2 Early ESL Lesson Card Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #666;
+            font-style: italic;
+        }
+
+        .note-banner {
+            background: #FFF6E9;
+            border: 1px dashed var(--accent);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12.5px;
+            color: #8a5a1f;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #DDD;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-generate {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-generate:hover { background-color: var(--primary-dark); }
+
+        .btn-print {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-print:hover { background-color: #E08710; }
+
+        #display-area {
+            border: 2px dashed #D0DEDC;
+            padding: 25px;
+            border-radius: 8px;
+            background-color: #FCFDFD;
+            min-height: 150px;
+        }
+
+        .activity-title {
+            color: var(--primary-dark);
+            margin-top: 0;
+            font-size: 22px;
+            border-bottom: 1px solid #EEE;
+            padding-bottom: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #E6F2F3;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .materials-box {
+            background: #F3F8F7;
+            border-left: 3px solid var(--primary);
+            padding: 10px 14px;
+            margin: 12px 0;
+            border-radius: 4px;
+        }
+
+        #print-template {
+            display: none;
+        }
+
+        @media print {
+            @page {
+                margin: 0;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #print-template, #print-template * {
+                visibility: visible;
+            }
+            #print-template {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0.5in;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .controls { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS ESL Innovation Lab</h1>
+        <p>Year 2 Early ESL &mdash; Teacher Lesson Card Builder</p>
+    </div>
+
+    <div class="note-banner">&#9998; Built for the teacher to plan and lead &mdash; not a student worksheet. At this age, output is a lesson card with materials and steps, not independent written work.</div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Early ESL Strand:</label>
+            <select id="strand">
+                <option value="phonics">Phonics &amp; Emergent Literacy</option>
+                <option value="oral">Oral Language &amp; Listening</option>
+                <option value="prewriting">Pre-Writing &amp; Fine Motor</option>
+                <option value="vocabulary">Vocabulary Through Play</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Group Setting:</label>
+            <select id="type">
+                <option value="whole">Whole Class Activity</option>
+                <option value="small">Small Group Activity</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Lesson Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Lesson Card</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Group Setting above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS ESL INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Year 2 &mdash; Early ESL Lesson Card</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Class / Group:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#128221; Teacher Notes / Adaptations:</p>
+        <div style="height: 220px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "phonics": {
+        "whole": {
+            "title": "Blend It Together",
+            "strand": "Phonics - Blending CVC Words",
+            "objective": "Blend individual sounds together to read simple CVC (consonant-vowel-consonant) words.",
+            "materials": "Large letter cards or a whiteboard; a simple picture matching each CVC word.",
+            "steps": "Hold up letter cards one at a time for a simple word (e.g., c-a-t), saying each sound clearly. Ask students to blend the sounds together to say the whole word, then show the matching picture to confirm. Repeat with 5&ndash;6 different CVC words, gradually increasing pace."
+        },
+        "small": {
+            "title": "Build the Word",
+            "strand": "Phonics - Segmenting & Building CVC Words",
+            "objective": "Segment a spoken CVC word into its sounds and build it using letter cards.",
+            "materials": "Sets of individual letter cards; a small picture for each target word.",
+            "steps": "Show a picture (e.g., a dog) and say the word slowly, sound by sound. In pairs, students find and arrange the correct letter cards in order to build the word, then blend it back together to check it matches the picture."
+        }
+    },
+    "oral": {
+        "whole": {
+            "title": "Simon Says: Two-Step Instructions",
+            "strand": "Oral Language - Following Multi-Step Instructions",
+            "objective": "Listen to and correctly follow instructions containing two steps.",
+            "materials": "None needed.",
+            "steps": "Play Simon Says using two-part instructions (e.g., 'Simon says touch your head and turn around.'). Students must complete both parts correctly to stay in the game. Gradually increase the complexity of the instructions as students succeed."
+        },
+        "small": {
+            "title": "What Did You Do This Morning?",
+            "strand": "Oral Language - Simple Recount Speaking",
+            "objective": "Use simple phrases to describe a recent personal event or action.",
+            "materials": "None needed; optional simple picture prompts (breakfast, bus, playground).",
+            "steps": "Model a simple sentence about your own morning (e.g., 'I ate breakfast.'). Go around the group, with each student saying one simple sentence about something they did that morning, using picture prompts for support if needed."
+        }
+    },
+    "prewriting": {
+        "whole": {
+            "title": "Letter Formation Relay",
+            "strand": "Pre-Writing - Correct Letter Formation",
+            "objective": "Practise forming lowercase letters with correct starting points, using large movements.",
+            "materials": "A large whiteboard, or chalk and outdoor pavement space.",
+            "steps": "In teams, students take turns running to the board and writing one letter of a simple word as large as possible, using correct formation, before running back and tagging the next teammate. The team that spells the word correctly and neatly first wins."
+        },
+        "small": {
+            "title": "Copy My Word",
+            "strand": "Pre-Writing - Copying Simple Words",
+            "objective": "Copy simple familiar words accurately, forming letters correctly.",
+            "materials": "Word cards with simple familiar words (mum, dad, cat, sun); lined paper; pencils.",
+            "steps": "Show one word card at a time. Students copy the word onto their own paper directly beneath a model, focusing on correct letter shape and staying on the line. Check together before moving to the next word."
+        }
+    },
+    "vocabulary": {
+        "whole": {
+            "title": "Category Corners",
+            "strand": "Vocabulary - Categorization",
+            "objective": "Sort familiar vocabulary correctly into simple categories.",
+            "materials": "Four labelled corners or areas (animals, food, toys, clothes); picture cards.",
+            "steps": "Label four corners of the room with categories. Show a picture card and say the word aloud, then students run to the corner they think it belongs to. Reveal the correct answer and briefly discuss any disagreements before showing the next card."
+        },
+        "small": {
+            "title": "This Is A... Snap!",
+            "strand": "Vocabulary - Simple Sentence Patterns",
+            "objective": "Use the simple sentence pattern 'This is a...' accurately to name objects.",
+            "materials": "A set of picture cards, doubled so pairs can be matched.",
+            "steps": "In pairs, deal picture cards face down. Students take turns flipping two cards, saying 'This is a ___' for each one flipped. If the pictures match, they keep the pair and go again; if not, cards are turned back over and it's the next player's turn."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <div class="materials-box"><strong>Materials Needed:</strong> ${activity.materials}</div>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Materials Needed:</strong> ${activity.materials}</p>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate a lesson idea first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

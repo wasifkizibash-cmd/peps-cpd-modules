@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 9 Math Innovation Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 800px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 25px; }
+        .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .header h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 28px; }
+        .header p { margin: 0; color: #666; font-style: italic; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        label { font-weight: 600; display: block; margin-bottom: 5px; color: var(--primary); }
+        select { width: 100%; padding: 10px; border: 2px solid #DDD; border-radius: 6px; font-size: 16px; outline: none; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 30px; }
+        button { flex: 1; padding: 12px 20px; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: background 0.3s; }
+        .btn-generate { background-color: var(--primary); color: white; }
+        .btn-generate:hover { background-color: var(--primary-dark); }
+        .btn-print { background-color: var(--accent); color: white; }
+        .btn-print:hover { background-color: #E08710; }
+        #display-area { border: 2px dashed #D0DEDC; padding: 25px; border-radius: 8px; background-color: #FCFDFD; min-height: 150px; }
+        .activity-title { color: var(--primary-dark); margin-top: 0; font-size: 22px; border-bottom: 1px solid #EEE; padding-bottom: 10px; }
+        .tag { display: inline-block; background: #E6F2F3; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; }
+        #print-template { display: none; }
+        @media print {
+            @page { margin: 0; }
+            body * { visibility: hidden; }
+            #print-template, #print-template * { visibility: visible; }
+            #print-template { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 0.5in; box-sizing: border-box; }
+        }
+        @media (max-width: 620px) { .controls { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS Math Innovation Lab</h1>
+        <p>Year 9 Cambridge Lower Secondary Activity &amp; Worksheet Builder</p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Cambridge Math Strand:</label>
+            <select id="strand">
+                <option value="number">Number</option>
+                <option value="algebra">Algebra</option>
+                <option value="geometry">Geometry &amp; Measure</option>
+                <option value="statistics">Statistics &amp; Probability</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Activity Dynamic Type:</label>
+            <select id="type">
+                <option value="active">Active / Kinesthetic Activity</option>
+                <option value="problem">Sharjah Localized Word Problem</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Innovation Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Worksheet</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Activity Type above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS MATH INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Cambridge Lower Secondary Mathematics &mdash; Year 9</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Student Name:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#9997;&#65039; Student Working Space &amp; Calculations:</p>
+        <div style="height: 300px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "number": {
+        "active": {
+            "title": "Sharjah Population Growth: Direct & Inverse Proportion Stations",
+            "strand": "Number - Direct and Inverse Proportion",
+            "objective": "Distinguish between direct and inverse proportion using real growth and rate contexts.",
+            "instructions": "Set up two stations. At the 'direct proportion' station, students use a scaled model to show how the cost of date boxes increases directly with quantity bought. At the 'inverse proportion' station, students model how the time to fill a water tank decreases as more identical pumps are added, using containers and timed pouring. Groups rotate through both, then classify a set of new mixed real-world scenario cards as direct, inverse, or neither."
+        },
+        "problem": {
+            "title": "Surds in the Sharjah Architecture Museum",
+            "strand": "Number - Indices and Surds",
+            "objective": "Simplify expressions involving indices and surds, and apply them to a real measurement context.",
+            "instructions": "A square courtyard at the Sharjah Architecture Museum has an area of 50m&sup2;. <br><br>1. Show that the exact side length can be written as 5&radic;2 metres, and explain why this is more precise than a rounded decimal. <br>2. A second, similar courtyard has double the area of the first. Find its exact side length in simplified surd form, showing your index law working."
+        }
+    },
+    "algebra": {
+        "active": {
+            "title": "Simultaneous Equations: The Two-Stall Balance",
+            "strand": "Algebra - Solving Simultaneous Linear Equations",
+            "objective": "Solve pairs of simultaneous linear equations using elimination or substitution, linked to a real balance scenario.",
+            "instructions": "Two market stalls sell fruit in mixed bags. Give groups physical 'weight cards' representing two different combinations of the same two fruit types with known total weights (e.g. '3 mango + 2 papaya = 2.6kg' and '1 mango + 4 papaya = 2.8kg', using card weights as manipulatives). Groups must physically test and eliminate combinations to find the weight of a single mango and a single papaya, then verify algebraically using elimination."
+        },
+        "problem": {
+            "title": "The Sharjah Splash Park Ticket Mix",
+            "strand": "Algebra - Simultaneous Equations from Worded Problems",
+            "objective": "Form and solve a pair of simultaneous equations from a real worded context.",
+            "instructions": "A family day at a Sharjah water park: 2 adult tickets and 3 child tickets cost 190 AED in total. On a second visit, 3 adult tickets and 1 child ticket cost 205 AED. <br><br>1. Form two simultaneous equations to represent both visits. <br>2. Solve them to find the price of one adult ticket and one child ticket. <br>3. Use your answer to calculate the cost of 4 adult and 2 child tickets."
+        }
+    },
+    "geometry": {
+        "active": {
+            "title": "Pythagoras on the Sharjah Corniche Zip Line",
+            "strand": "Geometry & Measure - Pythagoras' Theorem",
+            "objective": "Apply Pythagoras' theorem to find an unknown side length in a real right-angled context.",
+            "instructions": "Using metre sticks or trundle wheels outdoors (or scaled measurements indoors), set up a right-angled triangle marked out with tape representing a zip-line tower's height and horizontal distance to the landing point. Students measure the two known sides, use Pythagoras' theorem to predict the length of the zip line cable itself, then check their prediction against a measured (or given) actual length."
+        },
+        "problem": {
+            "title": "How Tall Is the Flagpole? A Trigonometry Problem",
+            "strand": "Geometry & Measure - Introduction to Trigonometry (SOH CAH TOA)",
+            "objective": "Use right-angled trigonometry to calculate an unknown height from an angle of elevation.",
+            "instructions": "A student standing 30m from the base of a flagpole outside a Sharjah government building measures the angle of elevation to the top of the pole as 28&deg;. <br><br>1. Sketch and label the right-angled triangle described. <br>2. Use an appropriate trigonometric ratio to calculate the height of the flagpole, to 1 decimal place. <br>3. Explain why this method is more practical than trying to measure the flagpole's height directly."
+        }
+    },
+    "statistics": {
+        "active": {
+            "title": "Building a Human Cumulative Frequency Curve",
+            "strand": "Statistics - Cumulative Frequency",
+            "objective": "Construct and interpret a cumulative frequency diagram from grouped data.",
+            "instructions": "Collect the class's times (in seconds) for a simple timed task (e.g. solving a short puzzle). Group the results into class intervals on the board. Students physically stand in a line ordered by their time, then the class builds a 'human' cumulative frequency count by counting how many students fall at or below each interval boundary, before each student plots the resulting cumulative frequency curve individually and estimates the median and interquartile range from it."
+        },
+        "problem": {
+            "title": "Tree Diagrams: Selecting Prefects at Sharjah Schools",
+            "strand": "Statistics & Probability - Tree Diagrams and Conditional Probability",
+            "objective": "Construct a tree diagram to calculate probabilities of combined and conditional events without replacement.",
+            "instructions": "A class council of 12 students contains 7 girls and 5 boys. Two students are picked at random, one after another, without replacement, to represent the class. <br><br>1. Draw a tree diagram showing all possible outcomes and probabilities for the two picks. <br>2. Calculate the probability that both students picked are girls. <br>3. Calculate the probability that at least one boy is picked, using your tree diagram to support your answer."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate an activity first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

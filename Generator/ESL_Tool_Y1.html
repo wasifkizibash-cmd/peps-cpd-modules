@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 1 Early ESL Lesson Card Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #666;
+            font-style: italic;
+        }
+
+        .note-banner {
+            background: #FFF6E9;
+            border: 1px dashed var(--accent);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12.5px;
+            color: #8a5a1f;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #DDD;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-generate {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-generate:hover { background-color: var(--primary-dark); }
+
+        .btn-print {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-print:hover { background-color: #E08710; }
+
+        #display-area {
+            border: 2px dashed #D0DEDC;
+            padding: 25px;
+            border-radius: 8px;
+            background-color: #FCFDFD;
+            min-height: 150px;
+        }
+
+        .activity-title {
+            color: var(--primary-dark);
+            margin-top: 0;
+            font-size: 22px;
+            border-bottom: 1px solid #EEE;
+            padding-bottom: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #E6F2F3;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .materials-box {
+            background: #F3F8F7;
+            border-left: 3px solid var(--primary);
+            padding: 10px 14px;
+            margin: 12px 0;
+            border-radius: 4px;
+        }
+
+        #print-template {
+            display: none;
+        }
+
+        @media print {
+            @page {
+                margin: 0;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #print-template, #print-template * {
+                visibility: visible;
+            }
+            #print-template {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0.5in;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .controls { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS ESL Innovation Lab</h1>
+        <p>Year 1 Early ESL &mdash; Teacher Lesson Card Builder</p>
+    </div>
+
+    <div class="note-banner">&#9998; Built for the teacher to plan and lead &mdash; not a student worksheet. At this age, output is a lesson card with materials and steps, not independent written work.</div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Early ESL Strand:</label>
+            <select id="strand">
+                <option value="phonics">Phonics &amp; Emergent Literacy</option>
+                <option value="oral">Oral Language &amp; Listening</option>
+                <option value="prewriting">Pre-Writing &amp; Fine Motor</option>
+                <option value="vocabulary">Vocabulary Through Play</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Group Setting:</label>
+            <select id="type">
+                <option value="whole">Whole Class Activity</option>
+                <option value="small">Small Group Activity</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Lesson Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Lesson Card</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Group Setting above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS ESL INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Year 1 &mdash; Early ESL Lesson Card</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Class / Group:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#128221; Teacher Notes / Adaptations:</p>
+        <div style="height: 220px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "phonics": {
+        "whole": {
+            "title": "The Letter Sound Hunt",
+            "strand": "Phonics - Initial Sound Recognition",
+            "objective": "Recognise and orally identify the initial sound of familiar words.",
+            "materials": "A set of large picture cards (cat, sun, ball, dog, fish); a soft ball or bean bag.",
+            "steps": "Sit in a circle. Show one picture card at a time and say the word clearly, emphasising the first sound (e.g., 'c-c-cat'). Roll the ball to a student, who must say the sound again before rolling it to a friend. Repeat with 5 pictures, then mix them up and ask students to find the picture that starts with a sound you say aloud."
+        },
+        "small": {
+            "title": "Sound Sorting Table",
+            "strand": "Phonics - Initial Sound Sorting",
+            "objective": "Sort familiar objects or pictures by their initial sound.",
+            "materials": "Small picture cards or real classroom objects; two sorting hoops or trays, each labelled with a letter (e.g., 's' and 'b').",
+            "steps": "In small groups of 3&ndash;4, students take turns picking up a picture card, saying the word aloud, and placing it in the correct hoop based on its initial sound. Model the first one or two examples before letting students continue independently."
+        }
+    },
+    "oral": {
+        "whole": {
+            "title": "Body Parts Action Song",
+            "strand": "Oral Language - Vocabulary Through Song & Movement",
+            "objective": "Listen to and join in with a simple repetitive song, using new vocabulary through action.",
+            "materials": "None needed, or optional song audio/video.",
+            "steps": "Teach a simple 'Head, Shoulders, Knees and Toes' style song, touching each body part as it is named. Sing through slowly first, then gradually increase speed. Repeat 2&ndash;3 times, encouraging all students to join in the actions even before they can say every word confidently."
+        },
+        "small": {
+            "title": "Who Has The Toy?",
+            "strand": "Oral Language - Simple Question & Answer",
+            "objective": "Understand and respond to a simple spoken question with a one-word or short answer.",
+            "materials": "A small soft toy or puppet.",
+            "steps": "Hide the toy behind your back or under a cloth and ask, 'Where is the toy?' Students point or say 'here' when they find it. Extend by asking simple yes/no questions about the toy (e.g., 'Is it red?') for students to answer with 'yes' or 'no'."
+        }
+    },
+    "prewriting": {
+        "whole": {
+            "title": "Sky Writing Shapes",
+            "strand": "Pre-Writing - Gross Motor Letter Shapes",
+            "objective": "Practise the basic shapes and movements used in letter formation through large arm movements.",
+            "materials": "None needed &mdash; open space to move.",
+            "steps": "Stand up with space around each student. Call out a simple shape or letter (straight line, circle, zig-zag) and demonstrate 'writing' it big in the air with one arm, then the other. Repeat with a few different shapes, gradually linking two shapes together the way some letters are formed (e.g., a line then a circle for 'b')."
+        },
+        "small": {
+            "title": "Trace and Trace Again",
+            "strand": "Pre-Writing - Letter Tracing Practice",
+            "objective": "Trace simple letter shapes accurately using correct starting points and direction.",
+            "materials": "Printed tracing sheets with dotted letter outlines; pencils or crayons.",
+            "steps": "Model tracing one letter slowly, talking through the starting point and direction out loud (e.g., 'start at the top, go down'). Students then trace their own sheet, with support given individually as needed."
+        }
+    },
+    "vocabulary": {
+        "whole": {
+            "title": "Colour Freeze Dance",
+            "strand": "Vocabulary - Colours Through Movement",
+            "objective": "Recognise and respond correctly to spoken colour words.",
+            "materials": "Coloured paper squares or scarves; music (optional).",
+            "steps": "Give each student a coloured paper square or scarf. Play music and let students dance freely. Stop the music and call out a colour &mdash; only students holding that colour freeze in place while others crouch down. Continue, calling different colours each round."
+        },
+        "small": {
+            "title": "Feely Bag Guessing Game",
+            "strand": "Vocabulary - Naming Familiar Objects",
+            "objective": "Name familiar objects using single words or short phrases.",
+            "materials": "A cloth bag; 6&ndash;8 small familiar classroom objects.",
+            "steps": "Students take turns reaching into the bag without looking, feeling an object, and guessing what it is before pulling it out to check. Encourage a full response where possible (e.g., 'It's a ball' rather than just 'ball')."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <div class="materials-box"><strong>Materials Needed:</strong> ${activity.materials}</div>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Materials Needed:</strong> ${activity.materials}</p>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate a lesson idea first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

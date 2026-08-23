@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 3 Early Math Lesson Card Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #666;
+            font-style: italic;
+        }
+
+        .note-banner {
+            background: #FFF6E9;
+            border: 1px dashed var(--accent);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12.5px;
+            color: #8a5a1f;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #DDD;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-generate {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-generate:hover { background-color: var(--primary-dark); }
+
+        .btn-print {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-print:hover { background-color: #E08710; }
+
+        #display-area {
+            border: 2px dashed #D0DEDC;
+            padding: 25px;
+            border-radius: 8px;
+            background-color: #FCFDFD;
+            min-height: 150px;
+        }
+
+        .activity-title {
+            color: var(--primary-dark);
+            margin-top: 0;
+            font-size: 22px;
+            border-bottom: 1px solid #EEE;
+            padding-bottom: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #E6F2F3;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .materials-box {
+            background: #F3F8F7;
+            border-left: 3px solid var(--primary);
+            padding: 10px 14px;
+            margin: 12px 0;
+            border-radius: 4px;
+        }
+
+        #print-template {
+            display: none;
+        }
+
+        @media print {
+            @page {
+                margin: 0;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #print-template, #print-template * {
+                visibility: visible;
+            }
+            #print-template {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0.5in;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .controls { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS Math Innovation Lab</h1>
+        <p>Year 3 Early Mathematics &mdash; Teacher Lesson Card Builder</p>
+    </div>
+
+    <div class="note-banner">&#9998; Built for the teacher to plan and lead &mdash; not a student worksheet. At this age, output is a lesson card with materials and steps, not independent written work.</div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Early Math Strand:</label>
+            <select id="strand">
+                <option value="number">Number &amp; Counting</option>
+                <option value="shape">Shape &amp; Space</option>
+                <option value="measure">Measures &amp; Comparison</option>
+                <option value="pattern">Pattern &amp; Sorting</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Group Setting:</label>
+            <select id="type">
+                <option value="whole">Whole Class Activity</option>
+                <option value="small">Small Group Activity</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Lesson Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Lesson Card</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Group Setting above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS MATH INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Year 3 &mdash; Early Mathematics Lesson Card</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Class / Group:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#128221; Teacher Notes / Adaptations:</p>
+        <div style="height: 220px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "number": {
+        "whole": {
+            "title": "Place Value Human Chart",
+            "strand": "Number - Place Value (Tens and Ones)",
+            "objective": "Represent 2-digit numbers correctly using tens and ones.",
+            "materials": "Large 'tens' and 'ones' cards or bundles of 10 straws plus loose straws.",
+            "steps": "Call out a 2-digit number (e.g., 34). Ask two students to come forward holding the correct number of 'tens' bundles and 'ones' cards to represent it (3 tens, 4 ones). The rest of the class checks by counting the total together. Repeat with several different numbers."
+        },
+        "small": {
+            "title": "Regrouping with Straws",
+            "strand": "Number - Addition with Regrouping (Concrete Method)",
+            "objective": "Add two 2-digit numbers using concrete materials, including regrouping ten ones into one ten.",
+            "materials": "Bundles of 10 straws and loose straws (enough for numbers up to 99).",
+            "steps": "Give groups two 2-digit numbers to add (e.g., 27 + 15). Students represent each number with straw bundles and loose straws, then combine the ones first. When there are 10 or more loose ones, group them into a new bundle of ten, then count the total tens and ones to find the answer."
+        }
+    },
+    "shape": {
+        "whole": {
+            "title": "Shape Property Detectives",
+            "strand": "Geometry - Sides, Corners & Symmetry",
+            "objective": "Identify and count the sides and corners (vertices) of 2D shapes, and recognise simple symmetry.",
+            "materials": "Large 2D shape cutouts (square, rectangle, triangle, pentagon, hexagon).",
+            "steps": "Hold up each shape and ask students to count the sides and corners together, recording the totals on the board. For shapes with a clear line of symmetry, fold the shape (or a paper copy) in half to show the matching sides, introducing the idea of symmetry."
+        },
+        "small": {
+            "title": "Symmetry Painting",
+            "strand": "Geometry - Creating Symmetrical Patterns",
+            "objective": "Create a simple symmetrical pattern or picture using a line of symmetry.",
+            "materials": "Paper folded in half; paint or coloured pencils.",
+            "steps": "Students paint or draw a simple pattern on one half of a folded paper, then press or trace it onto the other half (or copy it by hand) to create a matching, symmetrical design. Discuss how the two halves match exactly across the fold line."
+        }
+    },
+    "measure": {
+        "whole": {
+            "title": "Estimate and Measure: Classroom Objects",
+            "strand": "Measure - Standard Units (Centimetres)",
+            "objective": "Estimate and then measure the length of objects in centimetres using a ruler.",
+            "materials": "Rulers; 4&ndash;5 classroom objects of varying length.",
+            "steps": "Show each object and ask students to estimate its length in centimetres before measuring. Measure together as a class using a ruler, comparing the actual measurement to the estimates. Discuss which estimates were closest and why estimating is a useful skill."
+        },
+        "small": {
+            "title": "Kitchen Scale Investigation",
+            "strand": "Measure - Standard Units (Grams and Kilograms)",
+            "objective": "Use a simple scale to measure and compare the mass of objects in grams or kilograms.",
+            "materials": "A simple kitchen or classroom scale; 4&ndash;5 small objects of varying weight.",
+            "steps": "In small groups, students weigh each object using the scale, recording the mass in grams. Order the objects from lightest to heaviest based on their results, then discuss any results that surprised them compared to their earlier predictions."
+        }
+    },
+    "pattern": {
+        "whole": {
+            "title": "The Pattern Rule Challenge",
+            "strand": "Pattern - Identifying & Describing Pattern Rules",
+            "objective": "Identify the rule behind a number or shape pattern and use it to predict future terms.",
+            "materials": "A large number or shape pattern displayed on the board (e.g., 3, 6, 9, 12...).",
+            "steps": "Display a pattern and ask students to work out the rule in pairs (e.g., 'add 3 each time'). Once a few pairs have a rule, discuss as a class and use the rule to predict the next 3 terms in the pattern. Repeat with a new, slightly trickier pattern."
+        },
+        "small": {
+            "title": "Create Your Own Pattern Puzzle",
+            "strand": "Pattern - Creating & Explaining Patterns",
+            "objective": "Create an original pattern with a clear rule and explain it to others.",
+            "materials": "Counters, blocks, or coloured cards; paper to record the pattern.",
+            "steps": "In small groups, students create their own repeating or growing pattern using the materials, recording it on paper. Groups then swap patterns with another group, who must work out and explain the rule before checking with the original group."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <div class="materials-box"><strong>Materials Needed:</strong> ${activity.materials}</div>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Materials Needed:</strong> ${activity.materials}</p>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate a lesson idea first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

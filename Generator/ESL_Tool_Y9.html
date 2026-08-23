@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 9 ESL Innovation Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #666;
+            font-style: italic;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #DDD;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-generate {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-generate:hover { background-color: var(--primary-dark); }
+
+        .btn-print {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-print:hover { background-color: #E08710; }
+
+        #display-area {
+            border: 2px dashed #D0DEDC;
+            padding: 25px;
+            border-radius: 8px;
+            background-color: #FCFDFD;
+            min-height: 150px;
+        }
+
+        .activity-title {
+            color: var(--primary-dark);
+            margin-top: 0;
+            font-size: 22px;
+            border-bottom: 1px solid #EEE;
+            padding-bottom: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #E6F2F3;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        #print-template {
+            display: none;
+        }
+
+        @media print {
+            @page {
+                margin: 0;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #print-template, #print-template * {
+                visibility: visible;
+            }
+            #print-template {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0.5in;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .controls { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS ESL Innovation Lab</h1>
+        <p>Year 9 English as a Second Language &mdash; Activity &amp; Worksheet Builder</p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">ESL Skill Strand:</label>
+            <select id="strand">
+                <option value="reading">Reading</option>
+                <option value="writing">Writing</option>
+                <option value="speaking">Speaking &amp; Listening</option>
+                <option value="vocabulary">Vocabulary &amp; Grammar</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Activity Dynamic Type:</label>
+            <select id="type">
+                <option value="active">Active / Kinesthetic Activity</option>
+                <option value="task">Sharjah Localized Task</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Innovation Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Worksheet</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Activity Type above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS ESL INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Year 9 &mdash; English as a Second Language</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Student Name:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#9997;&#65039; Student Working Space &amp; Response:</p>
+        <div style="height: 300px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "reading": {
+        "active": {
+            "title": "Jigsaw: UAE National Day Traditions",
+            "strand": "Reading - Collaborative Jigsaw Reading",
+            "objective": "Read a section of a longer text independently and share key information to build a complete understanding as a group.",
+            "instructions": "Split a text about UAE National Day traditions into 4 sections (history, flag-raising, family celebrations, fireworks/events). Give each group member a different section to read and summarise in their own words. Groups then take turns sharing their section's key points, building a full picture of the text together, before answering questions that require information from all 4 sections."
+        },
+        "task": {
+            "title": "Understanding a News Report on Sharjah's Green Spaces",
+            "strand": "Reading - Literal, Inferential & Vocabulary Comprehension",
+            "objective": "Read a longer text for literal and inferential understanding, and summarise its main idea concisely.",
+            "instructions": "Give students a news-style text (200&ndash;250 words) about Sharjah's expanding green spaces and parks. <br><br>1. Answer 3 literal comprehension questions. <br>2. Answer 2 inference questions requiring interpretation beyond the text. <br>3. Write a 2-sentence summary of the text's main idea in your own words."
+        }
+    },
+    "writing": {
+        "active": {
+            "title": "Building the Argument: For and Against",
+            "strand": "Writing - Persuasive Argument Structuring",
+            "objective": "Collaboratively generate and organise arguments for a discursive writing task before writing independently.",
+            "instructions": "In groups, brainstorm arguments for and against a given statement (e.g., 'Schools should ban plastic water bottles'). Groups sort their ideas onto a large 'For' and 'Against' chart, then rank each side's strongest argument. Discuss as a class which arguments are most convincing and why, before students individually plan their own paragraph structure."
+        },
+        "task": {
+            "title": "Should Schools Ban Plastic Water Bottles?",
+            "strand": "Writing - Discursive/Opinion Writing",
+            "objective": "Write a structured discursive paragraph presenting both sides of an argument before giving a personal opinion.",
+            "instructions": "Write a structured response (100&ndash;120 words) to the question: 'Should schools ban plastic water bottles?' <br><br>1. Write one paragraph presenting arguments in favour. <br>2. Write one paragraph presenting arguments against. <br>3. Conclude with your own opinion, using a clear opinion phrase (e.g., 'In my opinion...')."
+        }
+    },
+    "speaking": {
+        "active": {
+            "title": "The Opinion Circle",
+            "strand": "Speaking - Expressing & Justifying Opinions",
+            "objective": "Express and justify an opinion clearly, and respond respectfully to a differing viewpoint.",
+            "instructions": "Sit in a circle. Pose a discussion topic relevant to students (e.g., 'Should mobile phones be allowed in class?'). Going around the circle, each student must state an opinion AND give one reason, without repeating a reason already used. Students may agree or politely disagree with a previous speaker before adding their own point."
+        },
+        "task": {
+            "title": "Listening to a Local Radio Interview",
+            "strand": "Listening - Extended Audio Comprehension & Discussion",
+            "objective": "Understand the main points and some detail of extended spoken text, and discuss it in response.",
+            "instructions": "Play a short interview-style audio (or read aloud a scripted transcript) about a local Sharjah event or initiative. <br><br>1. Students listen and note down 3 key points mentioned. <br>2. In pairs, discuss: what did you find most interesting, and would you want to attend or take part? Justify your answer using at least one point from the audio."
+        }
+    },
+    "vocabulary": {
+        "active": {
+            "title": "The Passive Voice Relay",
+            "strand": "Grammar - Active to Passive Voice Transformation",
+            "objective": "Accurately transform sentences between active and passive voice.",
+            "instructions": "Set up a relay with active-voice sentence cards taped around the room (e.g., 'The council built the new park.'). In teams, one student runs to a card, transforms it correctly into passive voice on a whiteboard ('The new park was built by the council.'), then tags the next teammate. Review common errors (missing 'by', incorrect auxiliary verb) as a class afterward."
+        },
+        "task": {
+            "title": "Reporting the News",
+            "strand": "Grammar - Reported Speech in Context",
+            "objective": "Use reported speech accurately to convey information from a direct-speech source.",
+            "instructions": "Given 5 direct-speech quotes from a mock news report (e.g., 'We are very excited about the new project,' said the manager.), rewrite each as reported speech (e.g., 'The manager said that they were very excited about the new project.') <br><br>Pay close attention to correct tense shifts and pronoun changes."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate an activity first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

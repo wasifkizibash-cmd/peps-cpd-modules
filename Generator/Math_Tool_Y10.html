@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 10 Math Innovation Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 800px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 25px; }
+        .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .header h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 28px; }
+        .header p { margin: 0; color: #666; font-style: italic; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        label { font-weight: 600; display: block; margin-bottom: 5px; color: var(--primary); }
+        select { width: 100%; padding: 10px; border: 2px solid #DDD; border-radius: 6px; font-size: 16px; outline: none; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 30px; }
+        button { flex: 1; padding: 12px 20px; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: background 0.3s; }
+        .btn-generate { background-color: var(--primary); color: white; }
+        .btn-generate:hover { background-color: var(--primary-dark); }
+        .btn-print { background-color: var(--accent); color: white; }
+        .btn-print:hover { background-color: #E08710; }
+        #display-area { border: 2px dashed #D0DEDC; padding: 25px; border-radius: 8px; background-color: #FCFDFD; min-height: 150px; }
+        .activity-title { color: var(--primary-dark); margin-top: 0; font-size: 22px; border-bottom: 1px solid #EEE; padding-bottom: 10px; }
+        .tag { display: inline-block; background: #E6F2F3; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; }
+        #print-template { display: none; }
+        @media print {
+            @page { margin: 0; }
+            body * { visibility: hidden; }
+            #print-template, #print-template * { visibility: visible; }
+            #print-template { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 0.5in; box-sizing: border-box; }
+        }
+        @media (max-width: 620px) { .controls { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS Math Innovation Lab</h1>
+        <p>Year 10 Cambridge Lower Secondary Activity &amp; Worksheet Builder</p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Cambridge Math Strand:</label>
+            <select id="strand">
+                <option value="number">Number</option>
+                <option value="algebra">Algebra</option>
+                <option value="geometry">Geometry &amp; Measure</option>
+                <option value="statistics">Statistics &amp; Probability</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Activity Dynamic Type:</label>
+            <select id="type">
+                <option value="active">Active / Kinesthetic Activity</option>
+                <option value="problem">Sharjah Localized Word Problem</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Innovation Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Worksheet</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Activity Type above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS MATH INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Cambridge Lower Secondary Mathematics &mdash; Year 10</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Student Name:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#9997;&#65039; Student Working Space &amp; Calculations:</p>
+        <div style="height: 300px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "number": {
+        "active": {
+            "title": "Standard Form Speed Stations",
+            "strand": "Number - Calculating with Standard Form",
+            "objective": "Multiply and divide numbers written in standard form, keeping the result in correct standard form.",
+            "instructions": "Set up 4 stations, each with a standard-form multiplication or division problem drawn from real UAE contexts (e.g., 'Sharjah's population is approximately 1.8 × 10⁶. If it grows by a factor of 1.2 × 10⁰...'). Groups rotate through stations, solving each problem and checking their answer is written correctly in standard form (a single digit before the decimal point) before moving on."
+        },
+        "problem": {
+            "title": "Compound Growth: A Sharjah Savings Account",
+            "strand": "Number - Compound Interest and Growth",
+            "objective": "Calculate compound growth over multiple time periods using a growth multiplier.",
+            "instructions": "A student deposits 2,000 AED into a savings account offering 4% interest per year, compounded annually. <br><br>1. Calculate the balance after 1 year, then after 2 years, using a growth multiplier (1.04). <br>2. Write a single expression to calculate the balance after 5 years without repeating the calculation 5 times. <br>3. Explain why compound growth increases faster over time than simple interest would."
+        }
+    },
+    "algebra": {
+        "active": {
+            "title": "Factorising Football",
+            "strand": "Algebra - Factorising Quadratic Expressions",
+            "objective": "Factorise simple quadratic expressions into two brackets.",
+            "instructions": "Set up a 'passing' game: call out a quadratic expression (e.g., x² + 7x + 12). The student who catches a soft ball must factorise it into two brackets before passing to a teammate, who checks the answer by expanding it back out. Increase difficulty gradually, including expressions with negative terms."
+        },
+        "problem": {
+            "title": "Simplifying the Ticket Pricing Formula",
+            "strand": "Algebra - Algebraic Fractions",
+            "objective": "Simplify algebraic fractions by factorising and cancelling common factors.",
+            "instructions": "A theme park's profit formula for x visitors is given as a fraction: (x² + 5x) / (x + 5) AED per group. <br><br>1. Factorise the numerator. <br>2. Simplify the fraction fully by cancelling common factors. <br>3. Use your simplified expression to quickly calculate the value when x = 40, and check it matches calculating the original unsimplified fraction."
+        }
+    },
+    "geometry": {
+        "active": {
+            "title": "The Non-Right-Angle Challenge: Sine Rule Stations",
+            "strand": "Geometry & Measure - The Sine Rule",
+            "objective": "Use the sine rule to find missing sides and angles in non-right-angled triangles.",
+            "instructions": "Set up several non-right-angled triangle diagrams around the room, each with two angles and one side given (or two sides and one angle). In pairs, students use the sine rule to calculate the missing side or angle at each station, comparing answers with a neighbouring pair before moving to the next station."
+        },
+        "problem": {
+            "title": "Surveying the Al Noor Mosque Minaret",
+            "strand": "Geometry & Measure - The Cosine Rule",
+            "objective": "Apply the cosine rule to find an unknown side in a non-right-angled triangle from a real measurement context.",
+            "instructions": "A surveyor stands at two points, 40m apart, both facing a minaret. The angle between the surveyor's line of sight to the minaret and the line joining the two survey points is known at each point, along with the angle at the minaret itself. <br><br>1. Sketch the triangle formed by the two survey points and the minaret. <br>2. Use the cosine rule to calculate the distance from one survey point to the minaret. <br>3. Explain why the cosine rule was needed here rather than simple right-angled trigonometry."
+        }
+    },
+    "statistics": {
+        "active": {
+            "title": "Building a Histogram from Real Heights",
+            "strand": "Statistics - Constructing Histograms with Unequal Class Widths",
+            "objective": "Construct a histogram from grouped data, correctly calculating frequency density for unequal class widths.",
+            "instructions": "Collect height data for the class in unevenly grouped intervals (e.g., 140-150cm, 150-155cm, 155-165cm). In groups, students calculate the frequency density for each interval (frequency divided by class width) and plot the histogram by hand on squared paper, discussing why the bar heights differ from what a simple frequency chart would show."
+        },
+        "problem": {
+            "title": "Selecting Without Replacement: The Prefect Committee",
+            "strand": "Statistics & Probability - Conditional Probability Without Replacement",
+            "objective": "Calculate conditional probabilities for successive selections made without replacement.",
+            "instructions": "A committee of 15 students contains 9 girls and 6 boys. Three students are selected at random, one after another, without replacement, to lead a school event. <br><br>1. Calculate the probability that all three selected are girls. <br>2. Calculate the probability that exactly two of the three are boys, considering all possible orders this could happen in. <br>3. Explain how the probability of selecting a girl changes after each selection, and why."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate an activity first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

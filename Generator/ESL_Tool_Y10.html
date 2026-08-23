@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 10 ESL Innovation Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #666;
+            font-style: italic;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #DDD;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-generate {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-generate:hover { background-color: var(--primary-dark); }
+
+        .btn-print {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-print:hover { background-color: #E08710; }
+
+        #display-area {
+            border: 2px dashed #D0DEDC;
+            padding: 25px;
+            border-radius: 8px;
+            background-color: #FCFDFD;
+            min-height: 150px;
+        }
+
+        .activity-title {
+            color: var(--primary-dark);
+            margin-top: 0;
+            font-size: 22px;
+            border-bottom: 1px solid #EEE;
+            padding-bottom: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #E6F2F3;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        #print-template {
+            display: none;
+        }
+
+        @media print {
+            @page {
+                margin: 0;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #print-template, #print-template * {
+                visibility: visible;
+            }
+            #print-template {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0.5in;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .controls { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS ESL Innovation Lab</h1>
+        <p>Year 10 English as a Second Language &mdash; Activity &amp; Worksheet Builder</p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">ESL Skill Strand:</label>
+            <select id="strand">
+                <option value="reading">Reading</option>
+                <option value="writing">Writing</option>
+                <option value="speaking">Speaking &amp; Listening</option>
+                <option value="vocabulary">Vocabulary &amp; Grammar</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Activity Dynamic Type:</label>
+            <select id="type">
+                <option value="active">Active / Kinesthetic Activity</option>
+                <option value="task">Sharjah Localized Task</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Innovation Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Worksheet</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Activity Type above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS ESL INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Year 10 &mdash; English as a Second Language</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Student Name:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#9997;&#65039; Student Working Space &amp; Response:</p>
+        <div style="height: 300px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "reading": {
+        "active": {
+            "title": "Two Views, One Place: Comparing Reviews",
+            "strand": "Reading - Comparing Texts & Identifying Viewpoint",
+            "objective": "Compare two texts on the same topic and identify differences in viewpoint, tone, and purpose.",
+            "instructions": "Give pairs two short reviews of the same place (e.g., a Sharjah restaurant or attraction) written from clearly different perspectives &mdash; one very positive, one more critical. Students identify specific language choices that reveal each reviewer's attitude, then discuss: which review do they find more convincing, and why? Groups present their comparison to another pair."
+        },
+        "task": {
+            "title": "Reading and Summarising: Sharjah's Cultural Heritage",
+            "strand": "Reading - Extended Comprehension & Summary Writing",
+            "objective": "Read an extended text and write a concise, accurate summary in your own words.",
+            "instructions": "Read an extended text (300&ndash;350 words) about Sharjah's designation as a UNESCO City of Culture or similar heritage topic. <br><br>1. Answer 4 comprehension questions covering literal and inferential understanding. <br>2. Write a summary of the text's main points in no more than 60 words, using your own words rather than copying phrases directly from the text."
+        }
+    },
+    "writing": {
+        "active": {
+            "title": "Same Message, Different Register",
+            "strand": "Writing - Register & Formality Awareness",
+            "objective": "Rewrite the same core message in appropriately different registers for different audiences.",
+            "instructions": "Give groups a simple informal message (e.g., a text to a friend about a cancelled trip). In groups, rewrite the SAME core information as: (1) a formal email to a teacher, and (2) a formal letter of apology to an organisation. Compare the three versions as a class, identifying specific vocabulary and structural choices that signal formality."
+        },
+        "task": {
+            "title": "A Letter of Complaint",
+            "strand": "Writing - Formal Letter Writing",
+            "objective": "Write a formal letter using appropriate register, structure, and conventions.",
+            "instructions": "Write a formal letter of complaint (120&ndash;150 words) to a local shop about a faulty product you bought. <br><br>1. Use an appropriate formal opening and closing. <br>2. Clearly explain the problem and what outcome you are requesting. <br>3. Maintain a formal, polite register throughout, avoiding informal language or contractions."
+        }
+    },
+    "speaking": {
+        "active": {
+            "title": "Prepared Talk: 60 Seconds on a Topic",
+            "strand": "Speaking - Prepared Individual Presentation",
+            "objective": "Plan and deliver a short, structured spoken presentation, and give constructive peer feedback.",
+            "instructions": "Give each student a topic card (e.g., 'A place you would like to visit', 'A skill you want to learn'). Students have 5 minutes to plan brief notes (not a full script), then deliver a 60-second talk to a small group. After each talk, listeners give one specific piece of positive feedback and one suggestion for improvement."
+        },
+        "task": {
+            "title": "Note-Taking from an Extended Talk",
+            "strand": "Listening - Note-Taking & Using Notes to Answer Questions",
+            "objective": "Take effective notes while listening to extended spoken text, and use those notes to answer questions accurately.",
+            "instructions": "Play or read aloud an extended talk (3&ndash;4 minutes) about a topic such as environmental sustainability in the UAE. <br><br>1. While listening, take notes using headings and abbreviations rather than full sentences. <br>2. Using only your notes (not memory), answer 5 questions about the talk's content, including at least one question requiring you to combine information from two different points."
+        }
+    },
+    "vocabulary": {
+        "active": {
+            "title": "Sentence Combining Challenge",
+            "strand": "Grammar - Complex Sentences & Linking Devices",
+            "objective": "Combine simple sentences into complex sentences using a range of relative clauses and linking devices.",
+            "instructions": "Give groups sets of simple sentence pairs (e.g., 'The museum is in the old town. The museum has a famous collection of coins.'). Groups race to combine each pair into a single complex sentence using a different linking device or relative clause each time (who, which, although, despite, since). Award points for accuracy and for not repeating the same linking device twice."
+        },
+        "task": {
+            "title": "Editing for Cohesion",
+            "strand": "Grammar - Connectives & Academic Vocabulary in Context",
+            "objective": "Select and use a range of connectives and more formal vocabulary accurately to improve textual cohesion.",
+            "instructions": "Given a short text with connectives removed and replaced with blanks, choose the most appropriate connective for each gap from a provided word bank (e.g., however, therefore, in addition, despite this, as a result). <br><br>1. Complete all 6 gaps with the most logical connective. <br>2. Replace 3 underlined 'simple' words in the text with more sophisticated synonyms from a given list, without changing the meaning."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate an activity first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

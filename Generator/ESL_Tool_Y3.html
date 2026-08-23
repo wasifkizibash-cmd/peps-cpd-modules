@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 3 Early ESL Lesson Card Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #666;
+            font-style: italic;
+        }
+
+        .note-banner {
+            background: #FFF6E9;
+            border: 1px dashed var(--accent);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12.5px;
+            color: #8a5a1f;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #DDD;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-generate {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-generate:hover { background-color: var(--primary-dark); }
+
+        .btn-print {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-print:hover { background-color: #E08710; }
+
+        #display-area {
+            border: 2px dashed #D0DEDC;
+            padding: 25px;
+            border-radius: 8px;
+            background-color: #FCFDFD;
+            min-height: 150px;
+        }
+
+        .activity-title {
+            color: var(--primary-dark);
+            margin-top: 0;
+            font-size: 22px;
+            border-bottom: 1px solid #EEE;
+            padding-bottom: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #E6F2F3;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .materials-box {
+            background: #F3F8F7;
+            border-left: 3px solid var(--primary);
+            padding: 10px 14px;
+            margin: 12px 0;
+            border-radius: 4px;
+        }
+
+        #print-template {
+            display: none;
+        }
+
+        @media print {
+            @page {
+                margin: 0;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #print-template, #print-template * {
+                visibility: visible;
+            }
+            #print-template {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0.5in;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .controls { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS ESL Innovation Lab</h1>
+        <p>Year 3 Early ESL &mdash; Teacher Lesson Card Builder</p>
+    </div>
+
+    <div class="note-banner">&#9998; Built for the teacher to plan and lead &mdash; not a student worksheet. At this age, output is a lesson card with materials and steps, not independent written work.</div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Early ESL Strand:</label>
+            <select id="strand">
+                <option value="phonics">Phonics &amp; Emergent Literacy</option>
+                <option value="oral">Oral Language &amp; Listening</option>
+                <option value="prewriting">Pre-Writing &amp; Fine Motor</option>
+                <option value="vocabulary">Vocabulary Through Play</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Group Setting:</label>
+            <select id="type">
+                <option value="whole">Whole Class Activity</option>
+                <option value="small">Small Group Activity</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Lesson Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Lesson Card</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Group Setting above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS ESL INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Year 3 &mdash; Early ESL Lesson Card</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Class / Group:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#128221; Teacher Notes / Adaptations:</p>
+        <div style="height: 220px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "phonics": {
+        "whole": {
+            "title": "Digraph Detectives",
+            "strand": "Phonics - Consonant Digraphs (sh, ch, th)",
+            "objective": "Recognise and read words containing common consonant digraphs.",
+            "materials": "Word cards containing sh/ch/th words; three labelled hoops or boxes.",
+            "steps": "Read each word card aloud as a class, clapping once for the digraph sound. Students then take turns sorting word cards into the correct hoop (sh, ch, or th) based on which digraph the word contains, checking together as a class at the end."
+        },
+        "small": {
+            "title": "Digraph Word Ladders",
+            "strand": "Phonics - Reading & Building Digraph Words",
+            "objective": "Read and build simple words containing digraphs by changing one part of the word.",
+            "materials": "Letter/digraph cards; a simple word ladder worksheet or whiteboard.",
+            "steps": "Start with a simple digraph word (e.g., 'ship'). In pairs, students change one part of the word to make a new real word (e.g., 'shop', 'chip'), reading each new word aloud as they go, building a short 'word ladder' of 4&ndash;5 words."
+        }
+    },
+    "oral": {
+        "whole": {
+            "title": "The Instruction Chain",
+            "strand": "Oral Language - Following & Passing On Instructions",
+            "objective": "Listen carefully to a short instruction and pass it on accurately to a partner.",
+            "materials": "A list of simple 3-part instructions.",
+            "steps": "In a line or circle, whisper a short 3-part instruction to the first student (e.g., 'Touch your knee, say hello, then sit down.'). Each student whispers it to the next. The last student performs the instruction aloud, and the class checks how accurately it survived the chain."
+        },
+        "small": {
+            "title": "Ask Me About My Weekend",
+            "strand": "Oral Language - Question Formation & Simple Exchange",
+            "objective": "Ask and answer simple questions about personal experiences using correct question word order.",
+            "materials": "Simple question prompt cards (What did you eat? Where did you go?).",
+            "steps": "In pairs, students take turns picking a question card, asking their partner the question correctly, and answering in a short full sentence. Encourage a natural back-and-forth exchange rather than single-word answers."
+        }
+    },
+    "prewriting": {
+        "whole": {
+            "title": "Sentence Building Blocks",
+            "strand": "Writing Readiness - Simple Sentence Construction",
+            "objective": "Physically arrange word cards into a correctly ordered simple sentence.",
+            "materials": "Large word cards forming 3&ndash;4 simple sentences, mixed up.",
+            "steps": "Give small teams a mixed set of word cards for one simple sentence (e.g., 'The, cat, is, big.'). Teams race to arrange the cards on the floor or table in the correct order, reading the finished sentence aloud to check it makes sense."
+        },
+        "small": {
+            "title": "Label and Write",
+            "strand": "Writing - Simple Labelling & Short Sentences",
+            "objective": "Write simple labels and short sentences to describe a picture.",
+            "materials": "A simple picture scene (e.g., a park); lined paper; pencils.",
+            "steps": "Look at the picture together and discuss what you can see. Students then write 2&ndash;3 simple labels for objects in the picture, and attempt one short simple sentence describing the scene (e.g., 'I can see a dog.')."
+        }
+    },
+    "vocabulary": {
+        "whole": {
+            "title": "Describe and Guess",
+            "strand": "Vocabulary - Descriptive Adjectives",
+            "objective": "Use simple descriptive adjectives to help others identify a hidden object or picture.",
+            "materials": "A set of picture cards showing everyday objects or animals.",
+            "steps": "One student picks a card without showing the class and gives 2&ndash;3 simple clues using adjectives (e.g., 'It is big. It is grey. It has a long trunk.'). The rest of the class guesses the object, with the describer confirming when someone guesses correctly."
+        },
+        "small": {
+            "title": "Word Web: Animals",
+            "strand": "Vocabulary - Building Related Word Sets",
+            "objective": "Generate and record related vocabulary around a central topic.",
+            "materials": "A large sheet of paper with a topic word in the centre (e.g., 'Animals'); markers.",
+            "steps": "Brainstorm and write as many related words as possible around the central topic word within a set time (e.g., 3 minutes) &mdash; animal names, sounds they make, places they live. Share and compare word webs with another group at the end."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <div class="materials-box"><strong>Materials Needed:</strong> ${activity.materials}</div>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Materials Needed:</strong> ${activity.materials}</p>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate a lesson idea first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

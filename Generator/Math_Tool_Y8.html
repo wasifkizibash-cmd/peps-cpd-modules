@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 8 Math Innovation Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 800px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 25px; }
+        .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .header h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 28px; }
+        .header p { margin: 0; color: #666; font-style: italic; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        label { font-weight: 600; display: block; margin-bottom: 5px; color: var(--primary); }
+        select { width: 100%; padding: 10px; border: 2px solid #DDD; border-radius: 6px; font-size: 16px; outline: none; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 30px; }
+        button { flex: 1; padding: 12px 20px; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: background 0.3s; }
+        .btn-generate { background-color: var(--primary); color: white; }
+        .btn-generate:hover { background-color: var(--primary-dark); }
+        .btn-print { background-color: var(--accent); color: white; }
+        .btn-print:hover { background-color: #E08710; }
+        #display-area { border: 2px dashed #D0DEDC; padding: 25px; border-radius: 8px; background-color: #FCFDFD; min-height: 150px; }
+        .activity-title { color: var(--primary-dark); margin-top: 0; font-size: 22px; border-bottom: 1px solid #EEE; padding-bottom: 10px; }
+        .tag { display: inline-block; background: #E6F2F3; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; }
+        #print-template { display: none; }
+        @media print {
+            @page { margin: 0; }
+            body * { visibility: hidden; }
+            #print-template, #print-template * { visibility: visible; }
+            #print-template { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 0.5in; box-sizing: border-box; }
+        }
+        @media (max-width: 620px) { .controls { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS Math Innovation Lab</h1>
+        <p>Year 8 Cambridge Lower Secondary Activity &amp; Worksheet Builder</p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Cambridge Math Strand:</label>
+            <select id="strand">
+                <option value="number">Number</option>
+                <option value="algebra">Algebra</option>
+                <option value="geometry">Geometry &amp; Measure</option>
+                <option value="statistics">Statistics &amp; Probability</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Activity Dynamic Type:</label>
+            <select id="type">
+                <option value="active">Active / Kinesthetic Activity</option>
+                <option value="problem">Sharjah Localized Word Problem</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Innovation Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Worksheet</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Activity Type above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS MATH INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Cambridge Lower Secondary Mathematics &mdash; Year 8</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Student Name:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#9997;&#65039; Student Working Space &amp; Calculations:</p>
+        <div style="height: 300px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "number": {
+        "active": {
+            "title": "Scaling the Sharjah Skyline",
+            "strand": "Number - Ratio and Proportion",
+            "objective": "Use ratio to scale quantities up and down in a real design context.",
+            "instructions": "In groups, students are given a small-scale 'blueprint' ratio (e.g. 1:200) for a fictional Sharjah tower and a set of real furniture/room dimensions. They must calculate the correct model dimensions, then physically construct a simple scaled cross-section using card and rulers, checking their scaling against another group's model of the same ratio."
+        },
+        "problem": {
+            "title": "Currency Exchange at Sharjah Airport",
+            "strand": "Number - Ratio, Proportion & Standard Form",
+            "objective": "Apply proportional reasoning to currency conversion and interpret large numbers.",
+            "instructions": "A currency exchange desk at Sharjah Airport offers a rate of 1 GBP = 4.65 AED. <br><br>1. A traveller converts 350 GBP &mdash; how many AED do they receive? <br>2. The airport processes an average of 2.3 &times; 10&sup4; passenger currency transactions per year. Write this number in full, then explain what advantage standard form gives over writing the number in full every time."
+        }
+    },
+    "algebra": {
+        "active": {
+            "title": "Bracket Expansion Relay",
+            "strand": "Algebra - Expanding and Simplifying Brackets",
+            "objective": "Expand single brackets and collect like terms accurately and efficiently.",
+            "instructions": "Set up a relay race with expression cards taped around the room, e.g. 3(2x + 5), 4(x - 3) + 2x. In teams, one student runs to a card, expands and simplifies it correctly on a whiteboard, then tags the next teammate. The first team to correctly complete all their cards, with every step shown, wins. Review common errors (sign mistakes, incomplete expansion) as a class afterward."
+        },
+        "problem": {
+            "title": "The Al Zahia Delivery Charge Problem",
+            "strand": "Algebra - Forming & Solving Two-Step Equations",
+            "objective": "Form and solve two-step linear equations from a real scenario.",
+            "instructions": "An online grocery service in Sharjah charges a fixed delivery fee of 12 AED, plus 8 AED per bag of groceries ordered. A customer's total bill, including delivery, comes to 92 AED. <br><br>1. Write an equation to represent this situation, using b for the number of bags. <br>2. Solve your equation to find how many bags the customer ordered. <br>3. A second customer orders 9 bags &mdash; use your original expression to find their total bill."
+        }
+    },
+    "geometry": {
+        "active": {
+            "title": "Al Majaz Fountain Circle Investigation",
+            "strand": "Geometry & Measure - Circumference and Area of Circles",
+            "objective": "Investigate and apply the relationship between radius, circumference, and area of a circle.",
+            "instructions": "Using string, metre sticks, and images/measurements of a real circular fountain or roundabout feature, students measure the diameter and estimate the circumference by wrapping string around a scale model or tracing. They compare their measured circumference-to-diameter ratio across several different circular objects, building toward discovering &pi; themselves before being given the formula to check their results."
+        },
+        "problem": {
+            "title": "Volume of a Sharjah Water Tank",
+            "strand": "Geometry & Measure - Volume of Prisms and Cylinders",
+            "objective": "Calculate the volume of cylindrical and cuboid containers and compare capacity.",
+            "instructions": "A residential building in Sharjah has two water tank options: a cylindrical tank with radius 1.2m and height 2.5m, or a cuboid tank measuring 2m &times; 2m &times; 1.4m. <br><br>1. Calculate the volume of each tank. <br>2. Which tank holds more water, and by how much? <br>3. If 1 cubic metre = 1000 litres, express the capacity of the larger tank in litres."
+        }
+    },
+    "statistics": {
+        "active": {
+            "title": "Do Taller Students Have Longer Strides? A Scatter Investigation",
+            "strand": "Statistics - Scatter Graphs and Correlation",
+            "objective": "Collect bivariate data, plot a scatter graph, and interpret correlation.",
+            "instructions": "In pairs, students measure their own height and the length of one natural walking stride (measured across a marked distance in the courtyard). Pool the whole class's data on the board, then each student plots a scatter graph of height vs. stride length, draws a line of best fit if appropriate, and describes the type of correlation shown &mdash; and whether it makes sense as a real relationship, not just a coincidence."
+        },
+        "problem": {
+            "title": "Two Coins at Al Qasba",
+            "strand": "Statistics & Probability - Combined Events",
+            "objective": "Use sample space diagrams to calculate probabilities of combined events.",
+            "instructions": "At a game stall, a player flips two fair coins. <br><br>1. Draw a sample space diagram showing all possible outcomes. <br>2. What is the probability of getting exactly one head? <br>3. The stall pays out 5 AED if both coins show the same face, but the player pays 3 AED to play. Over 100 games, would you expect the stall or the players to come out ahead? Show your reasoning."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate an activity first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

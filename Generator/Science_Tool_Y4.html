@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 4 Science Innovation Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 800px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 25px; }
+        .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .header h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 28px; }
+        .header p { margin: 0; color: #666; font-style: italic; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        label { font-weight: 600; display: block; margin-bottom: 5px; color: var(--primary); }
+        select { width: 100%; padding: 10px; border: 2px solid #DDD; border-radius: 6px; font-size: 16px; outline: none; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 30px; }
+        button { flex: 1; padding: 12px 20px; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: background 0.3s; }
+        .btn-generate { background-color: var(--primary); color: white; }
+        .btn-generate:hover { background-color: var(--primary-dark); }
+        .btn-print { background-color: var(--accent); color: white; }
+        .btn-print:hover { background-color: #E08710; }
+        #display-area { border: 2px dashed #D0DEDC; padding: 25px; border-radius: 8px; background-color: #FCFDFD; min-height: 150px; }
+        .activity-title { color: var(--primary-dark); margin-top: 0; font-size: 22px; border-bottom: 1px solid #EEE; padding-bottom: 10px; }
+        .tag { display: inline-block; background: #E6F2F3; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; }
+        #print-template { display: none; }
+        @media print {
+            @page { margin: 0; }
+            body * { visibility: hidden; }
+            #print-template, #print-template * { visibility: visible; }
+            #print-template { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 0.5in; box-sizing: border-box; }
+        }
+        @media (max-width: 620px) { .controls { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS Science Innovation Lab</h1>
+        <p>Year 4 Cambridge Primary Activity &amp; Worksheet Builder</p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Cambridge Science Strand:</label>
+            <select id="strand">
+                <option value="biology">Biology</option>
+                <option value="chemistry">Chemistry</option>
+                <option value="physics">Physics</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Activity Dynamic Type:</label>
+            <select id="type">
+                <option value="active">Active / Hands-On Investigation</option>
+                <option value="problem">Sharjah Localized Application Task</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Innovation Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Worksheet</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Activity Type above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS SCIENCE INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Cambridge Primary Science &mdash; Year 4</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Student Name:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#9997;&#65039; Student Working Space &amp; Observations:</p>
+        <div style="height: 300px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "biology": {
+        "active": {
+            "title": "The Teeth Detective Trail",
+            "strand": "Biology - Types of Teeth and Their Functions",
+            "objective": "Identify the main types of human teeth (incisors, canines, molars) and describe their function.",
+            "instructions": "Post 4 large tooth diagrams around the room, each labelled with a different tooth type. At each station, students find and record what job that tooth does (cutting, tearing, grinding) using a simple food example (e.g., 'molars grind food like an apple'). Students can feel their own teeth with their tongue (not fingers) to identify each type on themselves before moving to the next station."
+        },
+        "problem": {
+            "title": "Journey of a Date: The Digestive Trail",
+            "strand": "Biology - The Digestive System",
+            "objective": "Describe the basic journey of food through the human digestive system in the correct order.",
+            "instructions": "A student eats a date at breakfast. <br><br>1. List, in the correct order, the main parts of the digestive system the date passes through (mouth, oesophagus, stomach, small intestine, large intestine). <br>2. For two of these parts, describe in one sentence what happens to the food there. <br>3. Explain why chewing food well in the mouth makes the rest of the journey easier."
+        }
+    },
+    "chemistry": {
+        "active": {
+            "title": "Solid, Liquid or Gas? Freeze Statues",
+            "strand": "Chemistry - States of Matter",
+            "objective": "Identify and physically demonstrate the three states of matter and how particles behave in each.",
+            "instructions": "Explain that in a 'solid', particles are close together and can only wobble; in a 'liquid', they can slide past each other; in a 'gas', they move freely and far apart. Call out a state and have students move around the room accordingly (huddled and still for solid, close but moving for liquid, spread out and moving freely for gas). Call out different states quickly to check understanding through movement."
+        },
+        "problem": {
+            "title": "Ice, Water, and Steam Over Sharjah",
+            "strand": "Chemistry - Changing States",
+            "objective": "Explain what happens to particles when a substance changes from solid to liquid to gas, using the correct scientific terms.",
+            "instructions": "On a hot Sharjah day, an ice cube left outside melts, and later, a puddle of water evaporates in the sun. <br><br>1. Name the state change happening when the ice melts. <br>2. Name the state change happening when the puddle evaporates. <br>3. Explain in your own words what happens to the particles during each change."
+        }
+    },
+    "physics": {
+        "active": {
+            "title": "Shadow Puppet Investigation",
+            "strand": "Physics - How Shadows Form",
+            "objective": "Investigate how the size and shape of a shadow changes depending on the position of a light source.",
+            "instructions": "In pairs, use a torch and a simple object (or a hand shadow puppet) against a wall. Students experiment with moving the torch closer and further away, and at different angles, observing how the shadow's size and sharpness changes. Record what happens to the shadow when the light is very close, far away, and at an angle."
+        },
+        "problem": {
+            "title": "Opaque, Translucent or Transparent? The Sharjah Souk Window Test",
+            "strand": "Physics - Materials and Light",
+            "objective": "Classify materials as opaque, translucent, or transparent based on how light passes through them.",
+            "instructions": "A shopkeeper at a Sharjah souk is choosing material for a window display: clear glass, frosted glass, and a solid wooden panel. <br><br>1. Classify each material as opaque, translucent, or transparent. <br>2. Explain which material would let the shopkeeper's goods be seen most clearly from outside, and why. <br>3. Suggest a good reason the shopkeeper might choose frosted glass instead of clear glass for part of the display."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate an activity first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

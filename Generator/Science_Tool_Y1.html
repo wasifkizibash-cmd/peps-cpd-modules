@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 1 Early Science Lesson Card Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 800px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 25px; }
+        .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .header h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 28px; }
+        .header p { margin: 0; color: #666; font-style: italic; }
+        .note-banner { background: #FFF6E9; border: 1px dashed var(--accent); border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: #8a5a1f; margin-bottom: 20px; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        label { font-weight: 600; display: block; margin-bottom: 5px; color: var(--primary); }
+        select { width: 100%; padding: 10px; border: 2px solid #DDD; border-radius: 6px; font-size: 16px; outline: none; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 30px; }
+        button { flex: 1; padding: 12px 20px; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: background 0.3s; }
+        .btn-generate { background-color: var(--primary); color: white; }
+        .btn-generate:hover { background-color: var(--primary-dark); }
+        .btn-print { background-color: var(--accent); color: white; }
+        .btn-print:hover { background-color: #E08710; }
+        #display-area { border: 2px dashed #D0DEDC; padding: 25px; border-radius: 8px; background-color: #FCFDFD; min-height: 150px; }
+        .activity-title { color: var(--primary-dark); margin-top: 0; font-size: 22px; border-bottom: 1px solid #EEE; padding-bottom: 10px; }
+        .tag { display: inline-block; background: #E6F2F3; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; }
+        .materials-box { background: #F3F8F7; border-left: 3px solid var(--primary); padding: 10px 14px; margin: 12px 0; border-radius: 4px; }
+        #print-template { display: none; }
+        @media print {
+            @page { margin: 0; }
+            body * { visibility: hidden; }
+            #print-template, #print-template * { visibility: visible; }
+            #print-template { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 0.5in; box-sizing: border-box; }
+        }
+        @media (max-width: 620px) { .controls { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS Science Innovation Lab</h1>
+        <p>Year 1 Early Science &mdash; Teacher Lesson Card Builder</p>
+    </div>
+
+    <div class="note-banner">&#9998; Built for the teacher to plan and lead &mdash; not a student worksheet. At this age, output is a lesson card with materials and steps, not independent written work.</div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Early Science Strand:</label>
+            <select id="strand">
+                <option value="living">Exploring Living Things</option>
+                <option value="materials">Exploring Materials</option>
+                <option value="forces">Exploring Forces &amp; Movement</option>
+                <option value="enquiry">Scientific Enquiry &amp; Observation</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Group Setting:</label>
+            <select id="type">
+                <option value="whole">Whole Class Activity</option>
+                <option value="small">Small Group Activity</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Lesson Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Lesson Card</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Group Setting above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS SCIENCE INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Year 1 &mdash; Early Science Lesson Card</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Class / Group:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#128221; Teacher Notes / Adaptations:</p>
+        <div style="height: 220px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "living": {
+        "whole": {
+            "title": "My Amazing Senses Walk",
+            "strand": "Biology - The Five Senses",
+            "objective": "Identify and name the five senses and use them to explore the environment.",
+            "materials": "None needed, or simple sensory items (a bell, a scented item, a soft cloth) for a walk around the school.",
+            "steps": "Take students on a short walk around the school or garden. At each stop, ask them to use a different sense (e.g., 'What can you hear here?', 'What can you feel on this wall?'). Gather back and share what was noticed using each sense, building a simple class list of 'things we sensed today'."
+        },
+        "small": {
+            "title": "Animal or Not an Animal?",
+            "strand": "Biology - Identifying Living Things",
+            "objective": "Sort familiar things into living (animals) and non-living categories.",
+            "materials": "Picture cards showing a mix of animals and non-living objects; two sorting hoops.",
+            "steps": "In small groups, students take turns picking a card, naming what it shows, and deciding whether it is a living animal or not, placing it in the correct hoop. Discuss any tricky ones together (e.g., a toy animal) and why it doesn't count as a real living animal."
+        }
+    },
+    "materials": {
+        "whole": {
+            "title": "Hard or Soft? Material Feely Walk",
+            "strand": "Chemistry - Simple Material Properties",
+            "objective": "Describe everyday materials using simple property words (hard, soft, rough, smooth).",
+            "materials": "None needed &mdash; use real objects already in the classroom or school.",
+            "steps": "Walk around the classroom together, touching different objects and describing each one using a simple property word. Build a class list on the board of 'hard things' and 'soft things' as you go, checking together that everyone agrees with each classification."
+        },
+        "small": {
+            "title": "Sort the Materials Table",
+            "strand": "Chemistry - Sorting by Material Type",
+            "objective": "Sort everyday objects by the material they are made from (wood, plastic, metal, fabric).",
+            "materials": "A mixed set of small everyday objects made from different materials; four labelled sorting trays.",
+            "steps": "In small groups, students pick up each object, feel it, and decide which material tray it belongs in. Once sorted, discuss as a group: which tray has the most objects, and can they think of one more object for each material type?"
+        }
+    },
+    "forces": {
+        "whole": {
+            "title": "Push or Pull? Playground Actions",
+            "strand": "Physics - Introducing Push and Pull",
+            "objective": "Identify everyday actions as a push or a pull.",
+            "materials": "None needed &mdash; use playground equipment or classroom objects.",
+            "steps": "Demonstrate a few simple actions (opening a door, kicking a ball, pulling a chair) and ask students whether each one is a push or a pull. Then let students take turns performing their own action for the class to guess push or pull, building a shared understanding through movement."
+        },
+        "small": {
+            "title": "Toy Car Push Race",
+            "strand": "Physics - Forces Make Things Move",
+            "objective": "Observe that a push makes an object move, and describe what happens.",
+            "materials": "Small toy cars or balls; a flat surface or ramp.",
+            "steps": "In small groups, students take turns giving a toy car a gentle push and observing what happens (it moves, it slows down, it stops). Try pushing harder and softer, discussing what students notice changes about how far the car travels each time."
+        }
+    },
+    "enquiry": {
+        "whole": {
+            "title": "Look Closer! The Magnifying Glass Hunt",
+            "strand": "Scientific Enquiry - Careful Observation",
+            "objective": "Use simple tools to observe objects more closely and describe what is seen.",
+            "materials": "Magnifying glasses (enough for pairs); a few natural objects (leaves, stones, flowers).",
+            "steps": "Give pairs a magnifying glass and a natural object. Ask them to look closely and describe one thing they notice that they couldn't see without the magnifying glass. Share findings as a class, encouraging descriptive words (bumpy, lines, tiny holes)."
+        },
+        "small": {
+            "title": "What Do You Notice? Mystery Object Box",
+            "strand": "Scientific Enquiry - Asking Questions About Objects",
+            "objective": "Ask simple questions about an unfamiliar object to find out more about it.",
+            "materials": "A box containing a few unusual or unfamiliar objects.",
+            "steps": "In small groups, show one mystery object at a time. Students take turns asking a simple question about it (e.g., 'What is it for?', 'What is it made of?'). Encourage looking, touching (if safe), and discussing before revealing what the object actually is."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <div class="materials-box"><strong>Materials Needed:</strong> ${activity.materials}</div>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Materials Needed:</strong> ${activity.materials}</p>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate a lesson idea first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

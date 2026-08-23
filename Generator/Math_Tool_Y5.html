@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 5 Math Innovation Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 800px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 25px; }
+        .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .header h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 28px; }
+        .header p { margin: 0; color: #666; font-style: italic; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        label { font-weight: 600; display: block; margin-bottom: 5px; color: var(--primary); }
+        select { width: 100%; padding: 10px; border: 2px solid #DDD; border-radius: 6px; font-size: 16px; outline: none; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 30px; }
+        button { flex: 1; padding: 12px 20px; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: background 0.3s; }
+        .btn-generate { background-color: var(--primary); color: white; }
+        .btn-generate:hover { background-color: var(--primary-dark); }
+        .btn-print { background-color: var(--accent); color: white; }
+        .btn-print:hover { background-color: #E08710; }
+        #display-area { border: 2px dashed #D0DEDC; padding: 25px; border-radius: 8px; background-color: #FCFDFD; min-height: 150px; }
+        .activity-title { color: var(--primary-dark); margin-top: 0; font-size: 22px; border-bottom: 1px solid #EEE; padding-bottom: 10px; }
+        .tag { display: inline-block; background: #E6F2F3; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; }
+        #print-template { display: none; }
+        @media print {
+            @page { margin: 0; }
+            body * { visibility: hidden; }
+            #print-template, #print-template * { visibility: visible; }
+            #print-template { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 0.5in; box-sizing: border-box; }
+        }
+        @media (max-width: 620px) { .controls { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS Math Innovation Lab</h1>
+        <p>Year 5 Cambridge Curriculum Activity &amp; Worksheet Builder</p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Cambridge Math Strand:</label>
+            <select id="strand">
+                <option value="number">Number</option>
+                <option value="geometry">Geometry &amp; Measure</option>
+                <option value="statistics">Statistics</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Activity Dynamic Type:</label>
+            <select id="type">
+                <option value="active">Active Playground Game</option>
+                <option value="problem">Sharjah Localized Word Problem</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Innovation Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Worksheet</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your options above and click generate to populate a localized Cambridge activity!</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS MATH INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Cambridge Primary Mathematics &mdash; Year 5</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Student Name:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#9997;&#65039; Student Working Space &amp; Calculations:</p>
+        <div style="height: 300px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "number": {
+        "active": {
+            "title": "The Al Dhaid Farm Fraction Baskets",
+            "strand": "Number - Adding and Subtracting Fractions",
+            "objective": "Add and subtract fractions with the same and related denominators.",
+            "instructions": "Set up 'fruit baskets' around the room, each labelled with a fraction of a crate collected from an Al Dhaid farm stall (e.g., 3/4, 1/2, 1/4). In pairs, students visit two baskets, physically combine the fraction cards (using fraction strips or paper circles as manipulatives), and calculate the total. Groups check their answer against another pair who visited the same two baskets."
+        },
+        "problem": {
+            "title": "Counting Visitors at the Sharjah Book Fair",
+            "strand": "Number - Reading and Rounding Large Numbers",
+            "objective": "Read, write, and round numbers up to 100,000 to the nearest 1,000 or 10,000.",
+            "instructions": "The Sharjah International Book Fair welcomed 47,382 visitors on its opening weekend. <br><br>1. Round this number to the nearest 1,000. <br>2. Round it to the nearest 10,000. <br>3. If the fair expects to welcome roughly double this number across the full two weeks, estimate the total attendance and explain which rounded figure you used to estimate."
+        }
+    },
+    "geometry": {
+        "active": {
+            "title": "Angle Detectives: Triangle Hunt",
+            "strand": "Geometry & Measure - Angle Properties of Triangles",
+            "objective": "Measure and calculate missing angles in a triangle, knowing that angles in a triangle sum to 180 degrees.",
+            "instructions": "Give groups sets of triangle cutouts with two angles labelled and one missing. Students use a protractor to check the two given angles, then calculate the missing angle using the rule that all three angles sum to 180 degrees. Groups swap triangles with another group to check each other's answers by measuring the missing angle directly."
+        },
+        "problem": {
+            "title": "Tiling the Al Majaz Courtyard",
+            "strand": "Geometry & Measure - Area of Compound Shapes",
+            "objective": "Calculate the area of a compound shape made of two or more rectangles.",
+            "instructions": "A courtyard at Al Majaz Waterfront is being retiled. The courtyard is L-shaped: a 10m by 6m rectangle with a 4m by 3m rectangle removed from one corner. <br><br>1. Sketch the shape and split it into simple rectangles. <br>2. Calculate the area of each rectangle. <br>3. Find the total area of the courtyard that needs tiling."
+        }
+    },
+    "statistics": {
+        "active": {
+            "title": "Tracking the Temperature Line Graph",
+            "strand": "Statistics - Constructing and Reading Line Graphs",
+            "objective": "Construct a simple line graph from a data set and interpret trends shown.",
+            "instructions": "Give groups a week's worth of simple temperature data (e.g., recorded at the same time each day). Groups plot the data as a line graph on squared paper, joining points to show the trend. Discuss as a class: on which day was it hottest, and does the graph show any clear pattern across the week?"
+        },
+        "problem": {
+            "title": "Likely, Unlikely, or Certain? The Sharjah Weather Forecast",
+            "strand": "Statistics - Probability Language",
+            "objective": "Use probability language (impossible, unlikely, even chance, likely, certain) to describe the chance of an event.",
+            "instructions": "Read a short simple weather forecast for Sharjah in July (e.g., 'Sunny with a small chance of a light breeze; no rain expected.'). <br><br>1. Describe the chance of rain using probability language. <br>2. Describe the chance of sunshine using probability language. <br>3. Write your own short forecast for a different season, using at least 3 different probability words."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate an activity first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

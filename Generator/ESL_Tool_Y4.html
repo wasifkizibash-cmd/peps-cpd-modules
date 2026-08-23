@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 4 ESL Innovation Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #666;
+            font-style: italic;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #DDD;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-generate {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-generate:hover { background-color: var(--primary-dark); }
+
+        .btn-print {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-print:hover { background-color: #E08710; }
+
+        #display-area {
+            border: 2px dashed #D0DEDC;
+            padding: 25px;
+            border-radius: 8px;
+            background-color: #FCFDFD;
+            min-height: 150px;
+        }
+
+        .activity-title {
+            color: var(--primary-dark);
+            margin-top: 0;
+            font-size: 22px;
+            border-bottom: 1px solid #EEE;
+            padding-bottom: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #E6F2F3;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        #print-template {
+            display: none;
+        }
+
+        @media print {
+            @page {
+                margin: 0;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #print-template, #print-template * {
+                visibility: visible;
+            }
+            #print-template {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0.5in;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .controls { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS ESL Innovation Lab</h1>
+        <p>Year 4 English as a Second Language &mdash; Activity &amp; Worksheet Builder</p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">ESL Skill Strand:</label>
+            <select id="strand">
+                <option value="reading">Reading</option>
+                <option value="writing">Writing</option>
+                <option value="speaking">Speaking &amp; Listening</option>
+                <option value="vocabulary">Vocabulary &amp; Grammar</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Activity Dynamic Type:</label>
+            <select id="type">
+                <option value="active">Active / Kinesthetic Activity</option>
+                <option value="task">Sharjah Localized Task</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Innovation Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Worksheet</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Activity Type above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS ESL INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Year 4 &mdash; English as a Second Language</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Student Name:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#9997;&#65039; Student Working Space &amp; Response:</p>
+        <div style="height: 300px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "reading": {
+        "active": {
+            "title": "Picture Match: A Day at Al Jazeera Park",
+            "strand": "Reading - Word-Picture Matching",
+            "objective": "Match simple words and short phrases to matching pictures.",
+            "instructions": "Post 8 pictures of things found in a park (swing, slide, tree, bench, bicycle, ball, dog, flower) around the classroom. Give each student a set of matching word cards. Students walk around, find the picture that matches each word card, and place the word next to the correct picture. Check together as a class, saying each word aloud."
+        },
+        "task": {
+            "title": "About My School",
+            "strand": "Reading - Simple Sentence Comprehension",
+            "objective": "Read very short simple sentences and answer basic picture/yes-no comprehension questions.",
+            "instructions": "Read 4 very short sentences about a school (e.g., 'The school has a big playground. There are twenty classrooms. The library has many books.'). <br><br>1. For each sentence, circle the matching picture from two choices. <br>2. Answer 2 simple yes/no questions about the text (e.g., 'Does the school have a playground? Yes / No')."
+        }
+    },
+    "writing": {
+        "active": {
+            "title": "Build-a-Sentence: In My Classroom",
+            "strand": "Writing - Simple Present Tense with Picture Support",
+            "objective": "Build simple present tense sentences using picture and word cards.",
+            "instructions": "Give pairs sets of cards: subject cards (I, We, The teacher), verb cards with pictures (write, read, sit, draw), and object cards with pictures (a book, a picture, at my desk). Pairs arrange the cards to build a correct simple sentence, read it aloud, then rearrange the cards to build a new one. Repeat to build at least 4 different sentences."
+        },
+        "task": {
+            "title": "My School Bag",
+            "strand": "Writing - Guided Sentence Completion",
+            "objective": "Complete simple sentences accurately using a word bank.",
+            "instructions": "Complete the sentences about your school bag using words from the box (pens, books, ruler, has, blue). <br><br>1. My school bag is ___. <br>2. It ___ many things inside. <br>3. I have three ___ and two ___. <br>4. I also have a ___ to draw straight lines."
+        }
+    },
+    "speaking": {
+        "active": {
+            "title": "Listen and Do: Classroom Actions",
+            "strand": "Listening - Total Physical Response",
+            "objective": "Listen to and correctly follow simple spoken commands.",
+            "instructions": "Give simple spoken commands one at a time (e.g., 'Stand up.', 'Touch your nose.', 'Point to the window.', 'Sit down quietly.'). Students perform the action as quickly and correctly as possible. Speed up gradually, and occasionally give two commands in a row to build listening stamina (e.g., 'Stand up and clap your hands.')."
+        },
+        "task": {
+            "title": "What's This? Everyday Objects",
+            "strand": "Speaking - Naming & Simple Description",
+            "objective": "Name and give a simple one-word description of everyday classroom objects.",
+            "instructions": "In pairs, one student holds up a flashcard of an everyday object (pencil, chair, bag, clock) without showing their partner. <br><br>1. The partner asks, 'What's this?' <br>2. The first student answers with the object name and one describing word (e.g., 'It's a pencil. It's yellow.'). <br>3. Swap roles and repeat with 4 more objects."
+        }
+    },
+    "vocabulary": {
+        "active": {
+            "title": "Vocabulary Bingo: Animals",
+            "strand": "Vocabulary - Familiar Word Recognition",
+            "objective": "Recognise and match spoken vocabulary words to pictures under time pressure.",
+            "instructions": "Give each student a bingo card with 9 animal pictures. Call out animal names one at a time (in any order). Students cover the matching picture on their card. The first student to cover a full row calls 'Bingo!' and names all the covered animals aloud to check."
+        },
+        "task": {
+            "title": "Label the Park",
+            "strand": "Vocabulary - Labeling in Context",
+            "objective": "Correctly label a simple picture scene using a given word bank.",
+            "instructions": "Look at the picture of a park scene. Using the word bank (tree, bench, ball, dog, sun, flower), write the correct word next to each numbered arrow pointing to an object in the picture."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate an activity first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

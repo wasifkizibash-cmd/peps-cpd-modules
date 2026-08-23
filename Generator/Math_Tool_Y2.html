@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 2 Early Math Lesson Card Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #666;
+            font-style: italic;
+        }
+
+        .note-banner {
+            background: #FFF6E9;
+            border: 1px dashed var(--accent);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12.5px;
+            color: #8a5a1f;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #DDD;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-generate {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-generate:hover { background-color: var(--primary-dark); }
+
+        .btn-print {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-print:hover { background-color: #E08710; }
+
+        #display-area {
+            border: 2px dashed #D0DEDC;
+            padding: 25px;
+            border-radius: 8px;
+            background-color: #FCFDFD;
+            min-height: 150px;
+        }
+
+        .activity-title {
+            color: var(--primary-dark);
+            margin-top: 0;
+            font-size: 22px;
+            border-bottom: 1px solid #EEE;
+            padding-bottom: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #E6F2F3;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .materials-box {
+            background: #F3F8F7;
+            border-left: 3px solid var(--primary);
+            padding: 10px 14px;
+            margin: 12px 0;
+            border-radius: 4px;
+        }
+
+        #print-template {
+            display: none;
+        }
+
+        @media print {
+            @page {
+                margin: 0;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #print-template, #print-template * {
+                visibility: visible;
+            }
+            #print-template {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0.5in;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .controls { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS Math Innovation Lab</h1>
+        <p>Year 2 Early Mathematics &mdash; Teacher Lesson Card Builder</p>
+    </div>
+
+    <div class="note-banner">&#9998; Built for the teacher to plan and lead &mdash; not a student worksheet. At this age, output is a lesson card with materials and steps, not independent written work.</div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Early Math Strand:</label>
+            <select id="strand">
+                <option value="number">Number &amp; Counting</option>
+                <option value="shape">Shape &amp; Space</option>
+                <option value="measure">Measures &amp; Comparison</option>
+                <option value="pattern">Pattern &amp; Sorting</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Group Setting:</label>
+            <select id="type">
+                <option value="whole">Whole Class Activity</option>
+                <option value="small">Small Group Activity</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Lesson Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Lesson Card</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Group Setting above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS MATH INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Year 2 &mdash; Early Mathematics Lesson Card</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Class / Group:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#128221; Teacher Notes / Adaptations:</p>
+        <div style="height: 220px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "number": {
+        "whole": {
+            "title": "Skip Counting Steps",
+            "strand": "Number - Counting in 2s, 5s and 10s",
+            "objective": "Count forward in steps of 2, 5, and 10 up to 50 or 100.",
+            "materials": "None needed &mdash; open space to move, or a number line taped on the floor.",
+            "steps": "Practise counting together in 2s (2, 4, 6...) while taking a step forward for each number. Repeat counting in 5s, then in 10s. For an extra challenge, try counting backward in 10s from 100."
+        },
+        "small": {
+            "title": "Addition Story Problems with Counters",
+            "strand": "Number - Addition Within 20 Using Concrete Objects",
+            "objective": "Solve simple addition word problems within 20 using physical counters.",
+            "materials": "Small counters or blocks (at least 20 per group).",
+            "steps": "Tell a simple story problem (e.g., 'There are 6 birds in a tree. 5 more birds land. How many birds now?'). Students use counters to physically represent and solve the problem, then say the matching number sentence aloud (6 + 5 = 11)."
+        }
+    },
+    "shape": {
+        "whole": {
+            "title": "2D or 3D? Sort and Show",
+            "strand": "Geometry - Distinguishing 2D and 3D Shapes",
+            "objective": "Correctly identify and sort shapes as 2D (flat) or 3D (solid).",
+            "materials": "A mixed set of real 2D shapes (paper cut-outs) and 3D shapes (blocks, balls, boxes); two labelled hoops.",
+            "steps": "Show each shape one at a time, asking students whether it is flat (2D) or solid (3D) before placing it in the correct hoop. Discuss what makes a shape 3D (it has depth, you can hold it) versus 2D (it is flat, like a drawing)."
+        },
+        "small": {
+            "title": "3D Shape Properties Table",
+            "strand": "Geometry - Describing Properties of 3D Shapes",
+            "objective": "Describe simple properties of 3D shapes, including number of faces.",
+            "materials": "A collection of 3D shapes (cube, cylinder, cone, sphere); a simple recording table.",
+            "steps": "In small groups, students examine each 3D shape, counting and recording how many flat faces it has (e.g., a cube has 6). Discuss which shapes can roll and why, linking this to whether they have any curved surfaces."
+        }
+    },
+    "measure": {
+        "whole": {
+            "title": "Measuring with Footsteps",
+            "strand": "Measure - Non-Standard Units of Length",
+            "objective": "Measure the length of an object or distance using non-standard units, and compare results.",
+            "materials": "None needed &mdash; open floor space.",
+            "steps": "Mark a start and end point on the floor. Students take turns walking heel-to-toe (or counting footsteps) between the two points, counting how many steps it takes. Compare results across different students and discuss why the numbers might be different (different step sizes)."
+        },
+        "small": {
+            "title": "How Heavy Is It? Balance Scale Guessing",
+            "strand": "Measure - Comparing Weight",
+            "objective": "Compare the weight of two objects using direct comparison or a simple balance scale.",
+            "materials": "A simple balance scale (or two bags/cups on a hanger); 4&ndash;6 small objects of varying weight.",
+            "steps": "In small groups, students first guess (predict) which of two objects is heavier just by holding them. Then place both objects on the balance scale to check. Record which object was correctly predicted each time, discussing any surprises."
+        }
+    },
+    "pattern": {
+        "whole": {
+            "title": "Growing Pattern Bridge",
+            "strand": "Pattern - Simple Growing Patterns",
+            "objective": "Identify and continue a simple growing pattern (e.g., increasing by one each time).",
+            "materials": "Building blocks or similar stackable objects.",
+            "steps": "Build a simple growing pattern with blocks in front of the class (1 block, then 2, then 3, arranged in a visible sequence). Ask students to predict how many blocks the next step would need, then build it together to check. Repeat with a new starting pattern."
+        },
+        "small": {
+            "title": "Sort by Two Rules",
+            "strand": "Pattern - Sorting by Two Attributes",
+            "objective": "Sort a group of objects using two attributes at once (e.g., colour and size).",
+            "materials": "A mixed set of objects varying in both colour and size; a simple two-way sorting grid or table.",
+            "steps": "Give groups a two-way sorting table (e.g., rows for colour, columns for size). Students sort each object into the correct box based on both its colour and size, checking together that each object only fits in one box."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <div class="materials-box"><strong>Materials Needed:</strong> ${activity.materials}</div>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Materials Needed:</strong> ${activity.materials}</p>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate a lesson idea first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

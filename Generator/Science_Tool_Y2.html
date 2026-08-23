@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 2 Early Science Lesson Card Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 800px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 25px; }
+        .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .header h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 28px; }
+        .header p { margin: 0; color: #666; font-style: italic; }
+        .note-banner { background: #FFF6E9; border: 1px dashed var(--accent); border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: #8a5a1f; margin-bottom: 20px; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        label { font-weight: 600; display: block; margin-bottom: 5px; color: var(--primary); }
+        select { width: 100%; padding: 10px; border: 2px solid #DDD; border-radius: 6px; font-size: 16px; outline: none; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 30px; }
+        button { flex: 1; padding: 12px 20px; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: background 0.3s; }
+        .btn-generate { background-color: var(--primary); color: white; }
+        .btn-generate:hover { background-color: var(--primary-dark); }
+        .btn-print { background-color: var(--accent); color: white; }
+        .btn-print:hover { background-color: #E08710; }
+        #display-area { border: 2px dashed #D0DEDC; padding: 25px; border-radius: 8px; background-color: #FCFDFD; min-height: 150px; }
+        .activity-title { color: var(--primary-dark); margin-top: 0; font-size: 22px; border-bottom: 1px solid #EEE; padding-bottom: 10px; }
+        .tag { display: inline-block; background: #E6F2F3; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; }
+        .materials-box { background: #F3F8F7; border-left: 3px solid var(--primary); padding: 10px 14px; margin: 12px 0; border-radius: 4px; }
+        #print-template { display: none; }
+        @media print {
+            @page { margin: 0; }
+            body * { visibility: hidden; }
+            #print-template, #print-template * { visibility: visible; }
+            #print-template { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 0.5in; box-sizing: border-box; }
+        }
+        @media (max-width: 620px) { .controls { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS Science Innovation Lab</h1>
+        <p>Year 2 Early Science &mdash; Teacher Lesson Card Builder</p>
+    </div>
+
+    <div class="note-banner">&#9998; Built for the teacher to plan and lead &mdash; not a student worksheet. At this age, output is a lesson card with materials and steps, not independent written work.</div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Early Science Strand:</label>
+            <select id="strand">
+                <option value="living">Exploring Living Things</option>
+                <option value="materials">Exploring Materials</option>
+                <option value="forces">Exploring Forces &amp; Movement</option>
+                <option value="enquiry">Scientific Enquiry &amp; Observation</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Group Setting:</label>
+            <select id="type">
+                <option value="whole">Whole Class Activity</option>
+                <option value="small">Small Group Activity</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Lesson Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Lesson Card</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Group Setting above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS SCIENCE INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Year 2 &mdash; Early Science Lesson Card</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Class / Group:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#128221; Teacher Notes / Adaptations:</p>
+        <div style="height: 220px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "living": {
+        "whole": {
+            "title": "Watch It Grow: The Bean Diary",
+            "strand": "Biology - Plant Growth",
+            "objective": "Observe and describe the stages of a plant growing from a seed.",
+            "materials": "Bean seeds; clear cups; soil or damp cotton wool; water.",
+            "steps": "Plant a bean seed together as a class in a clear cup so roots are visible. Over the following days and weeks, gather briefly each day to observe and describe any changes, recording simple observations as a class diary (with drawings or short notes)."
+        },
+        "small": {
+            "title": "Where Do Animals Live? Habitat Sort",
+            "strand": "Biology - Introduction to Habitats",
+            "objective": "Match familiar animals to their correct habitat.",
+            "materials": "Animal picture cards; habitat picture cards or labelled areas (ocean, forest, desert, farm).",
+            "steps": "In small groups, students match each animal card to the habitat card where it would most likely live, discussing their reasoning briefly for each match (e.g., 'A camel lives in the desert because...'). Check together as a class at the end."
+        }
+    },
+    "materials": {
+        "whole": {
+            "title": "Will It Float? Prediction Pool",
+            "strand": "Chemistry - Floating and Sinking",
+            "objective": "Predict and test whether everyday objects float or sink in water.",
+            "materials": "A large tub or bowl of water; a selection of small objects (a stone, a leaf, a plastic toy, a coin).",
+            "steps": "Show each object and ask students to predict (guess) whether it will float or sink before testing. Test each object together, recording the actual result next to the prediction. Discuss any surprising results and what the floating objects seem to have in common."
+        },
+        "small": {
+            "title": "Waterproof or Not? Umbrella Material Test",
+            "strand": "Chemistry - Testing Material Properties",
+            "objective": "Test and compare materials to find out which are waterproof.",
+            "materials": "Small squares of different materials (plastic, paper, fabric, foil); a dropper or small cup of water; a tray.",
+            "steps": "In small groups, students place each material square over a small container and drip water onto it, observing whether the water passes through or stays on top. Record which materials were waterproof and discuss why an umbrella needs to be made from a waterproof material."
+        }
+    },
+    "forces": {
+        "whole": {
+            "title": "Ramp Racers: Steep or Shallow?",
+            "strand": "Physics - Forces and Ramps",
+            "objective": "Investigate how the steepness of a ramp affects how far or fast an object travels.",
+            "materials": "A board or ramp that can be adjusted to different heights; small toy cars or balls.",
+            "steps": "Set up a ramp at a low height and let students take turns releasing a car down it, marking how far it travels. Raise the ramp higher and repeat. Discuss as a class what happened to the distance travelled as the ramp got steeper."
+        },
+        "small": {
+            "title": "Magnet Detectives",
+            "strand": "Physics - Introduction to Magnets",
+            "objective": "Test and sort objects to find out which are attracted to a magnet.",
+            "materials": "A magnet; a mixed set of small objects (some metal, some not).",
+            "steps": "In small groups, students test each object with the magnet, sorting them into 'attracted' and 'not attracted' groups. Discuss what the attracted objects have in common (they are usually made of certain metals), and predict whether a new object will be attracted before testing it."
+        }
+    },
+    "enquiry": {
+        "whole": {
+            "title": "Same or Different? Compare and Describe",
+            "strand": "Scientific Enquiry - Comparing Objects",
+            "objective": "Compare two similar objects and describe their similarities and differences.",
+            "materials": "Pairs of similar but different objects (two leaves, two shells, two stones).",
+            "steps": "Show a pair of similar objects and ask students to describe one way they are the same and one way they are different. Practise with a few pairs as a class, encouraging increasingly specific observations (colour, size, texture, pattern)."
+        },
+        "small": {
+            "title": "My First Investigation: Testing Ideas",
+            "strand": "Scientific Enquiry - Simple Testing",
+            "objective": "Make a simple prediction and test it to see if it was correct.",
+            "materials": "Simple test materials depending on the question chosen (e.g., paper for a simple paper-plane distance test).",
+            "steps": "In small groups, pose a simple testable question (e.g., 'Which paper plane design flies further?'). Students predict which will win, then test both, recording the result. Discuss whether their prediction was correct and why they think that happened."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <div class="materials-box"><strong>Materials Needed:</strong> ${activity.materials}</div>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Materials Needed:</strong> ${activity.materials}</p>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate a lesson idea first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

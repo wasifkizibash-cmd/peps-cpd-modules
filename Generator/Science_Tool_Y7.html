@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 7 Science Innovation Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 800px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 25px; }
+        .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .header h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 28px; }
+        .header p { margin: 0; color: #666; font-style: italic; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        label { font-weight: 600; display: block; margin-bottom: 5px; color: var(--primary); }
+        select { width: 100%; padding: 10px; border: 2px solid #DDD; border-radius: 6px; font-size: 16px; outline: none; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 30px; }
+        button { flex: 1; padding: 12px 20px; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: background 0.3s; }
+        .btn-generate { background-color: var(--primary); color: white; }
+        .btn-generate:hover { background-color: var(--primary-dark); }
+        .btn-print { background-color: var(--accent); color: white; }
+        .btn-print:hover { background-color: #E08710; }
+        #display-area { border: 2px dashed #D0DEDC; padding: 25px; border-radius: 8px; background-color: #FCFDFD; min-height: 150px; }
+        .activity-title { color: var(--primary-dark); margin-top: 0; font-size: 22px; border-bottom: 1px solid #EEE; padding-bottom: 10px; }
+        .tag { display: inline-block; background: #E6F2F3; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; }
+        #print-template { display: none; }
+        @media print {
+            @page { margin: 0; }
+            body * { visibility: hidden; }
+            #print-template, #print-template * { visibility: visible; }
+            #print-template { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 0.5in; box-sizing: border-box; }
+        }
+        @media (max-width: 620px) { .controls { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS Science Innovation Lab</h1>
+        <p>Year 7 Cambridge Lower Secondary Activity &amp; Worksheet Builder</p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Cambridge Science Strand:</label>
+            <select id="strand">
+                <option value="biology">Biology</option>
+                <option value="chemistry">Chemistry</option>
+                <option value="physics">Physics</option>
+                <option value="enquiry">Scientific Enquiry</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Activity Dynamic Type:</label>
+            <select id="type">
+                <option value="active">Active / Hands-On Investigation</option>
+                <option value="problem">Sharjah Localized Application Task</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Innovation Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Worksheet</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Activity Type above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS SCIENCE INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Cambridge Lower Secondary Science &mdash; Year 7</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Student Name:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#9997;&#65039; Student Working Space &amp; Observations:</p>
+        <div style="height: 300px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "biology": {
+        "active": {
+            "title": "Cell City: Building a Plant Cell Model",
+            "strand": "Biology - Plant and Animal Cell Structure",
+            "objective": "Identify and describe the function of the main structures found in plant and animal cells.",
+            "instructions": "In groups, provide materials (jelly, sweets, string, etc.) to build an edible or craft model of a plant cell, correctly including and labelling the cell wall, cell membrane, nucleus, cytoplasm, and chloroplasts. Groups present their model, explaining the function of each structure, before comparing it to a similarly-built animal cell model from another group to identify key differences."
+        },
+        "problem": {
+            "title": "Microscope Investigation: Onion Cells",
+            "strand": "Biology - Using a Microscope to Observe Cells",
+            "objective": "Prepare a simple slide and use a microscope to observe and record plant cell structures.",
+            "instructions": "Using a thin layer of onion skin on a slide with a drop of iodine stain, view the sample under a microscope. <br><br>1. Draw and label what you observe, identifying the cell wall and nucleus. <br>2. Explain why iodine stain is used to help view the cells. <br>3. Estimate roughly how many cells you can see across the width of your field of view."
+        }
+    },
+    "chemistry": {
+        "active": {
+            "title": "Element, Compound or Mixture? Sort and Sprint",
+            "strand": "Chemistry - Elements, Compounds and Mixtures",
+            "objective": "Classify substances as elements, compounds, or mixtures based on their particle diagrams.",
+            "instructions": "Post particle diagram cards around the room showing single-atom arrangements (elements), bonded different atoms (compounds), and combinations without bonding (mixtures). Students race in teams to correctly sort cards into three labelled areas, explaining their classification for at least 3 cards to the group afterward."
+        },
+        "problem": {
+            "title": "Air: A Sharjah Atmosphere Investigation",
+            "strand": "Chemistry - Mixtures in Everyday Life",
+            "objective": "Explain why air is classified as a mixture rather than a compound or element.",
+            "instructions": "The air in Sharjah is made up of approximately 78% nitrogen, 21% oxygen, and small amounts of other gases including carbon dioxide and argon. <br><br>1. Explain why air is classified as a mixture. <br>2. Explain what would need to be true for air to instead be classified as a compound. <br>3. Suggest one method that could be used to separate the gases in air."
+        }
+    },
+    "physics": {
+        "active": {
+            "title": "The Playground Speed Trials",
+            "strand": "Physics - Calculating Speed",
+            "objective": "Measure distance and time to calculate speed, and understand the relationship between the three.",
+            "instructions": "Mark out a fixed distance in the playground or corridor. In pairs, one student times how long it takes their partner to walk, then run, the distance. Using the formula speed = distance &divide; time, calculate both speeds and compare walking versus running speed as a class, discussing which units are most appropriate."
+        },
+        "problem": {
+            "title": "The School Run: Calculating Journey Speed",
+            "strand": "Physics - Speed, Distance and Time Calculations",
+            "objective": "Rearrange and apply the speed, distance, and time formula to solve real-world problems.",
+            "instructions": "A school bus travels 12 km from a Sharjah neighbourhood to school, taking 24 minutes. <br><br>1. Calculate the average speed of the bus journey in km/h. <br>2. If the bus needs to complete the same journey in only 18 minutes one day due to a late start, calculate the average speed it would need to travel at. <br>3. Suggest one reason why the bus's actual speed might vary throughout the real journey rather than staying constant."
+        }
+    },
+    "enquiry": {
+        "active": {
+            "title": "Spot the Variable: The Investigation Card Sort",
+            "strand": "Scientific Enquiry - Identifying Variables",
+            "objective": "Identify the independent, dependent, and control variables in a described investigation.",
+            "instructions": "Give groups a set of simple investigation scenario cards (e.g., 'testing how temperature affects how quickly sugar dissolves'). For each scenario, groups identify and label which variable is being changed (independent), which is being measured (dependent), and which must be kept the same (control). Compare answers with another group and discuss any disagreements."
+        },
+        "problem": {
+            "title": "Designing a Fair Test: The Plant Growth Investigation",
+            "strand": "Scientific Enquiry - Planning a Fair Test",
+            "objective": "Design a fair test investigation, correctly identifying variables to change, measure, and control.",
+            "instructions": "A student wants to investigate whether the amount of sunlight affects how tall a plant grows. <br><br>1. Identify the independent variable (what will be changed). <br>2. Identify the dependent variable (what will be measured). <br>3. List at least 3 variables that must be controlled (kept the same) for the test to be fair, and explain why each matters."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate an activity first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

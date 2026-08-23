@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 6 Science Innovation Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 800px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 25px; }
+        .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .header h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 28px; }
+        .header p { margin: 0; color: #666; font-style: italic; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        label { font-weight: 600; display: block; margin-bottom: 5px; color: var(--primary); }
+        select { width: 100%; padding: 10px; border: 2px solid #DDD; border-radius: 6px; font-size: 16px; outline: none; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 30px; }
+        button { flex: 1; padding: 12px 20px; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: background 0.3s; }
+        .btn-generate { background-color: var(--primary); color: white; }
+        .btn-generate:hover { background-color: var(--primary-dark); }
+        .btn-print { background-color: var(--accent); color: white; }
+        .btn-print:hover { background-color: #E08710; }
+        #display-area { border: 2px dashed #D0DEDC; padding: 25px; border-radius: 8px; background-color: #FCFDFD; min-height: 150px; }
+        .activity-title { color: var(--primary-dark); margin-top: 0; font-size: 22px; border-bottom: 1px solid #EEE; padding-bottom: 10px; }
+        .tag { display: inline-block; background: #E6F2F3; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; }
+        #print-template { display: none; }
+        @media print {
+            @page { margin: 0; }
+            body * { visibility: hidden; }
+            #print-template, #print-template * { visibility: visible; }
+            #print-template { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 0.5in; box-sizing: border-box; }
+        }
+        @media (max-width: 620px) { .controls { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS Science Innovation Lab</h1>
+        <p>Year 6 Cambridge Primary Activity &amp; Worksheet Builder</p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Cambridge Science Strand:</label>
+            <select id="strand">
+                <option value="biology">Biology</option>
+                <option value="chemistry">Chemistry</option>
+                <option value="physics">Physics</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Activity Dynamic Type:</label>
+            <select id="type">
+                <option value="active">Active / Hands-On Investigation</option>
+                <option value="problem">Sharjah Localized Application Task</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Innovation Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Worksheet</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Activity Type above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS SCIENCE INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Cambridge Primary Science &mdash; Year 6</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Student Name:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#9997;&#65039; Student Working Space &amp; Observations:</p>
+        <div style="height: 300px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "biology": {
+        "active": {
+            "title": "Classification Key Challenge",
+            "strand": "Biology - Classifying Living Things",
+            "objective": "Use a simple classification key to identify and group living things based on observable characteristics.",
+            "instructions": "Give groups a set of 8 animal picture cards and a simple branching classification key (yes/no questions like 'Does it have fur?'). Students sort the animals by following the key step by step, ending with each animal correctly identified or grouped. Discuss as a class why classification keys are useful for scientists studying many different species."
+        },
+        "problem": {
+            "title": "Adapting to the Desert: Why the Fennec Fox Survives",
+            "strand": "Biology - Adaptation and Classification",
+            "objective": "Explain how specific physical features help classify and identify how an organism is adapted to its environment.",
+            "instructions": "The fennec fox, found in desert regions including parts of the UAE, has unusually large ears, pale fur, and is most active at night. <br><br>1. Explain how each of these three features helps the fennec fox survive in a hot desert environment. <br>2. Which broader animal group (classification) does the fennec fox belong to, and what characteristics define that group? <br>3. Suggest one other desert animal and one adaptation it has."
+        }
+    },
+    "chemistry": {
+        "active": {
+            "title": "The Great Mixture Separation Station",
+            "strand": "Chemistry - Separating Mixtures",
+            "objective": "Select and use appropriate methods (filtering, sieving, evaporating) to separate different types of mixtures.",
+            "instructions": "Set up three stations: a sand-and-water mixture (filtering), a mixed-size pasta/rice/bead mixture (sieving), and a salt-water solution (evaporating, demonstrated or pre-prepared). Groups rotate through each station, using the correct method to separate the mixture, and record which method worked for which type of mixture and why."
+        },
+        "problem": {
+            "title": "Cleaning the Sharjah Creek: Choosing a Separation Method",
+            "strand": "Chemistry - Applying Separation Techniques",
+            "objective": "Select and justify an appropriate separation method for a real-world mixture problem.",
+            "instructions": "A small amount of sand, plastic debris, and salt has mixed into a sample of water taken from Sharjah Creek during a clean-up investigation. <br><br>1. Suggest a method to remove the plastic debris and sand from the water. <br>2. Suggest a method that could be used to find out how much salt was dissolved in the water. <br>3. Explain, in order, the full process you would use to separate all three components from the water sample."
+        }
+    },
+    "physics": {
+        "active": {
+            "title": "Build a Circuit: Light It Up!",
+            "strand": "Physics - Simple Series Circuits",
+            "objective": "Construct a simple series circuit and use correct circuit symbols to represent it.",
+            "instructions": "In pairs, give students a battery, wires, a bulb, and a switch. Students build a working circuit that lights the bulb and can be turned on and off with the switch. Once working, students draw the circuit using standard circuit symbols, checking their diagram matches their real circuit exactly."
+        },
+        "problem": {
+            "title": "Conductor or Insulator? Wiring the Classroom Safely",
+            "strand": "Physics - Conductors and Insulators",
+            "objective": "Classify materials as electrical conductors or insulators and explain why this matters for safety.",
+            "instructions": "An electrician is choosing materials to wire a new classroom safely: copper wire, plastic coating, and a metal switch casing. <br><br>1. Classify each material as a conductor or an insulator. <br>2. Explain why the wire needs a conductor on the inside but an insulator on the outside. <br>3. Suggest what could go wrong if an insulator material was used where a conductor was needed, or vice versa."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate an activity first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

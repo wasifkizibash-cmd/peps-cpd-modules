@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS FS2 Innovation Lesson Card Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 800px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 25px; }
+        .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .header h1 { color: var(--primary); margin: 0 0 10px 0; font-size: 28px; }
+        .header p { margin: 0; color: #666; font-style: italic; }
+        .note-banner { background: #FFF6E9; border: 1px dashed var(--accent); border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: #8a5a1f; margin-bottom: 20px; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        label { font-weight: 600; display: block; margin-bottom: 5px; color: var(--primary); }
+        select { width: 100%; padding: 10px; border: 2px solid #DDD; border-radius: 6px; font-size: 16px; outline: none; box-sizing: border-box; }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 30px; }
+        button { flex: 1; padding: 12px 20px; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: background 0.3s; }
+        .btn-generate { background-color: var(--primary); color: white; }
+        .btn-generate:hover { background-color: var(--primary-dark); }
+        .btn-print { background-color: var(--accent); color: white; }
+        .btn-print:hover { background-color: #E08710; }
+        #display-area { border: 2px dashed #D0DEDC; padding: 25px; border-radius: 8px; background-color: #FCFDFD; min-height: 150px; }
+        .activity-title { color: var(--primary-dark); margin-top: 0; font-size: 22px; border-bottom: 1px solid #EEE; padding-bottom: 10px; }
+        .tag { display: inline-block; background: #E6F2F3; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; }
+        .materials-box { background: #F3F8F7; border-left: 3px solid var(--primary); padding: 10px 14px; margin: 12px 0; border-radius: 4px; }
+        #print-template { display: none; }
+        @media print {
+            @page { margin: 0; }
+            body * { visibility: hidden; }
+            #print-template, #print-template * { visibility: visible; }
+            #print-template { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 0.5in; box-sizing: border-box; }
+        }
+        @media (max-width: 620px) { .controls { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS FS2 Innovation Lab</h1>
+        <p>Foundation Stage 2 (Ages 4&ndash;5) &mdash; Teacher Lesson Card Builder</p>
+    </div>
+
+    <div class="note-banner">&#9998; Built for the teacher to plan and lead &mdash; not a student worksheet. FS2 (Cambridge Early Years EY2) is taught holistically across six interconnected Areas of Learning, not by subject.</div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">Area of Learning:</label>
+            <select id="strand">
+                <option value="communication">Communication, Language &amp; Literacy</option>
+                <option value="mathematics">Mathematics</option>
+                <option value="understanding">Understanding the World</option>
+                <option value="physical">Physical Development</option>
+                <option value="psed">Personal, Social &amp; Emotional Development</option>
+                <option value="creative">Creative Expression</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Group Setting:</label>
+            <select id="type">
+                <option value="whole">Whole Class Activity</option>
+                <option value="small">Small Group Activity</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Lesson Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Lesson Card</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Area of Learning and Group Setting above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS FS2 INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Foundation Stage 2 (Cambridge Early Years EY2) Lesson Card</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Class / Group:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#128221; Teacher Notes / Adaptations:</p>
+        <div style="height: 220px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "communication": {
+        "whole": {
+            "title": "Story Time Sound Effects",
+            "strand": "Communication, Language & Literacy - Listening and Responding to Stories",
+            "objective": "Listen attentively to a story and respond with actions or sounds at key moments.",
+            "materials": "A simple, familiar picture book with repeated actions or sounds (e.g., animal noises, weather sounds).",
+            "steps": "Read the story aloud, pausing at key moments to let children join in with an agreed sound or action (e.g., stomping for an elephant, whooshing for wind). Encourage children to predict what sound comes next before turning the page, building anticipation and listening skills."
+        },
+        "small": {
+            "title": "Puppet Talk Time",
+            "strand": "Communication, Language & Literacy - Speaking in Turn",
+            "objective": "Use a puppet to encourage speaking in short sentences and taking turns in conversation.",
+            "materials": "A simple hand puppet or soft toy.",
+            "steps": "In a small group, pass the puppet around. Whoever holds the puppet gets to say one thing (e.g., their favourite food, an animal they like) while others listen. Model taking turns and simple sentence starters ('My favourite is...') before letting children lead their own turn."
+        }
+    },
+    "mathematics": {
+        "whole": {
+            "title": "Number Hunt Around the Room",
+            "strand": "Mathematics - Recognising Numbers 1-10",
+            "objective": "Recognise and match numerals to the correct quantity of objects.",
+            "materials": "Large numeral cards (1-10) placed around the room; a basket of small objects (counters, blocks).",
+            "steps": "Place numeral cards around the room. Call out a number, and children run to the matching numeral card, then count out that many objects from a basket to bring back. Check together as a class that the correct quantity was collected."
+        },
+        "small": {
+            "title": "Shape Feely Bag",
+            "strand": "Mathematics - Recognising 2D Shapes by Touch",
+            "objective": "Identify simple shapes (circle, square, triangle) by feel, without looking.",
+            "materials": "A cloth bag; wooden or plastic shape pieces (circle, square, triangle).",
+            "steps": "In a small group, students take turns reaching into the bag without looking, feeling a shape, and naming it before pulling it out to check. Talk about how they knew (e.g., 'it had corners so I knew it wasn't a circle')."
+        }
+    },
+    "understanding": {
+        "whole": {
+            "title": "Weather Watchers",
+            "strand": "Understanding the World - Observing the Weather",
+            "objective": "Observe and describe the weather, and begin to notice simple weather patterns.",
+            "materials": "A simple weather chart with pictures (sunny, cloudy, windy); a marker or sticker.",
+            "steps": "Each day, take a moment as a class to look outside and describe the weather together. Mark the weather chart with a sticker or by pointing to the matching picture. Over a week, look back at the chart together and talk about which type of weather happened most often."
+        },
+        "small": {
+            "title": "Growing Our Garden",
+            "strand": "Understanding the World - Plants and Growing",
+            "objective": "Observe and describe how a plant changes as it grows.",
+            "materials": "A quick-growing seed (cress or beans); small pots; soil; water.",
+            "steps": "In a small group, plant a seed together, talking about what it needs to grow (water, light, soil). Over the following days, check and describe any changes noticed, encouraging simple describing words (tall, green, tiny)."
+        }
+    },
+    "physical": {
+        "whole": {
+            "title": "Animal Movement Parade",
+            "strand": "Physical Development - Gross Motor Movement",
+            "objective": "Move in different ways, copying the movement style of different animals.",
+            "materials": "None needed &mdash; open space to move.",
+            "steps": "Call out different animals (a hopping rabbit, a slithering snake, a stomping elephant, a fluttering butterfly) and have children move around the space in that style. Mix up the order and speed to keep it engaging, encouraging big, confident movements."
+        },
+        "small": {
+            "title": "Threading and Cutting Practice",
+            "strand": "Physical Development - Fine Motor Skills",
+            "objective": "Practise fine motor control through threading and simple cutting activities.",
+            "materials": "Large beads or pasta and string/laces; child-safe scissors and strips of paper.",
+            "steps": "In a small group, set up two short stations: threading beads onto a lace/string, and snipping straight lines on strips of paper with child-safe scissors. Rotate students through both, offering support with pencil/scissor grip as needed."
+        }
+    },
+    "psed": {
+        "whole": {
+            "title": "How Are You Feeling Today? Circle Time",
+            "strand": "PSED - Recognising and Naming Feelings",
+            "objective": "Identify and name a simple range of feelings (happy, sad, excited, worried).",
+            "materials": "Simple feelings face cards (happy, sad, excited, worried).",
+            "steps": "In a circle, show each feelings card and talk together about what it means and what it might look like on a face. Go around the circle, letting each child (if comfortable) point to or name how they are feeling today, modelling that all feelings are okay to have."
+        },
+        "small": {
+            "title": "Taking Turns Tower",
+            "strand": "PSED - Sharing and Taking Turns",
+            "objective": "Practise sharing resources and taking turns within a small group activity.",
+            "materials": "A set of building blocks.",
+            "steps": "In a small group, give one shared set of blocks and ask the group to build a tower together, with each child adding one block before passing to the next. Gently guide any turn-taking difficulties, praising patient waiting and kind sharing when you see it."
+        }
+    },
+    "creative": {
+        "whole": {
+            "title": "Musical Statues with Instruments",
+            "strand": "Creative Expression - Responding to Music and Rhythm",
+            "objective": "Move and respond expressively to music, and stop with control when it pauses.",
+            "materials": "Music (a simple upbeat song); optional simple instruments (shakers, drums).",
+            "steps": "Play music and let children move and dance freely around the space. Pause the music suddenly and encourage children to freeze like a statue. Repeat several times, occasionally handing out simple instruments for children to play along with the rhythm instead of dancing."
+        },
+        "small": {
+            "title": "Colour Mixing Magic",
+            "strand": "Creative Expression - Exploring Colour and Painting",
+            "objective": "Explore mixing primary colours and observe the new colours created.",
+            "materials": "Red, yellow, and blue paint; paper; paintbrushes or fingers for painting.",
+            "steps": "In a small group, give each child small amounts of two primary colours to mix together on paper, observing and naming the new colour created (e.g., red and yellow make orange). Encourage children to describe what they notice as the colours blend."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <div class="materials-box"><strong>Materials Needed:</strong> ${activity.materials}</div>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Area of Learning:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Materials Needed:</strong> ${activity.materials}</p>
+        <p><strong>Steps:</strong><br>${activity.steps}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate a lesson idea first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>

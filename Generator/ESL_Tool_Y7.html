@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEPS Year 7 ESL Innovation Generator</title>
+    <style>
+        :root {
+            --primary: #007A87;
+            --primary-dark: #005A64;
+            --accent: #FF9E1B;
+            --bg: #F4F7F6;
+            --card-bg: #FFFFFF;
+            --text: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #666;
+            font-style: italic;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #DDD;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-generate {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-generate:hover { background-color: var(--primary-dark); }
+
+        .btn-print {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-print:hover { background-color: #E08710; }
+
+        #display-area {
+            border: 2px dashed #D0DEDC;
+            padding: 25px;
+            border-radius: 8px;
+            background-color: #FCFDFD;
+            min-height: 150px;
+        }
+
+        .activity-title {
+            color: var(--primary-dark);
+            margin-top: 0;
+            font-size: 22px;
+            border-bottom: 1px solid #EEE;
+            padding-bottom: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #E6F2F3;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        #print-template {
+            display: none;
+        }
+
+        @media print {
+            @page {
+                margin: 0;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #print-template, #print-template * {
+                visibility: visible;
+            }
+            #print-template {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0.5in;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .controls { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>PEPS ESL Innovation Lab</h1>
+        <p>Year 7 English as a Second Language &mdash; Activity &amp; Worksheet Builder</p>
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="strand">ESL Skill Strand:</label>
+            <select id="strand">
+                <option value="reading">Reading</option>
+                <option value="writing">Writing</option>
+                <option value="speaking">Speaking &amp; Listening</option>
+                <option value="vocabulary">Vocabulary &amp; Grammar</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Activity Dynamic Type:</label>
+            <select id="type">
+                <option value="active">Active / Kinesthetic Activity</option>
+                <option value="task">Sharjah Localized Task</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generateActivity()">&#9889; Generate Innovation Idea</button>
+        <button class="btn-print" onclick="exportToPDF()">&#128424;&#65039; Print / Save Worksheet</button>
+    </div>
+
+    <div id="display-area">
+        <p style="color: #888; text-align: center; margin-top: 40px;">Select your Strand and Activity Type above, then click generate.</p>
+    </div>
+</div>
+
+<div id="print-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: Arial, sans-serif;">
+        <img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo" style="width:56px; height:56px; border-radius:50%; object-fit:cover; margin-bottom:8px;">
+        <h2 style="margin: 0; color: #007A87;">PEPS ESL INNOVATION LAB</h2>
+        <h3 style="margin: 5px 0 0 0; font-weight: normal; color: #555;">Year 7 &mdash; English as a Second Language</h3>
+        <table style="width: 100%; margin-top: 20px; font-size: 14px;">
+            <tr>
+                <td style="width: 50%; text-align: left;"><strong>Student Name:</strong> _____________________</td>
+                <td style="width: 50%; text-align: right;"><strong>Date:</strong> _____________________</td>
+            </tr>
+        </table>
+    </div>
+    <div id="print-content" style="font-family: Arial, sans-serif;"></div>
+    <div style="margin-top: 40px; border-top: 1px solid #CCC; padding-top: 20px; font-family: Arial, sans-serif;">
+        <p style="font-weight: bold;">&#9997;&#65039; Student Working Space &amp; Response:</p>
+        <div style="height: 300px; border: 1px solid #DDD; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<script>
+const dynamicDatabase = {
+    "reading": {
+        "active": {
+            "title": "The Sharjah City Park Fact Hunt",
+            "strand": "Reading - Locating Explicit Information",
+            "objective": "Scan a short text to find and record explicitly stated facts.",
+            "instructions": "Give each pair a short descriptive text (60&ndash;80 words) about Sharjah City Centre Park, with facts like opening times, activities available, and rules. Post 6 simple 'fact cards' around the room (e.g., 'What time does the park open?'). Students move around in pairs, scanning the text to find and write down the exact answer for each fact card, racing to complete all 6 correctly first."
+        },
+        "task": {
+            "title": "A Trip to the Sharjah Aquarium",
+            "strand": "Reading - Direct Comprehension",
+            "objective": "Read a short descriptive text and answer direct comprehension questions accurately.",
+            "instructions": "Give students a short text (80&ndash;100 words) describing a class visit to the Sharjah Aquarium. <br><br>1. Answer 5 who/what/where/when questions using information directly stated in the text. <br>2. Underline the sentence in the text that answers each question."
+        }
+    },
+    "writing": {
+        "active": {
+            "title": "Build-a-Sentence: My Favourite Place",
+            "strand": "Writing - Simple Present Tense Sentence Building",
+            "objective": "Build grammatically correct simple present tense sentences using structured sentence parts.",
+            "instructions": "Give groups sets of cards: subject cards (I, My family, We), verb cards (go, like, visit, enjoy), and place/reason cards (the beach, because it is fun, every weekend). Groups physically arrange cards into correct simple present tense sentences about a favourite place, reading each new sentence aloud before rearranging to build a different one."
+        },
+        "task": {
+            "title": "Describing My Favourite Place in Sharjah",
+            "strand": "Writing - Descriptive Paragraph Writing",
+            "objective": "Write a short structured paragraph using simple present tense and basic descriptive adjectives.",
+            "instructions": "Write a short paragraph (40&ndash;50 words) describing your favourite place in Sharjah. <br><br>1. Start with 'My favourite place in Sharjah is...' <br>2. Use at least 3 descriptive adjectives (e.g., big, beautiful, exciting). <br>3. Use simple present tense throughout (e.g., 'I go there', 'It has')."
+        }
+    },
+    "speaking": {
+        "active": {
+            "title": "Listen and Point: Classroom Directions",
+            "strand": "Listening - Following Simple Instructions",
+            "objective": "Listen to and follow simple spoken instructions accurately.",
+            "instructions": "Play a 'Simon Says'-style game using classroom and everyday vocabulary (e.g., 'Point to the door', 'Touch something blue', 'Stand near the window'). Students only follow the instruction if it starts with 'Simon says'. Increase speed gradually. This builds quick listening comprehension of simple instructions in a fun, active format."
+        },
+        "task": {
+            "title": "Getting to Know You",
+            "strand": "Speaking - Personal Information Exchange",
+            "objective": "Ask and answer simple personal questions using correct present simple question forms.",
+            "instructions": "In pairs, students take turns asking and answering 5 simple personal questions (e.g., 'What is your name?', 'Where do you live?', 'What do you like to eat?'). <br><br>1. Practise asking each question with correct word order. <br>2. Write down your partner's answers in full sentences (e.g., 'Her name is Fatima.')."
+        }
+    },
+    "vocabulary": {
+        "active": {
+            "title": "Sort It Out: Everyday Word Groups",
+            "strand": "Vocabulary - Categorization & Word Families",
+            "objective": "Sort everyday vocabulary into correct categories to build word-group awareness.",
+            "instructions": "Give groups a mixed set of 20 word cards covering food, places, and family members. Groups sort the cards into three labelled columns as quickly and accurately as possible. Once sorted, each group adds two new words of their own to each category, then shares their extra words with the class."
+        },
+        "task": {
+            "title": "My Daily Routine",
+            "strand": "Grammar - Simple Present Tense Gap-Fill",
+            "objective": "Complete a short text accurately using correct simple present tense verb forms.",
+            "instructions": "Complete the short daily routine text by filling each gap with the correct simple present tense form of the verb in brackets (e.g., 'I ___ (wake) up at 6 o'clock. I ___ (eat) breakfast with my family.'). <br><br>Once complete, read your finished routine aloud to a partner."
+        }
+    }
+};
+
+function generateActivity() {
+    const strand = document.getElementById('strand').value;
+    const type = document.getElementById('type').value;
+    const activity = dynamicDatabase[strand][type];
+
+    const displayArea = document.getElementById('display-area');
+    displayArea.innerHTML = `
+        <span class="tag">${activity.strand}</span>
+        <h2 class="activity-title">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+
+    const printContent = document.getElementById('print-content');
+    printContent.innerHTML = `
+        <p><strong>Strand:</strong> ${activity.strand}</p>
+        <h2 style="color:#007A87; margin-top:6px;">${activity.title}</h2>
+        <p><strong>Learning Objective:</strong> ${activity.objective}</p>
+        <p><strong>Instructions:</strong><br>${activity.instructions}</p>
+    `;
+}
+
+function exportToPDF() {
+    const printContent = document.getElementById('print-content');
+    if (!printContent.innerHTML.trim()) {
+        alert('Please generate an activity first, then print or save it.');
+        return;
+    }
+    window.print();
+}
+
+document.getElementById('strand').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+document.getElementById('type').addEventListener('change', function(){
+    if (document.getElementById('print-content').innerHTML.trim()) { generateActivity(); }
+});
+</script>
+</body>
+</html>
