@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEPS Plant Parts &amp; Functions Simulator - Year 4</title>
+<style>
+    :root { --primary: #007A87; --primary-dark: #005A64; --accent: #FF9E1B; --bg: #F4F7F6; --card-bg: #FFFFFF; --text: #333333; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+    .container { max-width: 780px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 26px; }
+    .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .header h1 { color: var(--primary); margin: 0 0 8px 0; font-size: 26px; }
+    .header p { margin: 0; color: #666; font-style: italic; font-size: 14px; }
+
+    .plant-stage { display: flex; align-items: center; justify-content: center; gap: 16px; background: #F3F8F7; border-radius: 12px; padding: 26px; }
+    .plant-diagram { font-size: 90px; text-align: center; line-height: 1; transition: opacity .4s, filter .4s; }
+    .plant-diagram.wilted { filter: grayscale(0.6) brightness(0.75); opacity: 0.6; }
+
+    .part-picker { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 20px 0 16px; }
+    .part-btn { background: #fff; border: 2px solid var(--primary); color: var(--primary-dark); padding: 9px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+    .part-btn.active { background: var(--primary); color: #fff; }
+
+    .info-box { background: #FFF6E9; border-radius: 8px; padding: 14px 16px; font-size: 13.5px; line-height: 1.6; color: #6b5a3f; min-height: 46px; margin-bottom: 16px; }
+
+    .whatif-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .whatif-btn { background: #fff; border: 1.5px solid #D64545; color: #D64545; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .whatif-btn:hover { background: #FBEAEA; }
+    .btn-restore { background: #fff; border: 1.5px solid var(--on, #2E8B57); color: #2E8B57; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>Plant Parts &amp; Functions Simulator</h1>
+        <p>Year 4 Science &mdash; What Does Each Part Do?</p>
+    </div>
+
+    <div class="plant-stage">
+        <div class="plant-diagram" id="plantDiagram">&#127800;</div>
+    </div>
+
+    <div class="part-picker" id="partPicker"></div>
+    <div class="info-box" id="infoBox">Click a plant part above to find out what it does.</div>
+
+    <div class="whatif-row" id="whatifRow"></div>
+</div>
+
+<script>
+const PARTS = {
+    roots:  { name: "Roots",  desc: "Roots anchor the plant in the soil and absorb water and nutrients, which travel up through the stem." },
+    stem:   { name: "Stem",   desc: "The stem supports the plant and carries water and nutrients between the roots and the leaves." },
+    leaves: { name: "Leaves", desc: "Leaves capture sunlight and use it, along with water and carbon dioxide, to make food for the plant through photosynthesis." },
+    flower: { name: "Flower", desc: "The flower's job is reproduction \u2014 it attracts pollinators and eventually produces seeds for new plants." }
+};
+
+let removedPart = null;
+
+function renderPicker(){
+    const picker = document.getElementById('partPicker');
+    picker.innerHTML = Object.keys(PARTS).map(key => `<button class="part-btn" onclick="showPart('${key}')">${PARTS[key].name}</button>`).join('');
+}
+
+function showPart(key){
+    document.getElementById('infoBox').textContent = PARTS[key].desc;
+    document.querySelectorAll ? null : null; // no-op, kept simple without needing querySelectorAll for active-state highlighting
+    renderPickerActive(key);
+}
+
+function renderPickerActive(activeKey){
+    const picker = document.getElementById('partPicker');
+    picker.innerHTML = Object.keys(PARTS).map(key => {
+        const active = key === activeKey;
+        return `<button class="part-btn${active ? ' active' : ''}" onclick="showPart('${key}')">${PARTS[key].name}</button>`;
+    }).join('');
+}
+
+function renderWhatIf(){
+    const row = document.getElementById('whatifRow');
+    if(removedPart){
+        row.innerHTML = `<button class="btn-restore" onclick="restorePart()">Restore the ${PARTS[removedPart].name}</button>`;
+    } else {
+        row.innerHTML = Object.keys(PARTS).filter(k => k !== 'flower').map(key =>
+            `<button class="whatif-btn" onclick="removePart('${key}')">What if the ${PARTS[key].name.toLowerCase()} were damaged?</button>`
+        ).join('');
+    }
+}
+
+const WILT_REASONS = {
+    roots: "Without roots, the plant cannot absorb water or nutrients from the soil, so it wilts and eventually dies.",
+    stem:  "Without a working stem, water and nutrients can't travel from the roots up to the leaves, so the plant wilts.",
+    leaves: "Without leaves, the plant can't photosynthesise to make its own food, so it weakens over time."
+};
+
+function removePart(key){
+    removedPart = key;
+    document.getElementById('plantDiagram').classList.add('wilted');
+    document.getElementById('infoBox').textContent = WILT_REASONS[key];
+    renderWhatIf();
+}
+
+function restorePart(){
+    removedPart = null;
+    document.getElementById('plantDiagram').classList.remove('wilted');
+    document.getElementById('infoBox').textContent = 'The plant is healthy again. Click a plant part above to find out what it does.';
+    renderWhatIf();
+    renderPicker();
+}
+
+renderPicker();
+renderWhatIf();
+</script>
+</body>
+</html>

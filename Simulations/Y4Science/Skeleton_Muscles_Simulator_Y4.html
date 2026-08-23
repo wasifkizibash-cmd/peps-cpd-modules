@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEPS Skeleton &amp; Muscles Simulator - Year 4</title>
+<style>
+    :root { --primary: #007A87; --primary-dark: #005A64; --accent: #FF9E1B; --bg: #F4F7F6; --card-bg: #FFFFFF; --text: #333333; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+    .container { max-width: 780px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 26px; }
+    .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .header h1 { color: var(--primary); margin: 0 0 8px 0; font-size: 26px; }
+    .header p { margin: 0; color: #666; font-style: italic; font-size: 14px; }
+
+    .arm-stage { background: #F3F8F7; border-radius: 12px; padding: 30px; text-align: center; }
+    .arm-icon { font-size: 80px; display: inline-block; transition: transform .5s ease-in-out; }
+    .arm-icon.bent { transform: rotate(-35deg); }
+
+    .muscle-row { display: flex; justify-content: center; gap: 30px; margin-top: 16px; }
+    .muscle-tag { padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; transition: background .3s, color .3s; }
+    .muscle-tag.contracted { background: var(--primary); color: #fff; }
+    .muscle-tag.relaxed { background: #E2E9E7; color: #667; }
+
+    .btn-row { display: flex; gap: 14px; justify-content: center; margin-top: 22px; }
+    button.action { padding: 11px 22px; font-size: 14.5px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; background-color: var(--primary); color: #fff; }
+    button.action:hover { background-color: var(--primary-dark); }
+
+    .info-box { margin-top: 18px; background: #FFF6E9; border-radius: 8px; padding: 14px 16px; font-size: 13.5px; line-height: 1.6; color: #6b5a3f; }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>Skeleton &amp; Muscles Simulator</h1>
+        <p>Year 4 Science &mdash; How Muscles Move Bones</p>
+    </div>
+
+    <div class="arm-stage">
+        <div class="arm-icon" id="armIcon">&#128170;</div>
+        <div class="muscle-row">
+            <div class="muscle-tag" id="bicepTag">Bicep</div>
+            <div class="muscle-tag" id="tricepTag">Tricep</div>
+        </div>
+    </div>
+
+    <div class="btn-row">
+        <button class="action" onclick="setArm('bent')">Bend the Arm</button>
+        <button class="action" onclick="setArm('straight')">Straighten the Arm</button>
+    </div>
+
+    <div class="info-box" id="infoBox"></div>
+</div>
+
+<script>
+let armState = 'straight';
+
+function setArm(state){
+    armState = state;
+    const arm = document.getElementById('armIcon');
+    arm.classList.toggle('bent', state === 'bent');
+
+    const bicepTag = document.getElementById('bicepTag');
+    const tricepTag = document.getElementById('tricepTag');
+    const info = document.getElementById('infoBox');
+
+    if(state === 'bent'){
+        bicepTag.className = 'muscle-tag contracted';
+        bicepTag.textContent = 'Bicep \u2014 contracted';
+        tricepTag.className = 'muscle-tag relaxed';
+        tricepTag.textContent = 'Tricep \u2014 relaxed';
+        info.textContent = "To bend the arm, the bicep muscle contracts (shortens and pulls), while the tricep relaxes to allow the movement.";
+    } else {
+        bicepTag.className = 'muscle-tag relaxed';
+        bicepTag.textContent = 'Bicep \u2014 relaxed';
+        tricepTag.className = 'muscle-tag contracted';
+        tricepTag.textContent = 'Tricep \u2014 contracted';
+        info.textContent = "To straighten the arm, the tricep muscle contracts and pulls, while the bicep relaxes. Muscles can only pull, never push \u2014 so they work in pairs like this.";
+    }
+
+    return { armState, bicepContracted: state === 'bent', tricepContracted: state === 'straight' };
+}
+
+setArm('straight');
+</script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEPS Water Cycle Simulator - Year 4</title>
+<style>
+    :root { --primary: #007A87; --primary-dark: #005A64; --accent: #FF9E1B; --bg: #F4F7F6; --card-bg: #FFFFFF; --text: #333333; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+    .container { max-width: 800px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 26px; }
+    .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .header h1 { color: var(--primary); margin: 0 0 8px 0; font-size: 26px; }
+    .header p { margin: 0; color: #666; font-style: italic; font-size: 14px; }
+
+    .scene { position: relative; height: 240px; background: linear-gradient(180deg, #CDEBF5 0%, #CDEBF5 60%, #6FAF8C 60%, #4C8F6F 100%); border-radius: 12px; overflow: hidden; border: 2px solid #D0DEDC; }
+    .sun-icon { position: absolute; top: 14px; right: 20px; font-size: 34px; }
+    .cloud-icon { position: absolute; top: 30px; left: 40%; font-size: 40px; opacity: 0; transition: opacity .5s; }
+    .cloud-icon.show { opacity: 1; }
+    .rain-drop { position: absolute; top: 60px; font-size: 16px; opacity: 0; }
+    .rain-drop.fall { animation: fall 1.2s ease-in forwards; }
+    @keyframes fall { 0% { opacity: 1; top: 60px; } 100% { opacity: 0.6; top: 190px; } }
+    .vapor-drop { position: absolute; bottom: 70px; font-size: 14px; opacity: 0; }
+    .vapor-drop.rise { animation: rise 1.4s ease-out forwards; }
+    @keyframes rise { 0% { opacity: 0.9; bottom: 70px; } 100% { opacity: 0; bottom: 190px; } }
+    .lake-label { position: absolute; bottom: 8px; left: 12px; font-size: 12px; color: #fff; font-weight: 700; }
+
+    .stage-picker { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 20px 0 16px; }
+    .stage-btn { background: #fff; border: 2px solid var(--primary); color: var(--primary-dark); padding: 9px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+    .stage-btn.active { background: var(--primary); color: #fff; }
+
+    .desc-box { background: #FFF6E9; border-radius: 8px; padding: 14px 16px; font-size: 13.5px; line-height: 1.6; color: #6b5a3f; min-height: 46px; }
+
+    .btn-row { display: flex; gap: 14px; justify-content: center; margin-top: 16px; }
+    button.action { padding: 10px 20px; font-size: 13.5px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; font-family: inherit; }
+    .btn-play { background-color: var(--primary); color: #fff; }
+    .btn-play:hover { background-color: var(--primary-dark); }
+    .btn-play:disabled { background-color: #B7C4C0; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>Water Cycle Simulator</h1>
+        <p>Year 4 Science &mdash; Evaporation, Condensation, Precipitation, Collection</p>
+    </div>
+
+    <div class="scene" id="scene">
+        <span class="sun-icon">&#9728;&#65039;</span>
+        <span class="cloud-icon" id="cloudIcon">&#9729;&#65039;</span>
+        <span class="lake-label">Lake</span>
+    </div>
+
+    <div class="stage-picker" id="stagePicker"></div>
+    <div class="desc-box" id="descBox"></div>
+
+    <div class="btn-row">
+        <button class="action btn-play" id="playBtn" onclick="playFullCycle()">Play Full Cycle</button>
+    </div>
+</div>
+
+<script>
+const STAGES = [
+    { key: "evaporation",  name: "Evaporation",   desc: "The sun heats water in the lake. It turns into invisible water vapour and rises into the sky." },
+    { key: "condensation", name: "Condensation",  desc: "As the vapour rises high into the cooler air, it turns back into tiny droplets of water, which gather together to form clouds." },
+    { key: "precipitation",name: "Precipitation", desc: "When a cloud holds too much water, the droplets become too heavy to stay up, and fall back down as rain." },
+    { key: "collection",   name: "Collection",    desc: "The rain lands back in the lake, rivers, and sea \u2014 ready for the whole cycle to begin again." }
+];
+
+let currentStage = 0;
+let cycling = false;
+
+function renderPicker(){
+    const picker = document.getElementById('stagePicker');
+    picker.innerHTML = STAGES.map((s, i) => {
+        const active = i === currentStage;
+        return `<button class="stage-btn${active ? ' active' : ''}" onclick="selectStage(${i})">${i + 1}. ${s.name}</button>`;
+    }).join('');
+}
+
+function selectStage(i){
+    currentStage = i;
+    renderPicker();
+    document.getElementById('descBox').textContent = STAGES[i].desc;
+    runStageAnimation(STAGES[i].key);
+}
+
+function runStageAnimation(key){
+    const scene = document.getElementById('scene');
+    const cloud = document.getElementById('cloudIcon');
+
+    if(key === 'evaporation'){
+        cloud.classList.remove('show');
+        for(let i = 0; i < 4; i++){
+            const drop = document.createElement('span');
+            drop.className = 'vapor-drop rise';
+            drop.textContent = '\u2022';
+            drop.style.left = (30 + i * 18) + 'px';
+            drop.style.animationDelay = (i * 0.15) + 's';
+            scene.appendChild(drop);
+        }
+    } else if(key === 'condensation'){
+        cloud.classList.add('show');
+    } else if(key === 'precipitation'){
+        for(let i = 0; i < 5; i++){
+            const drop = document.createElement('span');
+            drop.className = 'rain-drop fall';
+            drop.textContent = '\u{1F4A7}';
+            drop.style.left = (150 + i * 14) + 'px';
+            drop.style.animationDelay = (i * 0.12) + 's';
+            scene.appendChild(drop);
+        }
+    } else if(key === 'collection'){
+        cloud.classList.remove('show');
+    }
+}
+
+function playFullCycle(){
+    if(cycling) return;
+    cycling = true;
+    document.getElementById('playBtn').disabled = true;
+    let i = 0;
+    function step(){
+        if(i >= STAGES.length){
+            cycling = false;
+            document.getElementById('playBtn').disabled = false;
+            return;
+        }
+        selectStage(i);
+        i++;
+        setTimeout(step, 1600);
+    }
+    step();
+}
+
+selectStage(0);
+</script>
+</body>
+</html>
