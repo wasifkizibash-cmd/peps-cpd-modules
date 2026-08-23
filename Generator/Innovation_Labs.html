@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Innovation Labs — Innovation & Creativity Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#23301F; --ink-soft:#5B6552;
+    --paper:#FBF6EA; --card:#FFFFFF; --line:#E7DFC9;
+    --amber:#E8A33D; --amber-soft:#FBEBD1;
+    --teal:#2F6E4F; --teal-soft:#E1EDE6;
+    --shadow: 0 10px 26px -12px rgba(35,48,31,.20);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3{font-family:'Fraunces',serif; color:var(--ink); margin:0;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  button, select, input{font-family:inherit;}
+  *:focus-visible{outline:3px solid var(--teal); outline-offset:2px;}
+  body{ background-image: radial-gradient(circle, #00000009 1px, transparent 1.4px); background-size: 22px 22px; }
+
+  #gateScreen{ position:fixed; inset:0; z-index:100; background:var(--paper); display:flex; align-items:center; justify-content:center; padding:24px; }
+  .gate-card{ background:var(--card); border-radius:18px; box-shadow:var(--shadow); max-width:440px; width:100%; padding:44px 36px; text-align:center; border:1px solid var(--line); }
+  .gate-mark{ width:56px; height:56px; margin:0 auto 20px; border-radius:50%; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.15); }
+  .gate-mark img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .gate-card h1{ font-size:24px; margin-bottom:10px; }
+  .gate-card p.gate-sub{ color:var(--ink-soft); font-size:14.5px; margin:0 0 26px; }
+  .gsi-btn-wrap{ display:flex; justify-content:center; margin-bottom:14px; min-height:44px; align-items:center; }
+  .gate-domain-note{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin-top:10px; }
+  .gate-preview-link{ display:block; margin-top:22px; font-size:12.5px; color:var(--ink-soft); text-decoration:underline; cursor:pointer; background:none; border:none; }
+  .gate-config-warning{ margin-top:18px; text-align:left; font-size:12px; line-height:1.5; color:#8a5a1f; background:var(--amber-soft); border:1px dashed var(--amber); border-radius:10px; padding:12px 14px; }
+  .preview-banner{ position:fixed; top:0; left:0; right:0; z-index:90; background:var(--ink); color:#fff; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:12px; padding:9px 14px; display:none; }
+  .preview-banner.show{ display:block; }
+  .preview-banner b{ color:var(--amber); }
+
+  header.topbar{ position:sticky; top:0; z-index:50; background:rgba(251,246,234,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  .topbar-inner{ max-width:1180px; margin:0 auto; padding:15px 32px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .brand-mark{ width:34px; height:34px; border-radius:50%; overflow:hidden; flex-shrink:0; }
+  .brand-mark img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .brand-text .b1{ font-family:'Fraunces',serif; font-weight:700; font-size:16.5px; }
+  .brand-text .b2{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); }
+  nav.primary{ display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+  nav.primary a{ text-decoration:none; color:var(--ink); font-size:13.5px; font-weight:600; padding:5px 0; margin-right:20px; border-bottom:2px solid transparent; white-space:nowrap; }
+  nav.primary a:last-child{ margin-right:0; }
+  nav.primary a:hover, nav.primary a.active{ border-bottom-color:var(--amber); }
+  .who-badge{ display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:5px 12px 5px 5px; }
+  .who-badge .avatar{ width:24px; height:24px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; }
+
+  section.page-head{ padding:44px 0 8px; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--teal); margin-bottom:14px; }
+  .eyebrow .dot{ width:6px; height:6px; border-radius:50%; background:var(--amber); }
+  h1.page-title{ font-size:36px; }
+  p.page-sub{ margin:12px 0 0; color:var(--ink-soft); font-size:15.5px; max-width:620px; }
+
+  .filter-bar{
+    display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin:28px 0 8px;
+    background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 18px;
+  }
+  .filter-group{ display:flex; align-items:center; gap:8px; }
+  .filter-group label{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); }
+  .filter-group select{ border:1px solid var(--line); border-radius:7px; padding:7px 10px; font-size:13.5px; color:var(--ink); background:#fff; }
+  .search-input{ flex:1; min-width:180px; border:1px solid var(--line); border-radius:7px; padding:8px 12px; font-size:14px; }
+  .search-input:focus, .filter-group select:focus{ outline:2px solid var(--teal); outline-offset:1px; }
+  .clear-filters{ font-size:12.5px; color:var(--teal); text-decoration:underline; cursor:pointer; background:none; border:none; font-family:'Inter',sans-serif; font-weight:600; }
+  .result-count{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); margin:14px 2px 0; }
+
+  section.gallery{ padding:24px 0 70px; }
+  .card-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:18px; }
+  .lab-card{
+    background:var(--card); border:1px solid var(--line); border-radius:4px 16px 4px 16px;
+    padding:22px 22px 20px; position:relative; box-shadow:var(--shadow); text-decoration:none; color:var(--ink);
+    display:block; transition:transform .15s;
+  }
+  .lab-card:hover{ transform:translateY(-3px); }
+  .lab-card::before{ content:''; position:absolute; top:-8px; left:22px; width:14px; height:14px; border-radius:50%; background:var(--amber); box-shadow:0 2px 4px rgba(0,0,0,.2); }
+  .lab-tags{ display:flex; gap:7px; flex-wrap:wrap; margin-bottom:10px; }
+  .lab-tag{ font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.03em; padding:3px 8px; border-radius:20px; font-weight:700; }
+  .lab-tag.subject{ background:var(--teal-soft); color:var(--teal); }
+  .lab-tag.year{ background:var(--amber-soft); color:#8a5a1f; }
+  .lab-card h3{ font-size:17px; margin-bottom:8px; line-height:1.3; }
+  .lab-card p{ font-size:13.5px; color:var(--ink-soft); margin:0 0 14px; line-height:1.55; }
+  .lab-open{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--teal); font-weight:700; }
+  .empty-state{ text-align:center; padding:60px 20px; color:var(--ink-soft); font-size:15px; border:1.5px dashed var(--line); border-radius:14px; grid-column:1/-1; }
+
+  footer{ background:var(--ink); color:rgba(255,255,255,.75); padding:44px 0 26px; margin-top:20px; }
+  .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; font-size:12.5px; }
+
+  @media (max-width: 980px){ .card-grid{ grid-template-columns:1fr 1fr; } nav.primary{ display:none; } }
+  @media (max-width: 620px){ .wrap{ padding:0 20px; } .card-grid{ grid-template-columns:1fr; } h1.page-title{ font-size:28px; } .filter-bar{ flex-direction:column; align-items:stretch; } }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
+</style>
+</head>
+<body>
+
+<div class="preview-banner" id="previewBanner">Viewing in <b>Preview Mode</b> — sign-in is not yet enforced. Add a real Google OAuth Client ID to make this gate live.</div>
+
+<div id="gateScreen">
+  <div class="gate-card">
+    <div class="gate-mark"><img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo"></div>
+    <h1>Innovation &amp; Creativity Hub</h1>
+    <p class="gate-sub">For PEPS students (Year 7&ndash;13) and staff. Sign in with your school account to enter.</p>
+    <div class="gsi-btn-wrap" id="gsiButtonContainer"></div>
+    <button class="gate-preview-link" onclick="enterPreviewMode()">Continue in preview mode &rarr;</button>
+    <div class="gate-domain-note">Restricted to @pepsschool.ae accounts only</div>
+    <div class="gate-config-warning" id="configWarning">
+      <b>Setup needed:</b> this Sign-In button won't appear until a real Google OAuth Client ID is added in the script below (search for <code>YOUR_CLIENT_ID_HERE</code>). Until then, use &ldquo;Continue in preview mode&rdquo; above to review the site.
+    </div>
+  </div>
+</div>
+
+<div id="siteContent" style="display:none;">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="Innovation_Hub_Home.html">
+      <div class="brand-mark"><img src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo"></div>
+      <div class="brand-text"><div class="b1">Innovation &amp; Creativity Hub</div><div class="b2">Providence English School</div></div>
+    </a>
+    <nav class="primary">
+      <a href="Idea_Exchange.html">Idea Exchange</a>
+      <a href="Submit_Idea.html">Submit an Idea</a>
+      <a href="EdTech_Toolkit.html">EdTech Toolkit</a>
+      <a href="Spotlight.html">Spotlight</a>
+      <a href="Challenges.html">Challenges</a>
+      <a class="active" href="Innovation_Labs.html">Innovation Labs</a>
+    </nav>
+    <div class="who-badge"><div class="avatar" id="whoAvatar">?</div><span id="whoName">Guest</span></div>
+  </div>
+</header>
+
+<section class="page-head">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>Subject &amp; Year Generators</div>
+    <h1 class="page-title">Innovation Labs</h1>
+    <p class="page-sub">Localized, curriculum-aligned activity generators &mdash; browse by subject or year, click through to open the tool. Each one builds a fresh activity plus a print-ready worksheet.</p>
+  </div>
+</section>
+
+<section class="gallery">
+  <div class="wrap">
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label for="fSubject">Subject</label>
+        <select id="fSubject"><option value="">Any subject</option></select>
+      </div>
+      <div class="filter-group">
+        <label for="fYear">Year</label>
+        <select id="fYear"><option value="">Any year</option></select>
+      </div>
+      <input class="search-input" id="fSearch" type="text" placeholder="Search labs...">
+      <button class="clear-filters" onclick="clearFilters()">Clear filters</button>
+    </div>
+    <div class="result-count" id="resultCount"></div>
+    <div class="card-grid" id="cardGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>Innovation &amp; Creativity Hub &middot; Providence English School</span>
+    <span>Access restricted to @pepsschool.ae accounts</span>
+  </div>
+</footer>
+
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer onload="onGoogleScriptLoaded()" onerror="onGoogleScriptFailed()"></script>
+<script>
+let googleScriptReady = false;
+let pageLoadFired = false;
+
+function onGoogleScriptLoaded(){
+  googleScriptReady = true;
+  tryInitGoogleSignIn();
+}
+function onGoogleScriptFailed(){
+  console.error('Google Sign-In script failed to load \u2014 likely a network or firewall issue blocking accounts.google.com, not a problem with this page.');
+  showSignInUnavailable();
+}
+function showSignInUnavailable(){
+  const warning = document.getElementById('configWarning');
+  if(!warning) return;
+  warning.style.display = 'block';
+  warning.innerHTML = '<b>Sign-in temporarily unavailable.</b> The Google Sign-In script could not be loaded, usually a network or firewall issue rather than a problem with this page. Please check your connection, or use \u201cContinue in preview mode\u201d above.';
+}
+function tryInitGoogleSignIn(){
+  if(!pageLoadFired || !googleScriptReady) return;
+  if(GOOGLE_CLIENT_ID === "YOUR_CLIENT_ID_HERE"){ document.getElementById('gsiButtonContainer').style.display = 'none'; return; }
+  document.getElementById('configWarning').style.display = 'none';
+  try {
+    google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleCredentialResponse, hosted_domain: ALLOWED_DOMAIN, auto_select: true });
+    google.accounts.id.renderButton(document.getElementById('gsiButtonContainer'), { theme: 'outline', size: 'large', shape: 'pill', text: 'signin_with' });
+    google.accounts.id.prompt();
+  } catch(e){
+    console.error('Google Sign-In failed to initialize:', e);
+    showSignInUnavailable();
+  }
+}
+window.addEventListener('load', function(){
+  pageLoadFired = true;
+  tryInitGoogleSignIn();
+});
+setTimeout(function(){
+  if(!googleScriptReady && GOOGLE_CLIENT_ID !== "YOUR_CLIENT_ID_HERE"){ showSignInUnavailable(); }
+}, 6000);
+
+const GOOGLE_CLIENT_ID = "596461951047-qsh9m58i6rmv6u0eelcsv2f2rndv59k1.apps.googleusercontent.com";
+const ALLOWED_DOMAIN = "pepsschool.ae";
+
+function decodeJwt(token){
+  try {
+    const base64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+    return JSON.parse(decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')));
+  } catch(e){ return null; }
+}
+function handleCredentialResponse(response){
+  const payload = decodeJwt(response.credential);
+  if(!payload){ alert('Sign-in failed. Please try again.'); return; }
+  if(payload.hd !== ALLOWED_DOMAIN && !(payload.email && payload.email.endsWith('@' + ALLOWED_DOMAIN))){
+    alert('This hub is only available to @' + ALLOWED_DOMAIN + ' accounts. You signed in with ' + payload.email + '.');
+    return;
+  }
+  showSite(payload.name || payload.email, payload.picture || null, false);
+}
+function showSite(name, pictureUrl, isPreview){
+  document.getElementById('gateScreen').style.display = 'none';
+  document.getElementById('siteContent').style.display = 'block';
+  document.getElementById('whoName').textContent = isPreview ? 'Preview mode' : name;
+  const avatar = document.getElementById('whoAvatar');
+  if(pictureUrl){ avatar.style.backgroundImage = 'url(' + pictureUrl + ')'; avatar.style.backgroundSize = 'cover'; avatar.textContent = ''; }
+  else { avatar.textContent = (name || 'P').charAt(0).toUpperCase(); }
+  if(isPreview){ document.getElementById('previewBanner').classList.add('show'); }
+  window.scrollTo(0,0);
+  initLabsIndex();
+}
+function enterPreviewMode(){ showSite('Preview mode', null, true); }
+
+/* ======================= INNOVATION LABS DATA =======================
+   Add one entry here per tool as new labs are built. That's the only
+   change needed \u2014 filters, search, and the card grid all update
+   automatically from this list. */
+const LABS = [
+  {
+    subject: "Math",
+    yearBand: "Year 4",
+    title: "Math Innovation Lab \u2014 Year 4",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Math_Tool_Y4.html",
+    desc: "Cambridge Primary \u2014 Number, Geometry & Measure, Statistics. 6 activities, active + word-problem formats."
+  },
+  {
+    subject: "Math",
+    yearBand: "Year 5",
+    title: "Math Innovation Lab \u2014 Year 5",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Math_Tool_Y5.html",
+    desc: "Cambridge Primary \u2014 Number, Geometry & Measure, Statistics. 6 activities, active + word-problem formats."
+  },
+  {
+    subject: "Math",
+    yearBand: "Year 6",
+    title: "Math Innovation Lab \u2014 Year 6",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Math_Tool_Y6.html",
+    desc: "Cambridge Primary \u2014 Number, Geometry & Measure, Statistics. 6 activities, active + word-problem formats."
+  },
+  {
+    subject: "Math",
+    yearBand: "Year 7",
+    title: "Math Innovation Lab \u2014 Year 7",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Math_Tool_Y7.html",
+    desc: "Cambridge Lower Secondary \u2014 Number, Algebra, Geometry & Measure, Statistics & Probability. 8 activities, active + word-problem formats."
+  },
+  {
+    subject: "Math",
+    yearBand: "Year 8",
+    title: "Math Innovation Lab \u2014 Year 8",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Math_Tool_Y8.html",
+    desc: "Cambridge Lower Secondary \u2014 Number, Algebra, Geometry & Measure, Statistics & Probability. 8 activities, active + word-problem formats."
+  },
+  {
+    subject: "Math",
+    yearBand: "Year 9",
+    title: "Math Innovation Lab \u2014 Year 9",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Math_Tool_Y9.html",
+    desc: "Cambridge Lower Secondary \u2014 Number, Algebra, Geometry & Measure, Statistics & Probability. 8 activities, active + word-problem formats."
+  },
+  {
+    subject: "Math",
+    yearBand: "Year 10",
+    title: "Math Innovation Lab \u2014 Year 10",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Math_Tool_Y10.html",
+    desc: "Cambridge IGCSE-track \u2014 Number, Algebra, Geometry & Measure, Statistics & Probability. 8 activities, active + word-problem formats."
+  },
+  {
+    subject: "Math",
+    yearBand: "Year 1",
+    title: "Math Innovation Lab \u2014 Year 1 (Early Math)",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Math_Tool_Y1.html",
+    desc: "Number & Counting, Shape & Space, Measures & Comparison, Pattern & Sorting. Teacher lesson cards, not student worksheets."
+  },
+  {
+    subject: "Math",
+    yearBand: "Year 2",
+    title: "Math Innovation Lab \u2014 Year 2 (Early Math)",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Math_Tool_Y2.html",
+    desc: "Number & Counting, Shape & Space, Measures & Comparison, Pattern & Sorting. Teacher lesson cards, not student worksheets."
+  },
+  {
+    subject: "Math",
+    yearBand: "Year 3",
+    title: "Math Innovation Lab \u2014 Year 3 (Early Math)",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Math_Tool_Y3.html",
+    desc: "Number & Counting, Shape & Space, Measures & Comparison, Pattern & Sorting. Teacher lesson cards, not student worksheets."
+  },
+  {
+    subject: "ESL",
+    yearBand: "Year 8",
+    title: "ESL Innovation Lab \u2014 Year 8",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/ESL_Tool_Y8.html",
+    desc: "Reading, Writing, Speaking & Listening, Vocabulary & Grammar. 8 activities, active + localized task formats."
+  },
+  {
+    subject: "ESL",
+    yearBand: "Year 7",
+    title: "ESL Innovation Lab \u2014 Year 7",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/ESL_Tool_Y7.html",
+    desc: "Reading, Writing, Speaking & Listening, Vocabulary & Grammar. 8 activities, active + localized task formats."
+  },
+  {
+    subject: "ESL",
+    yearBand: "Year 9",
+    title: "ESL Innovation Lab \u2014 Year 9",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/ESL_Tool_Y9.html",
+    desc: "Reading, Writing, Speaking & Listening, Vocabulary & Grammar. 8 activities, active + localized task formats."
+  },
+  {
+    subject: "ESL",
+    yearBand: "Year 10",
+    title: "ESL Innovation Lab \u2014 Year 10",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/ESL_Tool_Y10.html",
+    desc: "Reading, Writing, Speaking & Listening, Vocabulary & Grammar. 8 activities, active + localized task formats."
+  },
+  {
+    subject: "ESL",
+    yearBand: "Year 4",
+    title: "ESL Innovation Lab \u2014 Year 4",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/ESL_Tool_Y4.html",
+    desc: "Reading, Writing, Speaking & Listening, Vocabulary & Grammar. 8 activities, active + localized task formats."
+  },
+  {
+    subject: "ESL",
+    yearBand: "Year 5",
+    title: "ESL Innovation Lab \u2014 Year 5",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/ESL_Tool_Y5.html",
+    desc: "Reading, Writing, Speaking & Listening, Vocabulary & Grammar. 8 activities, active + localized task formats."
+  },
+  {
+    subject: "ESL",
+    yearBand: "Year 6",
+    title: "ESL Innovation Lab \u2014 Year 6",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/ESL_Tool_Y6.html",
+    desc: "Reading, Writing, Speaking & Listening, Vocabulary & Grammar. 8 activities, active + localized task formats."
+  },
+  {
+    subject: "ESL",
+    yearBand: "Year 1",
+    title: "ESL Innovation Lab \u2014 Year 1 (Early ESL)",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/ESL_Tool_Y1.html",
+    desc: "Phonics & Emergent Literacy, Oral Language, Pre-Writing & Fine Motor, Vocabulary Through Play. Teacher lesson cards, not student worksheets."
+  },
+  {
+    subject: "ESL",
+    yearBand: "Year 2",
+    title: "ESL Innovation Lab \u2014 Year 2 (Early ESL)",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/ESL_Tool_Y2.html",
+    desc: "Phonics & Emergent Literacy, Oral Language, Pre-Writing & Fine Motor, Vocabulary Through Play. Teacher lesson cards, not student worksheets."
+  },
+  {
+    subject: "ESL",
+    yearBand: "Year 3",
+    title: "ESL Innovation Lab \u2014 Year 3 (Early ESL)",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/ESL_Tool_Y3.html",
+    desc: "Phonics & Emergent Literacy, Oral Language, Pre-Writing & Fine Motor, Vocabulary Through Play. Teacher lesson cards, not student worksheets."
+  },
+  {
+    subject: "Science",
+    yearBand: "Year 1",
+    title: "Science Innovation Lab \u2014 Year 1 (Early Science)",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Science_Tool_Y1.html",
+    desc: "Exploring Living Things, Exploring Materials, Exploring Forces & Movement, Scientific Enquiry & Observation. Teacher lesson cards, not student worksheets."
+  },
+  {
+    subject: "Science",
+    yearBand: "Year 2",
+    title: "Science Innovation Lab \u2014 Year 2 (Early Science)",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Science_Tool_Y2.html",
+    desc: "Exploring Living Things, Exploring Materials, Exploring Forces & Movement, Scientific Enquiry & Observation. Teacher lesson cards, not student worksheets."
+  },
+  {
+    subject: "Science",
+    yearBand: "Year 3",
+    title: "Science Innovation Lab \u2014 Year 3 (Early Science)",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Science_Tool_Y3.html",
+    desc: "Exploring Living Things, Exploring Materials, Exploring Forces & Movement, Scientific Enquiry & Observation. Teacher lesson cards, not student worksheets."
+  },
+  {
+    subject: "Science",
+    yearBand: "Year 4",
+    title: "Science Innovation Lab \u2014 Year 4",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Science_Tool_Y4.html",
+    desc: "Cambridge Primary \u2014 Biology, Chemistry, Physics. 6 activities, active + application task formats."
+  },
+  {
+    subject: "Science",
+    yearBand: "Year 5",
+    title: "Science Innovation Lab \u2014 Year 5",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Science_Tool_Y5.html",
+    desc: "Cambridge Primary \u2014 Biology, Chemistry, Physics. 6 activities, active + application task formats."
+  },
+  {
+    subject: "Science",
+    yearBand: "Year 6",
+    title: "Science Innovation Lab \u2014 Year 6",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Science_Tool_Y6.html",
+    desc: "Cambridge Primary \u2014 Biology, Chemistry, Physics. 6 activities, active + application task formats."
+  },
+  {
+    subject: "Science",
+    yearBand: "Year 7",
+    title: "Science Innovation Lab \u2014 Year 7",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Science_Tool_Y7.html",
+    desc: "Cambridge Lower Secondary \u2014 Biology, Chemistry, Physics, Scientific Enquiry. 8 activities, active + application task formats."
+  },
+  {
+    subject: "Science",
+    yearBand: "Year 8",
+    title: "Science Innovation Lab \u2014 Year 8",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Science_Tool_Y8.html",
+    desc: "Cambridge Lower Secondary \u2014 Biology, Chemistry, Physics, Scientific Enquiry. 8 activities, active + application task formats."
+  },
+  {
+    subject: "Science",
+    yearBand: "Year 9",
+    title: "Science Innovation Lab \u2014 Year 9",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/Science_Tool_Y9.html",
+    desc: "Cambridge Lower Secondary \u2014 Biology, Chemistry, Physics, Scientific Enquiry. 8 activities, active + application task formats."
+  },
+  {
+    subject: "Early Years",
+    yearBand: "EY2",
+    title: "EY2 Innovation Lab (Ages 4\u20135)",
+    url: "https://wasifkizibash-cmd.github.io/peps-cpd-modules/Generator/FS2_Innovation_Lab.html",
+    desc: "Cambridge Early Years EY2 \u2014 all 6 Areas of Learning: Communication/Literacy, Mathematics, Understanding the World, Physical Development, PSED, Creative Expression. Teacher lesson cards, not student worksheets."
+  }
+];
+
+let labsLoaded = false;
+let currentFilteredLabs = [];
+let activeLabFilters = { subject: '', yearBand: '', search: '' };
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function populateLabFilterOptions(){
+  const subjects = [...new Set(LABS.map(l => l.subject))].sort();
+  const years = [...new Set(LABS.map(l => l.yearBand))];
+  const subjSel = document.getElementById('fSubject');
+  const yearSel = document.getElementById('fYear');
+  subjSel.innerHTML = '<option value="">Any subject</option>';
+  yearSel.innerHTML = '<option value="">Any year</option>';
+  subjects.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; subjSel.appendChild(o); });
+  years.forEach(y => { const o = document.createElement('option'); o.value = y; o.textContent = y; yearSel.appendChild(o); });
+}
+
+function renderLabGallery(){
+  const grid = document.getElementById('cardGrid');
+  const filtered = LABS.filter(lab => {
+    if(activeLabFilters.subject && lab.subject !== activeLabFilters.subject) return false;
+    if(activeLabFilters.yearBand && lab.yearBand !== activeLabFilters.yearBand) return false;
+    if(activeLabFilters.search){
+      const hay = (lab.title + ' ' + lab.desc + ' ' + lab.subject).toLowerCase();
+      if(!hay.includes(activeLabFilters.search.toLowerCase())) return false;
+    }
+    return true;
+  });
+  currentFilteredLabs = filtered;
+
+  document.getElementById('resultCount').textContent = filtered.length + ' of ' + LABS.length + ' labs shown';
+
+  if(filtered.length === 0){
+    grid.innerHTML = '<div class="empty-state">No labs match those filters yet &mdash; try clearing a filter, or check back as more are built.</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(lab => `
+    <a class="lab-card" href="${escapeHtml(lab.url)}" target="_blank" rel="noopener">
+      <div class="lab-tags">
+        <span class="lab-tag subject">${escapeHtml(lab.subject)}</span>
+        <span class="lab-tag year">${escapeHtml(lab.yearBand)}</span>
+      </div>
+      <h3>${escapeHtml(lab.title)}</h3>
+      <p>${escapeHtml(lab.desc)}</p>
+      <div class="lab-open">Open tool &rarr; (opens in a new tab)</div>
+    </a>
+  `).join('');
+}
+
+function clearFilters(){
+  activeLabFilters = { subject: '', yearBand: '', search: '' };
+  document.getElementById('fSubject').value = '';
+  document.getElementById('fYear').value = '';
+  document.getElementById('fSearch').value = '';
+  renderLabGallery();
+}
+
+function initLabsIndex(){
+  if(labsLoaded) return;
+  labsLoaded = true;
+  populateLabFilterOptions();
+  document.getElementById('fSubject').addEventListener('change', e => { activeLabFilters.subject = e.target.value; renderLabGallery(); });
+  document.getElementById('fYear').addEventListener('change', e => { activeLabFilters.yearBand = e.target.value; renderLabGallery(); });
+  document.getElementById('fSearch').addEventListener('input', e => { activeLabFilters.search = e.target.value; renderLabGallery(); });
+  renderLabGallery();
+}
+</script>
+</body>
+</html>
