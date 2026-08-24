@@ -157,10 +157,11 @@
   .certificate{ background:#fff; border:2px solid var(--wb); border-radius:6px; padding:6px; }
   .certificate-inner{ border:1px solid var(--wb); padding:48px 50px; text-align:center; position:relative; }
   .cert-eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--wb); margin-bottom:18px; }
+  .cert-logo{ width:64px; height:64px; border-radius:50%; object-fit:cover; margin:0 auto 16px; display:block; box-shadow:0 2px 6px rgba(0,0,0,0.15); }
   .cert-title{ font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:var(--ink); margin:0 0 26px; }
   .cert-presented{ font-size:13px; color:var(--ink-soft); margin-bottom:6px; letter-spacing:.04em; }
   .cert-name{ font-family:'Source Serif 4',serif; font-style:italic; font-size:32px; color:var(--wb); margin:6px 0 22px; border-bottom:1px solid var(--line); display:inline-block; padding:0 20px 10px; }
-  .cert-body{ font-size:14.5px; color:#33405c; max-width:540px; margin:0 auto 26px; line-height:1.6; }
+  .cert-body{ font-size:14.5px; color:#33405c; max-width:540px; margin:0 auto 26px; line-height:1.6; text-align:justify; }
   .cert-body b{ color:var(--ink); }
   .cert-meta-row{ display:flex; justify-content:center; gap:40px; margin:26px 0 30px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); }
   .cert-meta-row div strong{ display:block; color:var(--ink); font-size:13px; font-family:'Inter',sans-serif; margin-top:3px; }
@@ -1630,6 +1631,7 @@ function renderCertificate(){
   return '<div class="app"><div class="cert-wrap">'+
     '<a class="cert-back" onclick="backFromCertificate()">'+s.backArrow+'</a>'+
     '<div class="certificate" id="certificate-print-area"><div class="certificate-inner">'+
+      '<img class="cert-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">'+
       '<div class="cert-eyebrow">'+s.certEyebrow+'</div>'+
       '<div class="cert-seal">'+s.certSeal+'</div>'+
       '<div class="cert-title">'+s.certTitle+'</div>'+
