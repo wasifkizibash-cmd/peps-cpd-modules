@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wellbeing Team CPD (Counsellor & Social Worker)</title>
+<title>Protection Lead CPD (Staff Safety & Emergency Preparedness)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
@@ -14,8 +14,8 @@
     --gold:#B7862C; --gold-soft:#F5EBD6;
     --red:#A23B3B; --red-soft:#F5E5E1;
     --line:#DBDACF;
-    --wb:#2E5C8A; --wb-soft:#E3EAF2;
-    --evi:#5C4A7A; --evi-soft:#ECE7F2;
+    --prot:#7A2E2E; --prot-soft:#F2E0DE;
+    --evi:#8A6D3A; --evi-soft:#F3ECD9;
     --shadow: 0 1px 2px rgba(27,42,74,0.06), 0 4px 14px rgba(27,42,74,0.06);
   }
   *{box-sizing:border-box;}
@@ -24,10 +24,10 @@
   .app{max-width:1180px; margin:0 auto; padding:0 22px 60px;}
 
   header.topbar{padding:34px 0 20px; border-bottom:1px solid var(--line); margin-bottom:26px;}
-  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--wb); font-weight:600;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--prot); font-weight:600;}
   h1.programme-title{font-family:'Source Serif 4',serif; font-weight:700; font-size:34px; margin:6px 0 8px; color:var(--ink);}
   .programme-sub{color:var(--ink-soft); max-width:700px; margin:0 0 14px;}
-  .prereq{display:inline-flex; align-items:center; gap:8px; background:var(--wb-soft); color:var(--wb); border:1px solid #c3d0e3; border-radius:20px; padding:7px 14px; font-size:12.5px; font-family:'IBM Plex Mono',monospace;}
+  .prereq{display:inline-flex; align-items:center; gap:8px; background:var(--prot-soft); color:var(--prot); border:1px solid #e0c2bf; border-radius:20px; padding:7px 14px; font-size:12.5px; font-family:'IBM Plex Mono',monospace;}
   .disclaimer{margin-top:14px; font-size:12.3px; color:var(--ink-soft); max-width:700px; border-left:3px solid var(--gold); padding:8px 12px; background:var(--gold-soft); border-radius:0 6px 6px 0;}
 
   .layout{display:grid; grid-template-columns:250px 1fr; gap:26px; align-items:start;}
@@ -40,27 +40,24 @@
   .sb-item:hover{background:#F7F7F2;}
   .sb-mark{width:22px;height:22px;border-radius:50%;flex:none;margin-top:1px; display:flex;align-items:center;justify-content:center; font-size:12px; font-weight:700; border:1.5px solid var(--line); color:var(--ink-soft); background:#fff;}
   .sb-mark.passed{background:var(--teal); border-color:var(--teal); color:#fff;}
-  .sb-mark.done{background:var(--wb); border-color:var(--wb); color:#fff;}
+  .sb-mark.done{background:var(--prot); border-color:var(--prot); color:#fff;}
   .sb-item-title{font-weight:600; font-size:13.3px; color:var(--ink);}
   .sb-item-meta{font-size:11.5px; color:var(--ink-soft); margin-top:2px;}
 
   main.content{min-height:400px;}
 
-  .module-head{background:var(--wb); color:#fff; border-radius:12px; padding:26px 28px; margin-bottom:24px; position:relative; overflow:hidden;}
+  .module-head{background:var(--prot); color:#fff; border-radius:12px; padding:26px 28px; margin-bottom:24px; position:relative; overflow:hidden;}
   .module-head::after{content:""; position:absolute; right:-40px; top:-40px; width:160px; height:160px; border:1px solid rgba(255,255,255,.14); border-radius:50%;}
-  .module-head .code{font-family:'IBM Plex Mono',monospace; font-size:12px; color:#cfdaf0; letter-spacing:.08em;}
+  .module-head .code{font-family:'IBM Plex Mono',monospace; font-size:12px; color:#f0d3d0; letter-spacing:.08em;}
   .module-head h2{font-family:'Source Serif 4',serif; font-size:26px; margin:6px 0 10px; font-weight:700;}
-  .module-head p{color:#dde6f4; max-width:660px; margin:0; font-size:14.5px;}
+  .module-head p{color:#f3ded9; max-width:660px; margin:0; font-size:14.5px;}
 
   .indicator-head{background:var(--ink); color:#fff; border-radius:10px; padding:16px 22px; margin:8px 0 18px;}
   .indicator-head .code{font-family:'IBM Plex Mono',monospace; font-size:12px; color:#cdd6ea; letter-spacing:.06em;}
   .indicator-head h3{font-family:'Source Serif 4',serif; font-size:20px; margin:4px 0 0; font-weight:700;}
 
-  .role-tags{display:flex; gap:8px; margin-top:10px;}
-  .role-tag{font-family:'IBM Plex Mono',monospace; font-size:10.8px; padding:3px 9px; border-radius:12px; border:1px solid rgba(255,255,255,.35); color:#fff;}
-
   .concept{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:24px 26px; margin-bottom:20px; box-shadow:var(--shadow);}
-  .concept-num{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--wb); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px;}
+  .concept-num{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--prot); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px;}
   .concept h3{font-family:'Source Serif 4',serif; font-size:21px; margin:0 0 12px; color:var(--ink);}
   .concept p{color:#33405c; margin:0 0 10px; font-size:14.8px;}
 
@@ -83,20 +80,20 @@
   .feedback.right{border-left-color:var(--teal); color:#1a4437;}
   .feedback.wrong{border-left-color:var(--red); color:#6e2a2a;}
 
-  .evidence-box{background:var(--evi-soft); border:1px solid #cfc0df; border-radius:10px; padding:20px 24px; margin:6px 0 22px;}
+  .evidence-box{background:var(--evi-soft); border:1px solid #d9c48a; border-radius:10px; padding:20px 24px; margin:6px 0 22px;}
   .evidence-box h4{font-family:'Source Serif 4',serif; font-size:17px; margin:0 0 4px; color:var(--evi); display:flex; align-items:center; gap:8px;}
-  .evidence-box p.sub{font-size:12.8px; color:#4a3d61; margin:0 0 12px;}
+  .evidence-box p.sub{font-size:12.8px; color:#5c4c22; margin:0 0 12px;}
   .evidence-box ul{margin:0; padding-left:20px;}
-  .evidence-box li{font-size:13.6px; color:#3a2f4d; margin-bottom:6px;}
+  .evidence-box li{font-size:13.6px; color:#4a3d1a; margin-bottom:6px;}
 
   .exam-cta{background:var(--gold-soft); border:1px solid #e6cf9e; border-radius:10px; padding:22px 26px; text-align:center; margin-top:8px;}
   .exam-cta.locked{background:#F1F1EA; border-color:var(--line);}
   .exam-cta h4{font-family:'Source Serif 4',serif; font-size:19px; margin:0 0 6px; color:var(--ink);}
   .exam-cta p{color:var(--ink-soft); font-size:13.8px; margin:0 0 14px;}
-  button.btn{font-family:'Inter',sans-serif; font-weight:600; font-size:14px; background:var(--wb); color:#fff; border:none; border-radius:7px; padding:11px 22px; cursor:pointer;}
-  button.btn:hover{background:#234a70;}
+  button.btn{font-family:'Inter',sans-serif; font-weight:600; font-size:14px; background:var(--prot); color:#fff; border:none; border-radius:7px; padding:11px 22px; cursor:pointer;}
+  button.btn:hover{background:#602424;}
   button.btn:disabled{background:#c7c6bb; cursor:not-allowed;}
-  button.btn.ghost{background:transparent; color:var(--wb); border:1.5px solid var(--wb);}
+  button.btn.ghost{background:transparent; color:var(--prot); border:1.5px solid var(--prot);}
   button.btn.ghost:hover{background:#fff;}
 
   .exam-head{margin-bottom:16px;}
@@ -115,35 +112,35 @@
   .review-list{text-align:left; max-width:660px; margin:0 auto 22px; border-top:1px solid var(--line); padding-top:16px;}
   .review-item{display:flex; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); font-size:13.8px;}
   .review-item:last-child{border-bottom:none;}
-  .review-tag{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--wb); flex:none; width:56px;}
+  .review-tag{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--prot); flex:none; width:80px;}
   .btn-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
 
   footer.foot{margin-top:36px; padding-top:18px; border-top:1px solid var(--line); font-size:12px; color:#8b8f7f; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;}
   a.reset-link{color:#8b8f7f; text-decoration:underline; cursor:pointer;}
 
-  .final-banner{background:linear-gradient(135deg,#2E5C8A,#4874A8); color:#fff; border-radius:12px; padding:30px 28px; text-align:center; margin-top:24px;}
+  .final-banner{background:linear-gradient(135deg,#7A2E2E,#9C4444); color:#fff; border-radius:12px; padding:30px 28px; text-align:center; margin-top:24px;}
   .final-banner h2{font-family:'Source Serif 4',serif; font-size:26px; margin:0 0 8px;}
-  .final-banner p{color:#dde6f4; font-size:14.5px; max-width:560px; margin:0 auto;}
+  .final-banner p{color:#f3ded9; font-size:14.5px; max-width:560px; margin:0 auto;}
 
   .name-gate{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:40px 34px; text-align:center; max-width:480px; margin:40px auto; box-shadow:var(--shadow); }
   .name-gate h4{ font-family:'Source Serif 4',serif; font-size:20px; margin:0 0 8px; color:var(--ink); }
   .name-gate p{ color:var(--ink-soft); font-size:13.8px; margin:0 0 18px; }
   .name-gate input{ width:100%; padding:10px 12px; border:1.5px solid var(--line); border-radius:7px; font-family:'Inter',sans-serif; font-size:14.5px; margin-bottom:14px; box-sizing:border-box; }
-  .name-gate input:focus{ outline:none; border-color:var(--wb); }
+  .name-gate input:focus{ outline:none; border-color:var(--prot); }
   .cert-wrap{ max-width:760px; margin:20px auto; }
   .cert-back{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft); cursor:pointer; margin-bottom:16px; display:inline-block; text-decoration:underline; }
-  .certificate{ background:#fff; border:2px solid var(--wb); border-radius:6px; padding:6px; }
-  .certificate-inner{ border:1px solid var(--wb); padding:48px 50px; text-align:center; position:relative; }
-  .cert-eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--wb); margin-bottom:18px; }
+  .certificate{ background:#fff; border:2px solid var(--prot); border-radius:6px; padding:6px; }
+  .certificate-inner{ border:1px solid var(--prot); padding:48px 50px; text-align:center; position:relative; }
+  .cert-eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--prot); margin-bottom:18px; }
   .cert-logo{ width:64px; height:64px; border-radius:50%; object-fit:cover; margin:0 auto 16px; display:block; box-shadow:0 2px 6px rgba(0,0,0,0.15); }
   .cert-title{ font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:var(--ink); margin:0 0 26px; }
   .cert-presented{ font-size:13px; color:var(--ink-soft); margin-bottom:6px; letter-spacing:.04em; }
-  .cert-name{ font-family:'Source Serif 4',serif; font-style:italic; font-size:32px; color:var(--wb); margin:6px 0 22px; border-bottom:1px solid var(--line); display:inline-block; padding:0 20px 10px; }
+  .cert-name{ font-family:'Source Serif 4',serif; font-style:italic; font-size:32px; color:var(--prot); margin:6px 0 22px; border-bottom:1px solid var(--line); display:inline-block; padding:0 20px 10px; }
   .cert-body{ font-size:14.5px; color:#33405c; max-width:540px; margin:0 auto 26px; line-height:1.6; text-align:justify; }
   .cert-body b{ color:var(--ink); }
   .cert-meta-row{ display:flex; justify-content:center; gap:40px; margin:26px 0 30px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); }
   .cert-meta-row div strong{ display:block; color:var(--ink); font-size:13px; font-family:'Inter',sans-serif; margin-top:3px; }
-  .cert-seal{ width:78px; height:78px; border-radius:50%; border:2px double var(--wb); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; color:var(--wb); font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:10.5px; text-align:center; line-height:1.3; }
+  .cert-seal{ width:78px; height:78px; border-radius:50%; border:2px double var(--prot); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; color:var(--prot); font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:10.5px; text-align:center; line-height:1.3; }
   .cert-actions{ margin-top:26px; display:flex; gap:10px; justify-content:center; }
 
   @media print{
@@ -199,516 +196,398 @@ if (!window.storage) {
 }
 
 /* =========================================================================
-   CONTENT: WELLBEING TEAM CPD (COUNSELLOR + SOCIAL WORKER)
-   Aligned to UAE MoE-referenced School Inspection Framework indicators:
-   5.1 Health & Safety, including arrangements for Child Protection
-   5.2 Care & Support
-   2.1.1 Attitudes | 2.1.2 Behaviour | 2.1.3 Relationships
+   CONTENT: PROTECTION LEAD CPD (STAFF SAFETY & EMERGENCY PREPAREDNESS)
+   Aligned to the UAE MoE Occupational Health, Safety & Environment pillar:
+   fire safety, evacuation & drills, electrical/hazardous materials safety,
+   first-aid readiness, emergency/crisis preparedness, incident reporting.
+   Scope: protection of ALL staff/manpower on the premises, and fire /
+   emergency preparedness \u2014 not general site security or access control.
    ========================================================================= */
-const MODULE_TITLE = "Wellbeing Team CPD: Counsellor & Social Worker";
-const EST_DURATION = "Fully self-paced \u2014 no fixed limit (typically 70\u2013100 minutes to work through thoroughly)";
+const MODULE_TITLE = "Protection Lead CPD: Staff Safety & Emergency Preparedness";
+const EST_DURATION = "Fully self-paced \u2014 no fixed limit (typically 60\u201390 minutes to work through thoroughly)";
 
 const GROUPS = [
   {
-    "code": "5.1",
-    "title": "Health & Safety, including Arrangements for Child Protection",
-    "intro": "The wellbeing team sits at the centre of the school's safeguarding response. Counsellors and social workers are often either the Designated Safeguarding Lead (DSL), a deputy, or the first point of referral for a concern — which means understanding exactly where confidentiality ends and the duty to protect begins is not optional.",
+    "code": "OHSE",
+    "title": "Occupational Health, Safety & Environment — Staff & Premises",
+    "intro": "This module covers the Protection Lead's core responsibility: keeping every person who works on the premises — teachers, support staff, maintenance, kitchen and grounds staff, drivers, contractors — safe day to day, and genuinely prepared for fire or any other untoward incident. This is distinct from student safeguarding, which is covered in other CPD modules.",
     "concepts": [
       {
-        "title": "The Wellbeing Team's Central Safeguarding Role",
-        "roles": [
-          "Counsellor",
-          "Social Worker"
-        ],
+        "title": "Fire Safety Compliance & Documentation",
         "body": [
-          "Therapeutic confidentiality in counselling is not absolute — it has a clearly understood limit at risk of harm. Best practice is to explain this limit to students at the start of any counselling relationship, so a later disclosure doesn't feel like a betrayal.",
-          "When a safeguarding concern arises, the response follows the school's child protection policy, not personal judgement alone: inform the DSL, document factually and promptly, and avoid investigating or promising secrecy.",
-          "Case records for safeguarding matters are stored separately from general counselling notes, with tightly controlled access."
+          "A live, current record of every piece of fire safety equipment — alarms, extinguishers, hose reels, sprinklers — with scheduled inspection and maintenance dates is the baseline, not installation records from years ago.",
+          "Valid civil defence certification for the premises must be current and renewed on schedule. An expired certificate is a compliance failure regardless of how good the physical equipment actually is.",
+          "Emergency exits and evacuation routes need to be kept clear and clearly signed at all times — not tidied up only when an inspection visit is expected."
         ],
         "checks": [
           {
-            "q": "During a confidential counselling session, a student discloses thoughts of self-harm. What should the counsellor do?",
+            "q": "A fire extinguisher's inspection tag shows servicing is overdue by three months. What should happen?",
             "options": [
-              "Follow the safeguarding protocol — inform the DSL and document factually, even though it breaks session confidentiality",
-              "Keep it fully confidential, since it was said in a counselling session",
-              "Wait until the next session to see if it comes up again",
-              "Promise the student it will never be shared with anyone"
+              "Arrange servicing or replacement immediately, and flag it until resolved",
+              "Wait for the next annual review to address it",
+              "Leave it, since the extinguisher still looks intact",
+              "Remove it without replacement to avoid confusion"
             ],
             "correct": 0,
-            "explain": "Risk of harm overrides therapeutic confidentiality. Good practice sets this expectation with the student in advance, but the safeguarding duty applies regardless."
+            "explain": "Overdue safety equipment is an active compliance gap that needs immediate action — not something to defer to a scheduled review."
           },
           {
-            "q": "What is the correct standard for documenting a safeguarding concern raised in a wellbeing session?",
+            "q": "Which is the strongest evidence of fire safety compliance for inspection purposes?",
             "options": [
-              "A brief mental note, formalised only if it happens again",
-              "A factual, prompt, dated record, shared with the DSL and stored securely and separately from general notes",
-              "A summary added informally to the student's general file",
-              "No written record, to protect the student's trust"
+              "A verbal assurance that equipment 'should be fine'",
+              "A maintained equipment log with current inspection dates, plus a valid civil defence certificate on file",
+              "The presence of extinguishers, regardless of service history",
+              "Reliance on staff memory of when equipment was last checked"
             ],
             "correct": 1,
-            "explain": "Prompt, factual, securely-stored documentation protects the student and creates the evidence trail safeguarding decisions depend on."
+            "explain": "Documented, current inspection records and a valid certificate are what evidence genuine compliance — not the mere presence of equipment or verbal assurance."
           }
         ]
       },
       {
-        "title": "Multi-Agency Liaison & the Social Worker's Distinctive Role",
-        "roles": [
-          "Social Worker"
-        ],
+        "title": "Evacuation Planning & Drills",
         "body": [
-          "The social worker's role often extends beyond the school gate — assessing home circumstances, liaising with external child protection or family services, and sometimes conducting home visits, in coordination with the DSL rather than independently.",
-          "The counsellor's contribution is primarily the in-school therapeutic relationship; the social worker's is the wider welfare and family context. Both feed into one coordinated case record rather than working in separate silos.",
-          "Multi-agency meetings (with external social services, health providers, or other authorities) should be documented, with clear actions and follow-up owners."
+          "The evacuation plan needs to cover the whole premises population — teachers, support staff, cleaners, drivers, kitchen staff, and contractors on site — not only students and their classroom teachers.",
+          "Muster points and a reliable headcount/roll-call procedure are essential: an evacuation isn't complete until every person is confirmed accounted for, including staff who aren't attached to a specific classroom.",
+          "Drills should run on a planned schedule, be timed, and be reviewed afterward to fix real weaknesses — including specific provisions for anyone who needs extra assistance evacuating — rather than treated as a once-a-year formality."
         ],
         "checks": [
           {
-            "q": "A social worker becomes aware of a concerning family circumstance affecting a student at home. What is the correct next step?",
+            "q": "During a fire drill, several support staff (kitchen and maintenance) are not included in the headcount system used to confirm everyone is out.",
             "options": [
-              "Visit the family home personally and address it directly, without informing the school",
-              "Discuss it informally with the student's teachers first",
-              "Assess and escalate through the DSL and, where appropriate, liaise with the relevant external agency",
-              "Wait for the family to raise it themselves"
+              "This is acceptable since they aren't attached to a classroom",
+              "This only matters if it happens during an actual fire",
+              "This is a real gap — the headcount system needs to cover every person on the premises, not only classroom-based staff",
+              "Support staff can be assumed safe without being counted"
             ],
             "correct": 2,
-            "explain": "Home/family concerns are escalated through the proper safeguarding and multi-agency channels — not handled as an independent, unilateral visit."
+            "explain": "An evacuation plan that misses whole categories of staff has a serious gap — accountability needs to cover everyone on site."
           },
           {
-            "q": "Which is the strongest evidence of effective multi-agency liaison for inspection purposes?",
+            "q": "Which reflects genuinely effective drill practice?",
             "options": [
-              "A verbal assurance that agencies are 'in the loop'",
-              "An email sent once with no reply expected",
-              "No documentation, to protect family privacy",
-              "Documented records of multi-agency meetings, with actions and follow-up owners"
+              "A single annual drill with no timing or review",
+              "Drills only announced in advance, with no variation",
+              "Skipping drills once a strong drill has been completed once",
+              "Regular, timed drills with documented review and follow-up corrective actions"
             ],
             "correct": 3,
-            "explain": "Documented, action-tracked liaison records are what demonstrate genuine, ongoing multi-agency coordination rather than a one-off gesture."
-          }
-        ]
-      }
-    ],
-    "evidence": [
-      "Safeguarding referral/case log, stored separately and confidentially from general counselling notes",
-      "Protocol document defining roles between counsellor, social worker and DSL",
-      "Child protection training records for all wellbeing team members",
-      "Records of multi-agency liaison meetings, with actions and follow-up",
-      "Confidentiality policy specific to counselling and case records",
-      "Risk assessment records for open, high-risk cases"
-    ]
-  },
-  {
-    "code": "5.2",
-    "title": "Care & Support",
-    "intro": "Beyond crisis response, the wellbeing team provides ongoing, planned support — individual case management, crisis intervention protocols, and clear referral pathways both within and beyond the school.",
-    "concepts": [
-      {
-        "title": "Individual Support & Case Management Plans",
-        "roles": [
-          "Counsellor",
-          "Social Worker"
-        ],
-        "body": [
-          "Each open case — whether a counselling case or a social-work/family case — has a written support plan: clear goals, planned actions, and a review date, not just a running log of session notes.",
-          "Plans are coordinated with other relevant staff (SEN lead, class teacher, nurse) where the student's needs cross domains, without over-sharing sensitive detail beyond what each person needs to know.",
-          "Reviews check not just whether sessions happened, but whether the plan's goals are actually being met — and adjust the plan if not."
-        ],
-        "checks": [
-          {
-            "q": "A student has been receiving counselling for eight weeks. What should exist alongside the session notes?",
-            "options": [
-              "A written support plan with goals, actions and a review date, checked against actual progress",
-              "Nothing further — session notes are sufficient on their own",
-              "A verbal summary given only if asked",
-              "A plan created once, never revisited"
-            ],
-            "correct": 0,
-            "explain": "A living support plan with clear goals and a review point is what turns a series of sessions into evidenced, purposeful support."
-          },
-          {
-            "q": "A student's case involves both social-emotional needs and a possible SEN need. What is the best coordination practice?",
-            "options": [
-              "The counsellor and SEN lead work entirely separately to protect confidentiality",
-              "Relevant information is shared with the SEN lead on a need-to-know basis, coordinated through the case plan",
-              "The case is handed over entirely to the SEN lead",
-              "No coordination is needed since the domains are different"
-            ],
-            "correct": 1,
-            "explain": "Coordinated, need-to-know sharing lets each specialist contribute without either working blind or oversharing sensitive information."
+            "explain": "Regular, timed, reviewed drills are what actually improve readiness — a single annual exercise with no follow-up doesn't build genuine preparedness."
           }
         ]
       },
       {
-        "title": "Crisis Intervention & Referral Pathways",
-        "roles": [
-          "Counsellor",
-          "Social Worker"
-        ],
+        "title": "Electrical & Hazardous Materials Safety",
         "body": [
-          "A crisis (e.g. active suicidal ideation, a disclosed family emergency) needs an immediate, rehearsed response — not an improvised one. Staff should know exactly who to contact and what the first steps are, at any time of day.",
-          "Referral pathways to external specialist support (e.g. child and adolescent mental health services, external social services) should be clearly mapped, with realistic wait times and a plan for supporting the student while waiting.",
-          "Every referral is followed up — confirming it was received, and checking in with the student and family — rather than treated as complete once the referral is sent."
+          "Electrical systems — wiring, panels, portable equipment — need scheduled inspection by qualified personnel, with faults logged and fixed promptly, rather than waiting for a visible failure.",
+          "Hazardous materials (cleaning chemicals, lab chemicals, maintenance substances) require secure, clearly labelled storage, with safety data sheets (SDS) accessible and access restricted to trained staff.",
+          "Any staff member who handles hazardous materials as part of their role needs documented training on safe handling and the correct response to exposure or a spill."
         ],
         "checks": [
           {
-            "q": "A student discloses active suicidal ideation during a session. What should guide the immediate response?",
+            "q": "Cleaning chemicals are stored in an unlabelled container, accessible to any staff member who walks by.",
             "options": [
-              "General clinical judgement, decided in the moment",
-              "Waiting until the end of the school day to act",
-              "The school's rehearsed crisis protocol, followed immediately and without delay",
-              "Asking the student to promise not to act on it, and leaving it there"
-            ],
-            "correct": 2,
-            "explain": "A crisis needs the rehearsed protocol followed immediately — not improvisation, and not a promise in place of action."
-          },
-          {
-            "q": "A referral is made to an external specialist service. What is correct practice after the referral is sent?",
-            "options": [
-              "The case is considered closed once the referral is sent",
-              "No further action until the external service responds",
-              "The student is told to contact the service themselves with no further support",
-              "The referral is followed up to confirm receipt, with the student supported in the meantime"
-            ],
-            "correct": 3,
-            "explain": "A referral is the start of a pathway, not the end of the wellbeing team's involvement — follow-up and interim support both matter."
-          }
-        ]
-      }
-    ],
-    "evidence": [
-      "Individual wellbeing/case support plans with goals, actions and review dates",
-      "Crisis intervention protocol document, with named contacts and escalation steps",
-      "Mapped referral pathway document (internal and external services)",
-      "Caseload tracking log",
-      "Referral follow-up records confirming receipt and interim support provided",
-      "Records evaluating support-plan outcomes at review points"
-    ]
-  },
-  {
-    "code": "2.1.1",
-    "title": "Attitudes",
-    "intro": "This indicator looks at whether students are developing genuine self-reliance and responding constructively to feedback — which the wellbeing team actively builds through how it works with students, not just what it says to them.",
-    "concepts": [
-      {
-        "title": "Building Self-Reliance Rather Than Dependency",
-        "roles": [
-          "Counsellor",
-          "Social Worker"
-        ],
-        "body": [
-          "Effective support builds a student's own coping skills and confidence — helping them find their own next step — rather than the wellbeing team solving every problem directly, which can quietly create dependency.",
-          "Session approaches that ask more than they tell (e.g. solution-focused questioning) tend to build stronger self-reliance than purely directive advice-giving.",
-          "Progress is evidenced by a student needing less intensive support over time, or successfully using a coping strategy independently — not just by attendance at sessions."
-        ],
-        "checks": [
-          {
-            "q": "A student comes to every session expecting the counsellor to tell them exactly what to do. What is the better long-term approach?",
-            "options": [
-              "Increasingly use questioning approaches that help the student find their own next step",
-              "Keep giving direct instructions, since it's faster",
-              "Refuse to help until the student figures it out alone",
-              "End the counselling relationship"
+              "This is a hazard — the container should be properly labelled, access restricted, and an SDS made available",
+              "This is fine as long as staff generally know what it is",
+              "Labelling is only required for lab chemicals, not cleaning products",
+              "This only matters if an incident actually occurs"
             ],
             "correct": 0,
-            "explain": "Building genuine self-reliance means shifting from telling to asking over time — not abandoning support, but not fostering dependency either."
+            "explain": "Unlabelled, unrestricted hazardous material storage is a genuine safety risk regardless of whether an incident has happened yet."
           },
           {
-            "q": "Which is the best evidence that a support intervention is building self-reliance?",
+            "q": "What is the correct standard for electrical safety on the premises?",
             "options": [
-              "The student has attended every scheduled session",
-              "The student successfully uses a coping strategy independently, outside of sessions",
-              "The student always agrees with the counsellor's suggestions",
-              "The number of sessions completed"
+              "Wait for a visible fault before taking action",
+              "Scheduled inspection by qualified personnel, with findings logged and faults addressed promptly",
+              "Rely on staff to report issues only if something stops working entirely",
+              "Inspect only areas that are visibly old or worn"
             ],
             "correct": 1,
-            "explain": "Independent use of a strategy outside the session room is the real marker of growing self-reliance — attendance alone doesn't show that."
+            "explain": "Scheduled, qualified inspection catches problems before they become failures — waiting for visible faults is reactive, not preventive."
           }
         ]
-      }
-    ],
-    "evidence": [
-      "Records of resilience/self-reliance-focused interventions or programmes",
-      "Anonymised examples of coaching-style (questioning) approaches used in case notes",
-      "Evidence of reduced support intensity over time for successfully-progressed cases"
-    ]
-  },
-  {
-    "code": "2.1.2",
-    "title": "Behaviour",
-    "intro": "The wellbeing team is frequently central to how a school responds to behaviour incidents — not as a disciplinary body, but as the team that helps repair relationships and address root causes alongside the pastoral/behaviour lead.",
-    "concepts": [
+      },
       {
-        "title": "Behaviour Support and Restorative Practice",
-        "roles": [
-          "Counsellor",
-          "Social Worker"
-        ],
+        "title": "First-Aid Readiness & Medical Emergency Response for Staff",
         "body": [
-          "Behaviour support plans are usually co-developed with the pastoral/behaviour lead — the wellbeing team contributes understanding of underlying causes, not just a response to the incident itself.",
-          "Restorative conversations (bringing those involved together to repair harm) are generally more effective long-term than purely punitive responses, though both may be used together depending on severity.",
-          "In bullying casework specifically, both the student who was targeted and the student who caused harm typically need appropriate support — not only consequences for one and comfort for the other."
+          "First-aid provision should be distributed across the premises — accessible kits in key work areas like maintenance, kitchen and grounds — not concentrated only in the school clinic, with regular stock checks to keep them usable.",
+          "A meaningful proportion of staff across all departments, not only the clinic team, should hold current first-aid/CPR certification — so help is genuinely close by wherever an incident happens on a large site.",
+          "A clear, rehearsed protocol should exist specifically for a staff medical emergency — who is called, how the area is secured, and how other relevant staff are informed — not just an assumption that the student-focused protocol automatically covers this too."
         ],
         "checks": [
           {
-            "q": "A student has been involved in a serious behaviour incident with a clear underlying emotional cause. What is the wellbeing team's role?",
+            "q": "A maintenance team member collapses in a remote part of the premises, with no first-aid trained staff nearby and no kit within reach.",
             "options": [
-              "Stay out of it entirely, since it's a discipline matter",
-              "Take over the disciplinary decision from the pastoral lead",
-              "Contribute understanding of the underlying cause and support to the behaviour plan, alongside the pastoral lead",
-              "Only get involved if asked directly by the student"
+              "This is simply bad luck and doesn't indicate a systemic issue",
+              "First-aid coverage only needs to reach classroom areas",
+              "This reflects a real gap in distributed first-aid coverage — kits and trained staff need to be spread across the whole site",
+              "This is acceptable as long as the clinic is eventually reached"
             ],
             "correct": 2,
-            "explain": "The wellbeing team's distinctive contribution is understanding root causes and coordinating support — working alongside, not replacing, the pastoral/behaviour lead."
+            "explain": "A remote part of a large site with no accessible first aid is exactly the kind of gap distributed coverage is meant to close."
           },
           {
-            "q": "In a bullying case, which is the correct scope of support?",
+            "q": "What is the correct standard for first-aid/CPR training coverage across the premises?",
             "options": [
-              "Support only the student who was targeted",
-              "Support only the student who caused harm, since they need to change",
-              "No support needed once consequences are issued",
-              "Provide appropriate support to both students involved, as relevant to each"
+              "Concentrated entirely within the clinic team",
+              "Limited to teaching staff only",
+              "Not necessary if the clinic is centrally located",
+              "Distributed meaningfully across departments, so help is close by wherever an incident occurs"
             ],
             "correct": 3,
-            "explain": "Effective bullying casework supports both parties appropriately — the student harmed, and the student whose behaviour needs to change — not just one side."
+            "explain": "Distributing trained staff across departments — not just the clinic — ensures a faster response wherever on the premises an incident happens."
           }
         ]
-      }
-    ],
-    "evidence": [
-      "Behaviour support plans co-developed with the pastoral/behaviour lead",
-      "Anti-bullying casework records, including support provided to all students involved",
-      "Records of restorative conversations and their outcomes",
-      "De-escalation incident logs where relevant"
-    ]
-  },
-  {
-    "code": "2.1.3",
-    "title": "Relationships",
-    "intro": "This indicator looks at the quality of relationships among students and with staff — something the wellbeing team actively builds through targeted, evidenced work, not just general goodwill.",
-    "concepts": [
+      },
       {
-        "title": "Fostering Positive Relationships and Social Skills",
-        "roles": [
-          "Counsellor",
-          "Social Worker"
-        ],
+        "title": "Emergency & Crisis Preparedness Beyond Fire",
         "body": [
-          "Structured social skills groups and peer mediation programmes give students practical tools for empathy, communication and conflict resolution — rather than relying on relationships to simply develop on their own.",
-          "Vulnerable or SEND students often need deliberate support to be included in peer relationships — the wellbeing team's role includes actively facilitating this, not just monitoring for exclusion.",
-          "Staff-student relationships also matter here: the wellbeing team can model and coach relationship-building approaches for other staff working with students who have relational difficulties."
+          "“Untoward incidents” beyond fire include severe weather events, structural incidents, security threats, and other site emergencies — each needs its own clear protocol, not an assumption that the fire evacuation plan automatically covers everything.",
+          "Lockdown or shelter-in-place procedures, where relevant, need to be understood by all staff, with a clear signal distinguishing them from a fire evacuation — since the correct response is often the opposite: stay in place rather than evacuate.",
+          "Clear internal communication protocols — who alerts whom, and a backup method if the primary system fails — are essential during any crisis, and should be tested periodically rather than assumed to work when needed."
         ],
         "checks": [
           {
-            "q": "A student with additional needs is consistently excluded from peer groups at break times. What is the wellbeing team's appropriate role?",
+            "q": "During a drill, several staff confuse the lockdown signal with the fire alarm and evacuate when they should have sheltered in place.",
             "options": [
-              "Actively facilitate inclusion — e.g. through a structured social skills group or peer mediation — rather than waiting for it to resolve itself",
-              "Monitor the situation but take no direct action",
-              "Refer the matter entirely to the SEN lead with no further involvement",
-              "Address it only if the student's parents complain"
+              "This shows the signals and protocols need to be more clearly distinguished and better trained — a real preparedness gap",
+              "This is a minor mix-up not worth addressing further",
+              "Only security staff need to know the difference",
+              "The fire evacuation plan can reasonably be used for all emergency types"
             ],
             "correct": 0,
-            "explain": "Deliberate, structured facilitation is what actually builds inclusion — passive monitoring rarely changes an established social pattern."
+            "explain": "Confusing an evacuate signal with a shelter-in-place signal is a serious preparedness gap, since the correct responses are opposite actions."
           },
           {
-            "q": "Which is the strongest evidence of the wellbeing team's contribution to student relationships, for inspection purposes?",
+            "q": "Which is the correct approach to non-fire emergencies (severe weather, security threats, structural issues)?",
             "options": [
-              "A general statement that the school has a caring culture",
-              "Records of social skills groups, peer mediation sessions, or relationship-building initiatives, with participation and outcomes noted",
-              "No specific evidence, since relationships are hard to measure",
-              "Attendance records alone"
+              "Assume the fire evacuation plan applies to all emergency types",
+              "Each type of incident has its own clear, communicated protocol appropriate to that risk",
+              "Only plan for fire, since it's the most common risk",
+              "Leave the response to individual staff judgement in the moment"
             ],
             "correct": 1,
-            "explain": "Specific, evidenced initiatives with recorded participation and outcomes are what demonstrate active, effective work on relationships — not general claims."
+            "explain": "Different emergencies often require different — sometimes opposite — responses, so each needs its own clear, trained protocol."
+          }
+        ]
+      },
+      {
+        "title": "Incident Recording, Reporting & Continuous Improvement",
+        "body": [
+          "Every incident and near-miss — not only actual injuries — should be logged factually and promptly. Near-misses are valuable early warning signs that get lost if they're only reported when someone is actually hurt.",
+          "After any significant incident or drill, a root-cause review identifies what actually went wrong, not just what happened, and produces specific corrective actions with clear owners and deadlines.",
+          "Complete, organised compliance records — equipment logs, drill records, training certificates, incident reports — should be inspection-ready at all times, not hastily assembled just before a visit."
+        ],
+        "checks": [
+          {
+            "q": "A staff member nearly slips on an unmarked wet floor, but isn't hurt, so no one reports it.",
+            "options": [
+              "This is fine, since no injury occurred",
+              "Only injuries requiring first aid need to be recorded",
+              "Near-misses should be logged too — they're valuable early warning data that can prevent a future injury",
+              "Reporting near-misses discourages staff from working efficiently"
+            ],
+            "correct": 2,
+            "explain": "Near-misses are some of the most valuable safety data available — they reveal risks before anyone is actually hurt."
+          },
+          {
+            "q": "What should follow a significant safety incident, beyond recording that it happened?",
+            "options": [
+              "Nothing further is needed once it's logged",
+              "A general reminder to staff to 'be more careful'",
+              "Waiting to see if it happens again before investigating",
+              "A root-cause review producing specific corrective actions with owners and deadlines"
+            ],
+            "correct": 3,
+            "explain": "A genuine root-cause review with owned, deadlined corrective actions is what prevents recurrence — simply logging the event isn't enough."
           }
         ]
       }
     ],
     "evidence": [
-      "Social skills group / peer mediation session records, with participation noted",
-      "Records of relationship-building initiatives supporting inclusion (e.g. buddy systems for SEND or vulnerable students)",
-      "Evidence of staff coaching/guidance provided on relationship-building approaches"
+      "Fire safety equipment maintenance log (alarms, extinguishers, sprinklers) with current inspection dates",
+      "Valid, current civil defence certification for the premises",
+      "Evacuation plan covering all staff categories, with muster point and headcount procedure",
+      "Drill records (dates, timings, review notes, corrective actions taken)",
+      "Electrical system inspection records",
+      "Hazardous materials inventory, SDS file, and related staff training records",
+      "First-aid/CPR training records showing coverage across departments, not only the clinic team",
+      "First-aid kit location map and stock-check log across the premises",
+      "Protocols for non-fire emergencies (severe weather, security, structural), with staff briefing/training records",
+      "Incident and near-miss log with root-cause reviews and corrective actions"
     ]
   }
 ];
 
 const EXAM = [
   {
-    "tag": "5.1",
-    "q": "A student tells the counsellor something that suggests they may be at risk of harm, during a session the counsellor described as confidential.",
+    "tag": "Fire Safety",
+    "q": "A fire extinguisher's service tag is overdue. What is the correct response?",
     "options": [
-      "Confidentiality is absolute in counselling, so it stays private",
-      "Only share if the student gives permission",
-      "The safeguarding duty overrides session confidentiality; the DSL must be informed and it must be documented",
-      "Wait to see if the student mentions it again"
-    ],
-    "correct": 2,
-    "explain": "Risk of harm overrides confidentiality in every case — this is a non-negotiable safeguarding principle."
-  },
-  {
-    "tag": "5.1",
-    "q": "Who typically holds the distinctive role of assessing home/family circumstances and liaising with external child-protection agencies?",
-    "options": [
-      "The counsellor, always",
-      "Neither — this is outside the wellbeing team's remit",
-      "Any available staff member",
-      "The social worker, in coordination with the DSL"
-    ],
-    "correct": 3,
-    "explain": "The social worker's role characteristically extends into home/family context and external agency liaison, coordinated through the DSL."
-  },
-  {
-    "tag": "5.1",
-    "q": "Where should safeguarding case records be stored relative to general counselling notes?",
-    "options": [
-      "Separately, with tightly controlled access",
-      "In the same file, for simplicity",
-      "Not recorded at all, to protect privacy",
-      "Shared openly with all pastoral staff"
+      "Arrange servicing or replacement immediately",
+      "Wait for the annual review",
+      "Leave it if it looks physically intact",
+      "Remove it with no replacement"
     ],
     "correct": 0,
-    "explain": "Safeguarding records need separation and controlled access — not merged into general notes or shared without a need-to-know basis."
+    "explain": "Overdue equipment is an active gap requiring immediate action, not deferral."
   },
   {
-    "tag": "5.2",
-    "q": "What should exist for every open counselling or social-work case, beyond session notes?",
+    "tag": "Fire Safety",
+    "q": "What is the strongest evidence of fire safety compliance for inspection purposes?",
     "options": [
-      "Nothing further is needed",
-      "A written support plan with goals, actions and a review date",
-      "A plan only if the case becomes serious",
-      "Verbal updates only, given informally"
+      "Verbal assurance equipment is fine",
+      "A maintained equipment log with current dates and a valid civil defence certificate",
+      "The presence of extinguishers regardless of service history",
+      "Staff memory of when things were last checked"
     ],
     "correct": 1,
-    "explain": "A written, reviewable support plan is what evidences purposeful, monitored support rather than an unstructured series of sessions."
+    "explain": "Documented, current records are the real evidence base — not presence alone or verbal assurance."
   },
   {
-    "tag": "5.2",
-    "q": "After a referral is made to an external specialist service, what is correct practice?",
+    "tag": "Evacuation",
+    "q": "Support staff (kitchen, maintenance) are excluded from a drill's headcount system.",
     "options": [
-      "Consider the case closed once the referral is sent",
-      "Wait indefinitely for the external service to respond with no further contact",
-      "Follow up to confirm receipt, and support the student while waiting",
-      "Tell the student to follow up themselves"
+      "Acceptable, since they aren't classroom-based",
+      "Only matters during a real fire",
+      "A real gap — headcount must cover every person on the premises",
+      "They can be assumed safe without counting"
     ],
     "correct": 2,
-    "explain": "A referral is a step in the pathway, not an endpoint — follow-up and interim support remain the wellbeing team's responsibility."
+    "explain": "Evacuation accountability must cover all staff categories, not only those attached to classrooms."
   },
   {
-    "tag": "5.2",
-    "q": "A student's needs cross into both wellbeing and SEN territory. What is the best coordination approach?",
+    "tag": "Evacuation",
+    "q": "What defines genuinely effective drill practice?",
     "options": [
-      "Keep the two entirely separate to protect confidentiality",
-      "Hand the whole case to the SEN lead",
-      "No coordination is necessary",
-      "Share relevant information on a need-to-know basis, coordinated through the case plan"
+      "A single annual drill with no review",
+      "Only announced drills with no variation",
+      "Stopping drills once one goes well",
+      "Regular, timed drills with documented review and corrective actions"
     ],
     "correct": 3,
-    "explain": "Coordinated, need-to-know information sharing allows both specialists to contribute effectively without oversharing."
+    "explain": "Regular, reviewed, timed drills build real readiness — a one-off exercise doesn't."
   },
   {
-    "tag": "2.1.1",
-    "q": "A student relies heavily on the counsellor to solve every problem directly. What is the better long-term approach?",
+    "tag": "Electrical/Hazmat",
+    "q": "Cleaning chemicals are found in an unlabelled, freely accessible container.",
     "options": [
-      "Gradually shift toward questioning approaches that help the student find their own solutions",
-      "Continue solving problems directly, since it's efficient",
-      "Stop supporting the student to force independence",
-      "End the counselling relationship immediately"
+      "A hazard — requires proper labelling, restricted access, and an accessible SDS",
+      "Acceptable if staff generally know what it is",
+      "Only lab chemicals require labelling",
+      "Only a concern after an incident occurs"
     ],
     "correct": 0,
-    "explain": "Building self-reliance means gradually shifting from directive advice-giving toward approaches that develop the student's own problem-solving."
+    "explain": "Unlabelled, unrestricted hazardous material storage is a genuine risk regardless of incident history."
   },
   {
-    "tag": "2.1.1",
-    "q": "Which is the strongest evidence that an intervention is building genuine self-reliance?",
+    "tag": "Electrical/Hazmat",
+    "q": "What is the correct standard for electrical safety inspection?",
     "options": [
-      "High attendance at scheduled sessions",
-      "The student successfully using a coping strategy independently, outside of sessions",
-      "The student always agreeing with the counsellor",
-      "A long case history"
+      "Wait for a visible fault",
+      "Scheduled inspection by qualified personnel, with findings logged and faults addressed promptly",
+      "Rely on staff reports of total failure only",
+      "Inspect only visibly old equipment"
     ],
     "correct": 1,
-    "explain": "Independent use of a strategy outside the session is the real marker of self-reliance, not attendance or agreement."
+    "explain": "Scheduled, qualified inspection is preventive; waiting for visible failure is reactive and riskier."
   },
   {
-    "tag": "2.1.2",
-    "q": "A serious behaviour incident has a clear underlying emotional cause. What is the wellbeing team's role?",
+    "tag": "First Aid",
+    "q": "A maintenance worker collapses in a remote area with no first-aid trained staff or kit nearby.",
     "options": [
-      "Take over the disciplinary decision entirely",
-      "Stay uninvolved since it's a discipline matter",
-      "Contribute understanding of the root cause and support, alongside the pastoral/behaviour lead",
-      "Only respond if asked by the student directly"
+      "Simply bad luck, not systemic",
+      "First aid only needs to cover classroom areas",
+      "A gap in distributed first-aid coverage that needs addressing across the site",
+      "Acceptable as long as the clinic is eventually reached"
     ],
     "correct": 2,
-    "explain": "The wellbeing team's distinctive value is understanding root causes and contributing coordinated support — not replacing the pastoral lead's role."
+    "explain": "This is exactly the scenario distributed first-aid coverage is meant to prevent."
   },
   {
-    "tag": "2.1.2",
-    "q": "In a bullying case, correct practice is to:",
+    "tag": "First Aid",
+    "q": "What is the correct standard for first-aid/CPR training coverage?",
     "options": [
-      "Support only the student who was targeted",
-      "Support only the student who caused harm",
-      "Provide no support once consequences are issued",
-      "Provide appropriate support to both students involved, as relevant to each"
+      "Concentrated entirely in the clinic team",
+      "Limited to teaching staff",
+      "Unnecessary if the clinic is centrally located",
+      "Distributed meaningfully across departments for faster response anywhere on site"
     ],
     "correct": 3,
-    "explain": "Effective bullying casework supports both parties appropriately, addressing both the harm caused and the behaviour that needs to change."
+    "explain": "Distributed coverage across departments ensures help is close by wherever an incident happens."
   },
   {
-    "tag": "2.1.3",
-    "q": "A vulnerable student is consistently excluded from peer groups. What is the appropriate wellbeing team response?",
+    "tag": "Crisis Prep",
+    "q": "Staff confuse a lockdown signal with the fire alarm during a drill and evacuate incorrectly.",
     "options": [
-      "Actively facilitate inclusion through structured initiatives such as social skills groups or peer mediation",
-      "Monitor only, without direct action",
-      "Refer entirely to the SEN lead with no further involvement",
-      "Wait for a parental complaint before acting"
+      "A real preparedness gap — signals and training need to be clearer, since correct responses are opposite actions",
+      "A minor mix-up, not worth addressing",
+      "Only security staff need to know the difference",
+      "The fire plan can reasonably cover this too"
     ],
     "correct": 0,
-    "explain": "Deliberate, structured facilitation is what actually shifts an established exclusion pattern — passive monitoring rarely does."
+    "explain": "Confusing evacuate vs. shelter-in-place signals is serious, since the correct actions directly oppose each other."
   },
   {
-    "tag": "2.1.3",
-    "q": "Which is the strongest evidence of the wellbeing team's impact on student relationships?",
+    "tag": "Crisis Prep",
+    "q": "What is the correct approach to non-fire emergencies (severe weather, security, structural issues)?",
     "options": [
-      "A general statement about the school's caring culture",
-      "Records of specific relationship-building initiatives with participation and outcomes noted",
-      "Attendance records alone",
-      "No specific evidence is expected for this indicator"
+      "Assume the fire evacuation plan covers everything",
+      "Each incident type has its own clear, communicated protocol",
+      "Plan only for fire, as the most likely risk",
+      "Leave responses to individual judgement in the moment"
     ],
     "correct": 1,
-    "explain": "Specific, evidenced initiatives with recorded participation and outcomes are the real evidence base — general claims are not enough."
+    "explain": "Different emergencies often need different, sometimes opposite, responses — each needs its own protocol."
   },
   {
-    "tag": "5.1",
-    "q": "A multi-agency meeting takes place regarding a student's welfare. What should follow?",
+    "tag": "Reporting",
+    "q": "A near-miss occurs (a staff member nearly slips) but no one is hurt, so it goes unreported.",
     "options": [
-      "Nothing further — the meeting itself is sufficient",
-      "A verbal summary passed on only if asked",
-      "A documented record of the meeting, with actions and follow-up owners",
-      "No record, to protect confidentiality"
+      "Fine, since no injury occurred",
+      "Only injuries requiring first aid need recording",
+      "Near-misses should be logged — they're valuable early warning data",
+      "Reporting near-misses is discouraged to keep morale up"
     ],
     "correct": 2,
-    "explain": "Documented, action-tracked records are what demonstrate genuine ongoing coordination, and are the evidence an inspection will expect."
+    "explain": "Near-misses are some of the most valuable prevention data available and should always be logged."
   },
   {
-    "tag": "5.2",
-    "q": "A crisis situation arises (e.g. active suicidal ideation). What should guide the response?",
+    "tag": "Reporting",
+    "q": "What should follow a significant safety incident beyond logging that it occurred?",
     "options": [
-      "Individual clinical judgement in the moment",
-      "Waiting until end of day to assess further",
-      "A promise from the student that they won't act on it, with no further steps",
-      "The school's rehearsed crisis protocol, followed immediately"
+      "Nothing further is required",
+      "A general reminder to 'be more careful'",
+      "Wait to see if it recurs before investigating",
+      "A root-cause review with specific corrective actions, owners and deadlines"
     ],
     "correct": 3,
-    "explain": "A rehearsed, immediately-followed protocol is essential in a crisis — not improvisation or a verbal promise in place of action."
+    "explain": "A genuine root-cause review with owned, deadlined actions is what prevents recurrence."
   },
   {
-    "tag": "2.1.1",
-    "q": "How should progress in building self-reliance typically be evidenced over time?",
+    "tag": "Fire Safety",
+    "q": "Emergency exits and evacuation routes should be kept clear:",
     "options": [
-      "The student needing less intensive support, or using coping strategies independently",
-      "The number of sessions attended",
-      "The student never disagreeing with guidance given",
-      "There is no way to evidence this"
+      "At all times, as standard daily practice",
+      "Only before a scheduled inspection visit",
+      "Only during fire drills",
+      "Only in classroom corridors, not staff areas"
     ],
     "correct": 0,
-    "explain": "Reduced need for intensive support, or independent use of strategies, is the meaningful evidence of growing self-reliance."
+    "explain": "Clear exits and routes are a constant requirement, not something arranged only for inspection visits."
+  },
+  {
+    "tag": "Evacuation",
+    "q": "Provision for staff or students needing extra assistance to evacuate should be:",
+    "options": [
+      "Left to be figured out during the actual emergency",
+      "Planned for specifically in advance, as part of the evacuation plan and drills",
+      "Not necessary if most people can evacuate quickly",
+      "Only considered if requested at the time"
+    ],
+    "correct": 1,
+    "explain": "Extra-assistance evacuation needs must be planned and rehearsed in advance, not improvised during a real emergency."
   }
 ];
 
@@ -723,7 +602,7 @@ let examAnswers = {};
 let lastResult = null;
 let storageReady = false;
 let wrongAttempts = {}; // transient, per-question: last incorrect pick, NOT persisted -- lets a student retry until correct
-const STORAGE_KEY = "cpd-wellbeing-team-progress";
+const STORAGE_KEY = "cpd-protection-lead-progress";
 
 function defaultProgress(){
   return { checks:{}, examAttempts:0, examBest:0, examPassed:false, certName:"" };
@@ -872,11 +751,11 @@ function render(){
 
 function renderHeader(){
   return '<header class="topbar">'+
-    '<div class="eyebrow">Non-Teaching Staff CPD \u00b7 Wellbeing Team</div>'+
+    '<div class="eyebrow">Non-Teaching Staff CPD \u00b7 Protection Lead</div>'+
     '<h1 class="programme-title">'+MODULE_TITLE+'</h1>'+
-    '<p class="programme-sub">A self-paced professional development module for the school\u2019s Counsellor and Social Worker, aligned to the UAE Ministry of Education-referenced school inspection indicators for Health & Safety incl. Child Protection (5.1), Care & Support (5.2), and Personal Development: Attitudes, Behaviour & Relationships (2.1.1\u20132.1.3). Each section includes practical guidance for both roles, knowledge checks, and the evidence you should have ready for inspection.</p>'+
-    '<div class="prereq">Indicators covered: 5.1 \u00b7 5.2 \u00b7 2.1.1 \u00b7 2.1.2 \u00b7 2.1.3 &nbsp;|&nbsp; '+EST_DURATION+'</div>'+
-    '<div class="disclaimer">Content is aligned to the UAE School Inspection Framework and MoE-referenced child protection and wellbeing principles (including UAE Federal Law No. 3 of 2016, Wadeema\u2019s Law). Always confirm exact document formats, referral pathways and reporting chains against your school\u2019s current policy and the latest MoE circulars.</div>'+
+    '<p class="programme-sub">A self-paced professional development module for the Protection Lead responsible for the safety of all staff (\u201cmanpower\u201d) on the premises, and preparedness for fire or any other untoward incident. Aligned to the UAE Ministry of Education\u2019s Occupational Health, Safety & Environment pillar. Includes practical guidance, knowledge checks, and the evidence you should have ready for inspection.</p>'+
+    '<div class="prereq">Focus: Staff/premises safety & emergency preparedness &nbsp;|&nbsp; '+EST_DURATION+'</div>'+
+    '<div class="disclaimer">Content is aligned to the UAE Ministry of Education\u2019s Occupational Health, Safety & Environment inspection pillar (fire safety, civil defence, evacuation, hazardous materials, first aid). This module covers staff protection and emergency preparedness \u2014 not general site security or access control, and not student child-protection safeguarding (covered separately). Always confirm exact requirements against your school\u2019s current policy and the latest MoE/civil defence circulars.</div>'+
     '</header>';
 }
 
@@ -887,7 +766,7 @@ function renderSidebar(){
       const done = c.checks.every((chk, qi) => progress.checks[gi+"_"+ci+"_"+qi] !== undefined);
       html += '<div class="sb-item" onclick="scrollToConcept('+gi+','+ci+')">'+
         '<div class="sb-mark'+(done?" done":"")+'">'+(done?"\u2713":(ci+1))+'</div>'+
-        '<div><div class="sb-item-title">'+c.title+'</div><div class="sb-item-meta">'+g.code+'</div></div>'+
+        '<div><div class="sb-item-title">'+c.title+'</div></div>'+
         '</div>';
     });
   });
@@ -906,24 +785,24 @@ function renderMain(){
 }
 
 function renderModuleHead(){
-  return '<div class="module-head"><div class="code">SELF-PACED CPD \u00b7 '+EST_DURATION+'</div><h2>'+MODULE_TITLE+'</h2><p>Work through all five indicator areas below, then pass the module exam (80%+) to complete it and generate your certificate.</p></div>';
+  return '<div class="module-head"><div class="code">SELF-PACED CPD \u00b7 '+EST_DURATION+'</div><h2>'+MODULE_TITLE+'</h2><p>Work through all six topics below, then pass the module exam (80%+) to complete it and generate your certificate.</p></div>';
 }
 
 function renderConcepts(){
   let html = renderModuleHead();
   GROUPS.forEach((g, gi) => {
-    html += '<div class="indicator-head"><div class="code">Indicator '+g.code+'</div><h3>'+g.title+'</h3></div>';
+    html += '<div class="indicator-head"><div class="code">'+g.code+'</div><h3>'+g.title+'</h3></div>';
     html += '<p style="color:#4a5670; font-size:14.3px; max-width:760px; margin:0 0 16px;">'+g.intro+'</p>';
     g.concepts.forEach((c, ci) => {
       html += '<div class="concept" id="concept-'+gi+'-'+ci+'">';
-      html += '<div class="concept-num">'+g.code+' \u00b7 Topic '+(ci+1)+' of '+g.concepts.length+' \u00b7 '+c.roles.join(' & ')+'</div>';
+      html += '<div class="concept-num">Topic '+(ci+1)+' of '+g.concepts.length+'</div>';
       html += '<h3>'+c.title+'</h3>';
       c.body.forEach(p => html += '<p>'+p+'</p>');
       html += '<div class="check-block"><div class="check-label">Check your understanding</div>';
       c.checks.forEach((chk, qi) => html += renderCheckQuestion(gi, ci, qi, chk));
       html += '</div></div>';
     });
-    html += '<div class="evidence-box"><h4>\ud83d\udcc1 Evidence to Prepare for Inspection \u2014 '+g.code+'</h4>'+
+    html += '<div class="evidence-box"><h4>\ud83d\udcc1 Evidence to Prepare for Inspection</h4>'+
       '<p class="sub">Documents and records you should be able to produce, up to date, if asked during an inspection visit.</p>'+
       '<ul>'+g.evidence.map(e=>'<li>'+e+'</li>').join("")+'</ul></div>';
   });
@@ -942,7 +821,7 @@ function renderConcepts(){
   html += '</div>';
 
   if(progress.examPassed){
-    html += '<div class="final-banner"><h2>Module complete</h2><p>You\u2019ve completed the Wellbeing Team CPD, covering Child Protection, Care & Support, and Personal Development \u2014 with the evidence base ready for your next inspection.</p></div>';
+    html += '<div class="final-banner"><h2>Module complete</h2><p>You\u2019ve completed the Protection Lead CPD, covering fire safety, evacuation, hazardous materials, first-aid readiness, crisis preparedness and incident reporting \u2014 with the evidence base ready for your next inspection.</p></div>';
   }
   return html;
 }
@@ -980,7 +859,7 @@ function renderExam(){
   html += '<div class="exam-progress">'+answeredCount+' of '+EXAM.length+' answered</div>';
   html += '<div class="concept">';
   EXAM.forEach((q, qi) => {
-    html += '<div class="question"><div class="q-text">'+(qi+1)+'. '+q.q+' <span style="color:#2E5C8A;font-family:IBM Plex Mono,monospace;font-size:11px;">['+q.tag+']</span></div>';
+    html += '<div class="question"><div class="q-text">'+(qi+1)+'. '+q.q+' <span style="color:#7A2E2E;font-family:IBM Plex Mono,monospace;font-size:11px;">['+q.tag+']</span></div>';
     q.options.forEach((opt, oi) => {
       const sel = examAnswers[qi] === oi;
       html += '<div class="opt'+(sel?" selected":"")+'" onclick="selectExamAnswer('+qi+','+oi+')"><div class="opt-bullet"></div><div>'+opt+'</div></div>';
@@ -1035,12 +914,12 @@ function renderCertificate(){
     '<a class="cert-back" onclick="backFromCertificate()">\u2190 Back to module</a>'+
     '<div class="certificate"><div class="certificate-inner">'+
       '<img class="cert-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">'+
-      '<div class="cert-eyebrow">Non-Teaching Staff CPD \u00b7 Wellbeing Team</div>'+
+      '<div class="cert-eyebrow">Non-Teaching Staff CPD \u00b7 Protection Lead</div>'+
       '<div class="cert-seal">COMPLETED<br>\u2713</div>'+
       '<div class="cert-title">Certificate of Completion</div>'+
       '<div class="cert-presented">This certifies that</div>'+
       '<div class="cert-name">'+escapeHtml(progress.certName)+'</div>'+
-      '<div class="cert-body">has successfully completed the <b>Wellbeing Team CPD (Counsellor & Social Worker)</b>, covering Health & Safety including Child Protection (5.1), Care & Support (5.2), and Personal Development: Attitudes, Behaviour & Relationships (2.1.1\u20132.1.3), in alignment with the UAE Ministry of Education-referenced school inspection framework.</div>'+
+      '<div class="cert-body">has successfully completed the <b>Protection Lead CPD: Staff Safety & Emergency Preparedness</b>, covering fire safety, evacuation, hazardous materials, first-aid readiness, crisis preparedness and incident reporting, in alignment with the UAE Ministry of Education\u2019s Occupational Health, Safety & Environment inspection pillar.</div>'+
       '<div class="cert-meta-row">'+
         '<div>Score<strong>'+progress.examBest+'%</strong></div>'+
         '<div>Date<strong>'+dateStr+'</strong></div>'+
