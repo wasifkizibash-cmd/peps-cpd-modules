@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Section Supervisor CPD / برنامج تطوير مشرف القسم</title>
+<title>Wellbeing Team CPD / برنامج التطوير المهني لفريق الرعاية النفسية</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -14,7 +14,7 @@
     --gold:#B7862C; --gold-soft:#F5EBD6;
     --red:#A23B3B; --red-soft:#F5E5E1;
     --line:#DBDACF;
-    --wb:#B5651D; --wb-soft:#F5E6D3;
+    --wb:#2E5C8A; --wb-soft:#E3EAF2;
     --evi:#5C4A7A; --evi-soft:#ECE7F2;
     --shadow: 0 1px 2px rgba(27,42,74,0.06), 0 4px 14px rgba(27,42,74,0.06);
   }
@@ -194,9 +194,6 @@
     .watermark{ opacity: 0.07; -webkit-print-color-adjust: exact; print-color-adjust: exact; position: fixed; }
   }
 </style>
-<link rel="preconnect" href="https://cdnjs.cloudflare.com">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 <div class="watermark"></div>
@@ -231,20 +228,20 @@ if (!window.storage) {
    Certificate is always issued in English regardless of the language toggle.
    ========================================================================= */
 
-
 const STR = {
   en: {
-    eyebrow: "Non-Teaching Staff CPD \u00b7 Section Supervisor (Administration)",
-    title: "Section Supervisor CPD: Discipline & Attendance",
-    duration: "Fully self-paced \u2014 no fixed limit (typically 60\u201390 minutes to work through thoroughly)",
-    sub: "A self-paced professional development module for Section Supervisors responsible for whole-section discipline, aligned to the UAE Ministry of Education-referenced school inspection indicators for Behaviour (2.1.2) and Attendance & Punctuality (2.1.5). Each section includes practical guidance, knowledge checks, and the evidence you should have ready for inspection.",
-    prereqLbl: "Indicators covered: 2.1.2 \u00b7 2.1.5",
-    disclaimer: "Content is aligned to the UAE School Inspection Framework\u2019s Personal Development standard. Always confirm your specific escalation ladder, late-gate procedure and referral thresholds against your school\u2019s current behaviour and attendance policy.",
+    eyebrow: "Non-Teaching Staff CPD \u00b7 Wellbeing Team",
+    title: "Wellbeing Team CPD: Counsellor & Social Worker",
+    duration: "Fully self-paced \u2014 no fixed limit (typically 70\u2013100 minutes to work through thoroughly)",
+    sub: "A self-paced professional development module for the school\u2019s Counsellor and Social Worker, aligned to the UAE Ministry of Education-referenced school inspection indicators for Health & Safety incl. Child Protection (5.1), Care & Support (5.2), and Personal Development: Attitudes, Behaviour & Relationships (2.1.1\u20132.1.3). Each section includes practical guidance for both roles, knowledge checks, and the evidence you should have ready for inspection.",
+    prereqLbl: "Indicators covered: 5.1 \u00b7 5.2 \u00b7 2.1.1 \u00b7 2.1.2 \u00b7 2.1.3",
+    disclaimer: "Content is aligned to the UAE School Inspection Framework and MoE-referenced child protection and wellbeing principles (including UAE Federal Law No. 3 of 2016, Wadeema\u2019s Law). Always confirm exact document formats, referral pathways and reporting chains against your school\u2019s current policy and the latest MoE circulars.",
     thisModule: "This Module", moduleExam: "Module Exam",
     passedLbl: "Passed", readyLbl: "Ready", lockedLbl: "Locked",
     selfPaced: "SELF-PACED CPD \u00b7 ",
-    moduleHeadP: "Work through both indicator areas below, then pass the module exam (80%+) to complete it and generate your certificate.",
+    moduleHeadP: "Work through all five indicator areas below, then pass the module exam (80%+) to complete it and generate your certificate.",
     topicOf: (a,b)=>"Topic "+a+" of "+b,
+    roleJoin: (arr)=>arr.join(" & "),
     checkUnderstanding: "Check your understanding",
     correctPrefix: "Correct. ", wrongPrefix: "Not quite. ", tryAgainHint: "Choose another option to try again.",
     evidenceTitle: "\ud83d\udcc1 Evidence to Prepare for Inspection \u2014 ",
@@ -258,14 +255,14 @@ const STR = {
     lockedH: "Module Exam locked",
     lockedP: (a,b)=>"Answer every check-your-understanding question above ("+a+" of "+b+" done) to unlock the exam.",
     finalH: "Module complete",
-    finalP: "You\u2019ve completed the Section Supervisor CPD, covering Behaviour and Attendance & Punctuality \u2014 with the evidence base ready for your next inspection.",
+    finalP: "You\u2019ve completed the Wellbeing Team CPD, covering Child Protection, Care & Support, and Personal Development \u2014 with the evidence base ready for your next inspection.",
     examEyebrow: "Module Exam",
     examHeadP: (n,p)=>"Answer all "+n+" questions, then submit. You need "+p+"%+ to pass. Retake as many times as you need.",
     answeredOf: (a,b)=>a+" of "+b+" answered",
     submitExam: "Submit Exam",
     completedStamp: "COMPLETED \u2713", failStamp: "NOT YET \u2014 RETRY",
     scoreLine: (c,t,p)=>c+" / "+t+" correct ("+p+"%)",
-    passedSub: "You\u2019ve passed the Section Supervisor exam.",
+    passedSub: "You\u2019ve passed the Wellbeing Team CPD exam.",
     failSub: (p)=>"You need "+p+"%+ to pass. Review the explanations below, then retake when ready.",
     correctAnswerLbl: "Correct answer: ",
     backToModule: "Back to module",
@@ -274,644 +271,1084 @@ const STR = {
     fullNamePh: "Full name",
     cancel: "Cancel", cont: "Continue",
     backArrow: "\u2190 Back to module",
-    certEyebrow: "Non-Teaching Staff CPD \u00b7 Section Supervisor",
+    certEyebrow: "Non-Teaching Staff CPD \u00b7 Wellbeing Team",
     certSeal: "COMPLETED<br>\u2713",
     certTitle: "Certificate of Completion",
     certPresented: "This certifies that",
-    certBody: "has successfully completed the <b>Section Supervisor CPD (Discipline & Attendance)</b>, covering Behaviour (2.1.2) and Attendance & Punctuality (2.1.5), in alignment with the UAE Ministry of Education-referenced school inspection framework.",
+    certBody: "has successfully completed the <b>Wellbeing Team CPD (Counsellor & Social Worker)</b>, covering Health & Safety including Child Protection (5.1), Care & Support (5.2), and Personal Development: Attitudes, Behaviour & Relationships (2.1.1\u20132.1.3), in alignment with the UAE Ministry of Education-referenced school inspection framework.",
     scoreLbl: "Score", dateLbl: "Date",
-    editName: "Edit name", printCert: "Print / Save as PDF", downloadCert: "Download Certificate (PDF)",
+    editName: "Edit name", printCert: "Print / Save as PDF",
     footProgress: "Progress saves automatically as you go.",
     resetLink: "Reset my progress",
-    indicatorLbl: "Section "
+    indicatorLbl: "Indicator "
   },
   ar: {
-    eyebrow: "\u0627\u0644\u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0645\u0647\u0646\u064a \u0644\u0644\u0645\u0648\u0638\u0641\u064a\u0646 \u063a\u064a\u0631 \u0627\u0644\u062a\u062f\u0631\u064a\u0633\u064a\u064a\u0646 \u00b7 \u0645\u0634\u0631\u0641 \u0627\u0644\u0642\u0633\u0645 (\u0627\u0644\u0625\u062f\u0627\u0631\u0629)",
-    title: "\u0628\u0631\u0646\u0627\u0645\u062c \u062a\u0637\u0648\u064a\u0631 \u0645\u0634\u0631\u0641 \u0627\u0644\u0642\u0633\u0645: \u0627\u0644\u0633\u0644\u0648\u0643 \u0648\u0627\u0644\u062d\u0636\u0648\u0631",
-    duration: "\u0630\u0627\u062a\u064a \u0627\u0644\u0648\u062a\u064a\u0631\u0629 \u0628\u0627\u0644\u0643\u0627\u0645\u0644 \u2014 \u062f\u0648\u0646 \u062d\u062f \u0632\u0645\u0646\u064a \u062b\u0627\u0628\u062a (\u064a\u0633\u062a\u063a\u0631\u0642 \u0639\u0627\u062f\u0629 60-90 \u062f\u0642\u064a\u0642\u0629 \u0644\u0625\u062a\u0645\u0627\u0645\u0647 \u0628\u0639\u0646\u0627\u064a\u0629)",
-    sub: "\u0648\u062d\u062f\u0629 \u062a\u0637\u0648\u064a\u0631 \u0645\u0647\u0646\u064a \u0630\u0627\u062a\u064a\u0629 \u0627\u0644\u0648\u062a\u064a\u0631\u0629 \u0644\u0645\u0634\u0631\u0641\u064a \u0627\u0644\u0623\u0642\u0633\u0627\u0645 \u0627\u0644\u0645\u0633\u0624\u0648\u0644\u064a\u0646 \u0639\u0646 \u0627\u0644\u0627\u0646\u0636\u0628\u0627\u0637 \u0639\u0644\u0649 \u0645\u0633\u062a\u0648\u0649 \u0627\u0644\u0642\u0633\u0645 \u0628\u0623\u0643\u0645\u0644\u0647\u060c \u062a\u062a\u0648\u0627\u0641\u0642 \u0645\u0639 \u0645\u0624\u0634\u0631\u0627\u062a \u0627\u0644\u062a\u0641\u062a\u064a\u0634 \u0627\u0644\u0645\u062f\u0631\u0633\u064a \u0627\u0644\u0635\u0627\u062f\u0631\u0629 \u0639\u0646 \u0648\u0632\u0627\u0631\u0629 \u0627\u0644\u062a\u0631\u0628\u064a\u0629 \u0648\u0627\u0644\u062a\u0639\u0644\u064a\u0645 \u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062a\u064a\u0629 \u0644\u0644\u0633\u0644\u0648\u0643 (2.1.2) \u0648\u0627\u0644\u062d\u0636\u0648\u0631 \u0648\u0627\u0644\u0627\u0646\u0636\u0628\u0627\u0637 \u0641\u064a \u0627\u0644\u0645\u0648\u0627\u0639\u064a\u062f (2.1.5). \u064a\u062a\u0636\u0645\u0646 \u0643\u0644 \u0642\u0633\u0645 \u0625\u0631\u0634\u0627\u062f\u0627\u062a \u0639\u0645\u0644\u064a\u0629\u060c \u0648\u0623\u0633\u0626\u0644\u0629 \u0644\u0644\u062a\u062d\u0642\u0642 \u0645\u0646 \u0627\u0644\u0641\u0647\u0645\u060c \u0648\u0645\u0644\u062e\u0635\u064b\u0627 \u0644\u0644\u0623\u062f\u0644\u0629 \u0627\u0644\u062a\u064a \u064a\u062c\u0628 \u0623\u0646 \u062a\u0643\u0648\u0646 \u062c\u0627\u0647\u0632\u0629 \u0644\u0644\u062a\u0641\u062a\u064a\u0634.",
-    prereqLbl: "\u0627\u0644\u0645\u0624\u0634\u0631\u0627\u062a \u0627\u0644\u0645\u0634\u0645\u0648\u0644\u0629: 2.1.2 \u00b7 2.1.5",
-    disclaimer: "\u064a\u062a\u0648\u0627\u0641\u0642 \u0627\u0644\u0645\u062d\u062a\u0648\u0649 \u0645\u0639 \u0645\u0639\u064a\u0627\u0631 \u0627\u0644\u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0634\u062e\u0635\u064a \u0641\u064a \u0625\u0637\u0627\u0631 \u0627\u0644\u062a\u0641\u062a\u064a\u0634 \u0627\u0644\u0645\u062f\u0631\u0633\u064a \u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062a\u064a. \u064a\u064f\u0631\u062c\u0649 \u062f\u0627\u0626\u0645\u064b\u0627 \u0627\u0644\u062a\u062d\u0642\u0642 \u0645\u0646 \u0633\u0644\u0645 \u0627\u0644\u062a\u0635\u0639\u064a\u062f \u0627\u0644\u062e\u0627\u0635 \u0628\u0645\u062f\u0631\u0633\u062a\u0643\u0645\u060c \u0648\u0625\u062c\u0631\u0627\u0621 \u0628\u0648\u0627\u0628\u0629 \u0627\u0644\u062a\u0623\u062e\u064a\u0631\u060c \u0648\u062d\u062f\u0648\u062f \u0627\u0644\u0625\u062d\u0627\u0644\u0629\u060c \u0628\u0627\u0644\u0631\u062c\u0648\u0639 \u0625\u0644\u0649 \u0633\u064a\u0627\u0633\u0629 \u0627\u0644\u0633\u0644\u0648\u0643 \u0648\u0627\u0644\u062d\u0636\u0648\u0631 \u0627\u0644\u062d\u0627\u0644\u064a\u0629 \u0641\u064a \u0645\u062f\u0631\u0633\u062a\u0643\u0645.",
+    eyebrow: "\u0627\u0644\u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0645\u0647\u0646\u064a \u0644\u0644\u0645\u0648\u0638\u0641\u064a\u0646 \u063a\u064a\u0631 \u0627\u0644\u062a\u062f\u0631\u064a\u0633\u064a\u064a\u0646 \u00b7 \u0641\u0631\u064a\u0642 \u0627\u0644\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0646\u0641\u0633\u064a\u0629",
+    title: "\u0628\u0631\u0646\u0627\u0645\u062c \u0627\u0644\u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0645\u0647\u0646\u064a \u0644\u0641\u0631\u064a\u0642 \u0627\u0644\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0646\u0641\u0633\u064a\u0629: \u0627\u0644\u0645\u0631\u0634\u062f \u0627\u0644\u0637\u0644\u0627\u0628\u064a \u0648\u0627\u0644\u0623\u062e\u0635\u0627\u0626\u064a \u0627\u0644\u0627\u062c\u062a\u0645\u0627\u0639\u064a",
+    duration: "\u0630\u0627\u062a\u064a \u0627\u0644\u0648\u062a\u064a\u0631\u0629 \u0628\u0627\u0644\u0643\u0627\u0645\u0644 \u2014 \u062f\u0648\u0646 \u062d\u062f \u0632\u0645\u0646\u064a \u062b\u0627\u0628\u062a (\u064a\u0633\u062a\u063a\u0631\u0642 \u0639\u0627\u062f\u0629 \u0645\u0646 70 \u0625\u0644\u0649 100 \u062f\u0642\u064a\u0642\u0629 \u0644\u0625\u062a\u0645\u0627\u0645\u0647 \u0628\u0639\u0646\u0627\u064a\u0629)",
+    sub: "\u0648\u062d\u062f\u0629 \u062a\u0637\u0648\u064a\u0631 \u0645\u0647\u0646\u064a \u0630\u0627\u062a\u064a\u0629 \u0627\u0644\u0648\u062a\u064a\u0631\u0629 \u0644\u0644\u0645\u0631\u0634\u062f \u0627\u0644\u0637\u0644\u0627\u0628\u064a \u0648\u0627\u0644\u0623\u062e\u0635\u0627\u0626\u064a \u0627\u0644\u0627\u062c\u062a\u0645\u0627\u0639\u064a \u0641\u064a \u0627\u0644\u0645\u062f\u0631\u0633\u0629\u060c \u0645\u062a\u0648\u0627\u0641\u0642\u0629 \u0645\u0639 \u0645\u0624\u0634\u0631\u0627\u062a \u0625\u0637\u0627\u0631 \u0627\u0644\u062a\u0641\u062a\u064a\u0634 \u0627\u0644\u0645\u062f\u0631\u0633\u064a \u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062a\u064a \u0627\u0644\u0635\u0627\u062f\u0631 \u0639\u0646 \u0648\u0632\u0627\u0631\u0629 \u0627\u0644\u062a\u0631\u0628\u064a\u0629 \u0648\u0627\u0644\u062a\u0639\u0644\u064a\u0645 \u0644\u0644\u0635\u062d\u0629 \u0648\u0627\u0644\u0633\u0644\u0627\u0645\u0629 \u0628\u0645\u0627 \u0641\u064a \u0630\u0644\u0643 \u062d\u0645\u0627\u064a\u0629 \u0627\u0644\u0637\u0641\u0644 (5.1)\u060c \u0648\u0627\u0644\u0631\u0639\u0627\u064a\u0629 \u0648\u0627\u0644\u062f\u0639\u0645 (5.2)\u060c \u0648\u0627\u0644\u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0634\u062e\u0635\u064a: \u0627\u0644\u0627\u062a\u062c\u0627\u0647\u0627\u062a \u0648\u0627\u0644\u0633\u0644\u0648\u0643 \u0648\u0627\u0644\u0639\u0644\u0627\u0642\u0627\u062a (2.1.1\u20132.1.3). \u064a\u062a\u0636\u0645\u0646 \u0643\u0644 \u0642\u0633\u0645 \u0625\u0631\u0634\u0627\u062f\u0627\u062a \u0639\u0645\u0644\u064a\u0629 \u0644\u0643\u0644\u0627 \u0627\u0644\u062f\u0648\u0631\u064a\u0646\u060c \u0648\u0623\u0633\u0626\u0644\u0629 \u0644\u0641\u062d\u0635 \u0627\u0644\u0641\u0647\u0645\u060c \u0648\u0627\u0644\u0623\u062f\u0644\u0629 \u0627\u0644\u062a\u064a \u064a\u062c\u0628 \u0623\u0646 \u062a\u0643\u0648\u0646 \u062c\u0627\u0647\u0632\u0629 \u0644\u0644\u062a\u0641\u062a\u064a\u0634.",
+    prereqLbl: "\u0627\u0644\u0645\u0624\u0634\u0631\u0627\u062a \u0627\u0644\u0645\u0634\u0645\u0648\u0644\u0629: 5.1 \u00b7 5.2 \u00b7 2.1.1 \u00b7 2.1.2 \u00b7 2.1.3",
+    disclaimer: "\u0627\u0644\u0645\u062d\u062a\u0648\u0649 \u0645\u062a\u0648\u0627\u0641\u0642 \u0645\u0639 \u0625\u0637\u0627\u0631 \u0627\u0644\u062a\u0641\u062a\u064a\u0634 \u0627\u0644\u0645\u062f\u0631\u0633\u064a \u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062a\u064a \u0648\u0645\u0628\u0627\u062f\u0626 \u062d\u0645\u0627\u064a\u0629 \u0627\u0644\u0637\u0641\u0644 \u0648\u0627\u0644\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0646\u0641\u0633\u064a\u0629 \u0627\u0644\u0635\u0627\u062f\u0631\u0629 \u0639\u0646 \u0648\u0632\u0627\u0631\u0629 \u0627\u0644\u062a\u0631\u0628\u064a\u0629 \u0648\u0627\u0644\u062a\u0639\u0644\u064a\u0645 (\u0628\u0645\u0627 \u0641\u064a \u0630\u0644\u0643 \u0627\u0644\u0642\u0627\u0646\u0648\u0646 \u0627\u0644\u0627\u062a\u062d\u0627\u062f\u064a \u0631\u0642\u0645 3 \u0644\u0633\u0646\u0629 2016 \"\u0642\u0627\u0646\u0648\u0646 \u0648\u062f\u064a\u0645\u0629\"). \u064a\u064f\u0631\u062c\u0649 \u062f\u0627\u0626\u0645\u064b\u0627 \u0627\u0644\u062a\u062d\u0642\u0642 \u0645\u0646 \u0627\u0644\u0635\u064a\u063a \u0627\u0644\u062f\u0642\u064a\u0642\u0629 \u0644\u0644\u0645\u0633\u062a\u0646\u062f\u0627\u062a\u060c \u0648\u0645\u0633\u0627\u0631\u0627\u062a \u0627\u0644\u0625\u062d\u0627\u0644\u0629\u060c \u0648\u0633\u0644\u0627\u0633\u0644 \u0627\u0644\u0625\u0628\u0644\u0627\u063a \u0648\u0641\u0642 \u0633\u064a\u0627\u0633\u0629 \u0645\u062f\u0631\u0633\u062a\u0643\u0645 \u0627\u0644\u062d\u0627\u0644\u064a\u0629 \u0648\u0623\u062d\u062f\u062b \u062a\u0639\u0627\u0645\u064a\u0645 \u0627\u0644\u0648\u0632\u0627\u0631\u0629.",
     thisModule: "\u0647\u0630\u0647 \u0627\u0644\u0648\u062d\u062f\u0629", moduleExam: "\u0627\u062e\u062a\u0628\u0627\u0631 \u0627\u0644\u0648\u062d\u062f\u0629",
     passedLbl: "\u0646\u0627\u062c\u062d", readyLbl: "\u062c\u0627\u0647\u0632", lockedLbl: "\u0645\u063a\u0644\u0642",
     selfPaced: "\u062a\u0637\u0648\u064a\u0631 \u0645\u0647\u0646\u064a \u0630\u0627\u062a\u064a \u0627\u0644\u0648\u062a\u064a\u0631\u0629 \u00b7 ",
-    moduleHeadP: "\u0623\u0643\u0645\u0644\u0648\u0627 \u0627\u0644\u0639\u0645\u0644 \u0639\u0628\u0631 \u0645\u062c\u0627\u0644\u064a \u0627\u0644\u0645\u0624\u0634\u0631\u064a\u0646 \u0623\u062f\u0646\u0627\u0647\u060c \u062b\u0645 \u0627\u062c\u062a\u0627\u0632\u0648\u0627 \u0627\u062e\u062a\u0628\u0627\u0631 \u0627\u0644\u0648\u062d\u062f\u0629 (80% \u0641\u0623\u0639\u0644\u0649) \u0644\u0625\u062a\u0645\u0627\u0645\u0647\u0627 \u0648\u0627\u0644\u062d\u0635\u0648\u0644 \u0639\u0644\u0649 \u0634\u0647\u0627\u062f\u062a\u0643\u0645.",
+    moduleHeadP: "\u0623\u0643\u0645\u0644 \u0627\u0644\u0639\u0645\u0644 \u0639\u0628\u0631 \u0645\u062c\u0627\u0644\u0627\u062a \u0627\u0644\u0645\u0624\u0634\u0631\u0627\u062a \u0627\u0644\u062e\u0645\u0633\u0629 \u0623\u062f\u0646\u0627\u0647\u060c \u062b\u0645 \u0627\u062c\u062a\u0632 \u0627\u062e\u062a\u0628\u0627\u0631 \u0627\u0644\u0648\u062d\u062f\u0629 (80% \u0641\u0623\u0639\u0644\u0649) \u0644\u0625\u062a\u0645\u0627\u0645\u0647\u0627 \u0648\u0627\u0644\u062d\u0635\u0648\u0644 \u0639\u0644\u0649 \u0634\u0647\u0627\u062f\u062a\u0643.",
     topicOf: (a,b)=>"\u0627\u0644\u0645\u0648\u0636\u0648\u0639 "+a+" \u0645\u0646 "+b,
-    checkUnderstanding: "\u062a\u062d\u0642\u0642\u0648\u0627 \u0645\u0646 \u0641\u0647\u0645\u0643\u0645",
+    roleJoin: (arr)=>arr.join(" \u0648 "),
+    checkUnderstanding: "\u062a\u062d\u0642\u0642 \u0645\u0646 \u0641\u0647\u0645\u0643",
     correctPrefix: "\u0625\u062c\u0627\u0628\u0629 \u0635\u062d\u064a\u062d\u0629. ", wrongPrefix: "\u0644\u064a\u0633\u062a \u0635\u062d\u064a\u062d\u0629 \u062a\u0645\u0627\u0645\u064b\u0627. ", tryAgainHint: "\u0627\u062e\u062a\u0631 \u0625\u062c\u0627\u0628\u0629 \u0623\u062e\u0631\u0649 \u0644\u0644\u0645\u062d\u0627\u0648\u0644\u0629 \u0645\u0631\u0629 \u0623\u062e\u0631\u0649.",
     evidenceTitle: "\ud83d\udcc1 \u0627\u0644\u0623\u062f\u0644\u0629 \u0627\u0644\u0648\u0627\u062c\u0628 \u062a\u062c\u0647\u064a\u0632\u0647\u0627 \u0644\u0644\u062a\u0641\u062a\u064a\u0634 \u2014 ",
-    evidenceSub: "\u0627\u0644\u0645\u0633\u062a\u0646\u062f\u0627\u062a \u0648\u0627\u0644\u0633\u062c\u0644\u0627\u062a \u0627\u0644\u062a\u064a \u064a\u062c\u0628 \u0623\u0646 \u062a\u0643\u0648\u0646\u0648\u0627 \u0642\u0627\u062f\u0631\u064a\u0646 \u0639\u0644\u0649 \u062a\u0642\u062f\u064a\u0645\u0647\u0627\u060c \u0645\u062d\u062f\u0651\u062b\u0629\u060c \u0625\u0630\u0627 \u0637\u064f\u0644\u0628 \u0630\u0644\u0643 \u0623\u062b\u0646\u0627\u0621 \u0632\u064a\u0627\u0631\u0629 \u062a\u0641\u062a\u064a\u0634\u064a\u0629.",
+    evidenceSub: "\u0627\u0644\u0645\u0633\u062a\u0646\u062f\u0627\u062a \u0648\u0627\u0644\u0633\u062c\u0644\u0627\u062a \u0627\u0644\u062a\u064a \u064a\u062c\u0628 \u0623\u0646 \u062a\u0643\u0648\u0646 \u0642\u0627\u062f\u0631\u064b\u0627 \u0639\u0644\u0649 \u062a\u0642\u062f\u064a\u0645\u0647\u0627\u060c \u0645\u062d\u062f\u0651\u062b\u0629\u060c \u0625\u0630\u0627 \u0637\u064f\u0644\u0628 \u0630\u0644\u0643 \u0623\u062b\u0646\u0627\u0621 \u0632\u064a\u0627\u0631\u0629 \u062a\u0641\u062a\u064a\u0634\u064a\u0629.",
     examPassedH: (s)=>"\u062a\u0645 \u0627\u062c\u062a\u064a\u0627\u0632 \u0627\u062e\u062a\u0628\u0627\u0631 \u0627\u0644\u0648\u062d\u062f\u0629 \u2014 "+s+"%",
-    examPassedP: "\u064a\u0645\u0643\u0646\u0643\u0645 \u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u0627\u062e\u062a\u0628\u0627\u0631 \u0641\u064a \u0623\u064a \u0648\u0642\u062a \u0644\u062a\u062d\u0633\u064a\u0646 \u062f\u0631\u062c\u062a\u0643\u0645.",
+    examPassedP: "\u064a\u0645\u0643\u0646\u0643 \u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u0627\u062e\u062a\u0628\u0627\u0631 \u0641\u064a \u0623\u064a \u0648\u0642\u062a \u0644\u062a\u062d\u0633\u064a\u0646 \u062f\u0631\u062c\u062a\u0643.",
     retakeExam: "\u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u0627\u062e\u062a\u0628\u0627\u0631", getCert: "\u0627\u0644\u062d\u0635\u0648\u0644 \u0639\u0644\u0649 \u0627\u0644\u0634\u0647\u0627\u062f\u0629",
     readyH: "\u062c\u0627\u0647\u0632 \u0644\u0627\u062e\u062a\u0628\u0627\u0631 \u0627\u0644\u0648\u062d\u062f\u0629",
-    readyP: (n,att,best)=>"\u0644\u0642\u062f \u0623\u0643\u0645\u0644\u062a\u0645 \u062c\u0645\u064a\u0639 \u0627\u0644\u0645\u0648\u0627\u0636\u064a\u0639 \u0627\u0644\u0640"+n+". \u0627\u062d\u0635\u0644\u0648\u0627 \u0639\u0644\u0649 80% \u0623\u0648 \u0623\u0639\u0644\u0649 \u0644\u0625\u062a\u0645\u0627\u0645 \u0647\u0630\u0647 \u0627\u0644\u0648\u062d\u062f\u0629."+(att>0?" \u0623\u0641\u0636\u0644 \u0646\u062a\u064a\u062c\u0629 \u0633\u0627\u0628\u0642\u0629: "+best+"%.":""),
+    readyP: (n,att,best)=>"\u0644\u0642\u062f \u0623\u0643\u0645\u0644\u062a \u062c\u0645\u064a\u0639 \u0627\u0644\u0645\u0648\u0627\u0636\u064a\u0639 \u0627\u0644\u0640"+n+". \u0627\u062d\u0635\u0644 \u0639\u0644\u0649 80% \u0623\u0648 \u0623\u0639\u0644\u0649 \u0644\u0625\u062a\u0645\u0627\u0645 \u0647\u0630\u0647 \u0627\u0644\u0648\u062d\u062f\u0629."+(att>0?" \u0623\u0641\u0636\u0644 \u0646\u062a\u064a\u062c\u0629 \u0633\u0627\u0628\u0642\u0629: "+best+"%.":""),
     startExamBtn: (att)=> att>0 ? "\u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u0627\u062e\u062a\u0628\u0627\u0631" : "\u0628\u062f\u0621 \u0627\u062e\u062a\u0628\u0627\u0631 \u0627\u0644\u0648\u062d\u062f\u0629",
     lockedH: "\u0627\u062e\u062a\u0628\u0627\u0631 \u0627\u0644\u0648\u062d\u062f\u0629 \u0645\u063a\u0644\u0642",
-    lockedP: (a,b)=>"\u0623\u062c\u064a\u0628\u0648\u0627 \u0639\u0646 \u062c\u0645\u064a\u0639 \u0623\u0633\u0626\u0644\u0629 \u0627\u0644\u062a\u062d\u0642\u0642 \u0645\u0646 \u0627\u0644\u0641\u0647\u0645 \u0623\u0639\u0644\u0627\u0647 ("+a+" \u0645\u0646 "+b+" \u0645\u0643\u062a\u0645\u0644\u0629) \u0644\u0641\u062a\u062d \u0627\u0644\u0627\u062e\u062a\u0628\u0627\u0631.",
+    lockedP: (a,b)=>"\u0623\u062c\u0628 \u0639\u0646 \u062c\u0645\u064a\u0639 \u0623\u0633\u0626\u0644\u0629 \u0627\u0644\u062a\u062d\u0642\u0642 \u0645\u0646 \u0627\u0644\u0641\u0647\u0645 \u0623\u0639\u0644\u0627\u0647 ("+a+" \u0645\u0646 "+b+" \u0645\u0643\u062a\u0645\u0644\u0629) \u0644\u0641\u062a\u062d \u0627\u0644\u0627\u062e\u062a\u0628\u0627\u0631.",
     finalH: "\u0627\u0643\u062a\u0645\u0644\u062a \u0627\u0644\u0648\u062d\u062f\u0629",
-    finalP: "\u0644\u0642\u062f \u0623\u0643\u0645\u0644\u062a\u0645 \u0628\u0631\u0646\u0627\u0645\u062c \u0645\u0634\u0631\u0641 \u0627\u0644\u0642\u0633\u0645\u060c \u0627\u0644\u0630\u064a \u064a\u063a\u0637\u064a \u0627\u0644\u0633\u0644\u0648\u0643 \u0648\u0627\u0644\u062d\u0636\u0648\u0631 \u0648\u0627\u0644\u0627\u0646\u0636\u0628\u0627\u0637 \u0641\u064a \u0627\u0644\u0645\u0648\u0627\u0639\u064a\u062f — \u0645\u0639 \u0642\u0627\u0639\u062f\u0629 \u0623\u062f\u0644\u0629 \u062c\u0627\u0647\u0632\u0629 \u0644\u0639\u0645\u0644\u064a\u0629 \u0627\u0644\u062a\u0641\u062a\u064a\u0634 \u0627\u0644\u0642\u0627\u062f\u0645\u0629.",
+    finalP: "\u0644\u0642\u062f \u0623\u0643\u0645\u0644\u062a \u0628\u0631\u0646\u0627\u0645\u062c \u0627\u0644\u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0645\u0647\u0646\u064a \u0644\u0641\u0631\u064a\u0642 \u0627\u0644\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0646\u0641\u0633\u064a\u0629\u060c \u0627\u0644\u0630\u064a \u064a\u063a\u0637\u064a \u062d\u0645\u0627\u064a\u0629 \u0627\u0644\u0637\u0641\u0644\u060c \u0648\u0627\u0644\u0631\u0639\u0627\u064a\u0629 \u0648\u0627\u0644\u062f\u0639\u0645\u060c \u0648\u0627\u0644\u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0634\u062e\u0635\u064a \u2014 \u0645\u0639 \u0642\u0627\u0639\u062f\u0629 \u0623\u062f\u0644\u0629 \u062c\u0627\u0647\u0632\u0629 \u0644\u0639\u0645\u0644\u064a\u0629 \u0627\u0644\u062a\u0641\u062a\u064a\u0634 \u0627\u0644\u0642\u0627\u062f\u0645\u0629.",
     examEyebrow: "\u0627\u062e\u062a\u0628\u0627\u0631 \u0627\u0644\u0648\u062d\u062f\u0629",
-    examHeadP: (n,p)=>"\u0623\u062c\u064a\u0628\u0648\u0627 \u0639\u0646 \u062c\u0645\u064a\u0639 \u0627\u0644\u0623\u0633\u0626\u0644\u0629 \u0627\u0644\u0640"+n+" \u062b\u0645 \u0623\u0631\u0633\u0644\u0648\u0627 \u0627\u0644\u0625\u062c\u0627\u0628\u0627\u062a. \u062a\u062d\u062a\u0627\u062c\u0648\u0646 \u0625\u0644\u0649 "+p+"% \u0641\u0623\u0639\u0644\u0649 \u0644\u0644\u0646\u062c\u0627\u062d. \u064a\u0645\u0643\u0646\u0643\u0645 \u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u0645\u062d\u0627\u0648\u0644\u0629 \u0628\u0642\u062f\u0631 \u0645\u0627 \u062a\u062d\u062a\u0627\u062c\u0648\u0646.",
+    examHeadP: (n,p)=>"\u0623\u062c\u0628 \u0639\u0646 \u062c\u0645\u064a\u0639 \u0627\u0644\u0623\u0633\u0626\u0644\u0629 \u0627\u0644\u0640"+n+" \u062b\u0645 \u0623\u0631\u0633\u0644 \u0627\u0644\u0625\u062c\u0627\u0628\u0627\u062a. \u062a\u062d\u062a\u0627\u062c \u0625\u0644\u0649 "+p+"% \u0641\u0623\u0639\u0644\u0649 \u0644\u0644\u0646\u062c\u0627\u062d. \u064a\u0645\u0643\u0646\u0643 \u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u0645\u062d\u0627\u0648\u0644\u0629 \u0628\u0642\u062f\u0631 \u0645\u0627 \u062a\u062d\u062a\u0627\u062c.",
     answeredOf: (a,b)=>a+" \u0645\u0646 "+b+" \u062a\u0645\u062a \u0627\u0644\u0625\u062c\u0627\u0628\u0629 \u0639\u0644\u064a\u0647\u0627",
     submitExam: "\u0625\u0631\u0633\u0627\u0644 \u0627\u0644\u0627\u062e\u062a\u0628\u0627\u0631",
-    completedStamp: "\u0645\u0643\u062a\u0645\u0644 \u2713", failStamp: "\u0644\u0645 \u064a\u0643\u062a\u0645\u0644 \u0628\u0639\u062f — \u0623\u0639\u062f \u0627\u0644\u0645\u062d\u0627\u0648\u0644\u0629",
+    completedStamp: "\u0645\u0643\u062a\u0645\u0644 \u2713", failStamp: "\u0644\u0645 \u064a\u0643\u062a\u0645\u0644 \u0628\u0639\u062f \u2014 \u0623\u0639\u062f \u0627\u0644\u0645\u062d\u0627\u0648\u0644\u0629",
     scoreLine: (c,t,p)=>c+" / "+t+" \u0625\u062c\u0627\u0628\u0629 \u0635\u062d\u064a\u062d\u0629 ("+p+"%)",
-    passedSub: "\u0644\u0642\u062f \u0627\u062c\u062a\u0632\u062a\u0645 \u0627\u062e\u062a\u0628\u0627\u0631 \u0645\u0634\u0631\u0641 \u0627\u0644\u0642\u0633\u0645.",
-    failSub: (p)=>"\u062a\u062d\u062a\u0627\u062c\u0648\u0646 \u0625\u0644\u0649 "+p+"% \u0641\u0623\u0639\u0644\u0649 \u0644\u0644\u0646\u062c\u0627\u062d. \u0631\u0627\u062c\u0639\u0648\u0627 \u0627\u0644\u062a\u0641\u0633\u064a\u0631\u0627\u062a \u0623\u062f\u0646\u0627\u0647\u060c \u062b\u0645 \u0623\u0639\u064a\u062f\u0648\u0627 \u0627\u0644\u0645\u062d\u0627\u0648\u0644\u0629 \u0639\u0646\u062f \u0627\u0644\u0627\u0633\u062a\u0639\u062f\u0627\u062f.",
+    passedSub: "\u0644\u0642\u062f \u0627\u062c\u062a\u0632\u062a \u0627\u062e\u062a\u0628\u0627\u0631 \u0628\u0631\u0646\u0627\u0645\u062c \u0627\u0644\u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0645\u0647\u0646\u064a \u0644\u0641\u0631\u064a\u0642 \u0627\u0644\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0646\u0641\u0633\u064a\u0629.",
+    failSub: (p)=>"\u062a\u062d\u062a\u0627\u062c \u0625\u0644\u0649 "+p+"% \u0641\u0623\u0639\u0644\u0649 \u0644\u0644\u0646\u062c\u0627\u062d. \u0631\u0627\u062c\u0639 \u0627\u0644\u062a\u0641\u0633\u064a\u0631\u0627\u062a \u0623\u062f\u0646\u0627\u0647\u060c \u062b\u0645 \u0623\u0639\u062f \u0627\u0644\u0645\u062d\u0627\u0648\u0644\u0629 \u0639\u0646\u062f \u0627\u0644\u0627\u0633\u062a\u0639\u062f\u0627\u062f.",
     correctAnswerLbl: "\u0627\u0644\u0625\u062c\u0627\u0628\u0629 \u0627\u0644\u0635\u062d\u064a\u062d\u0629: ",
     backToModule: "\u0627\u0644\u0639\u0648\u062f\u0629 \u0625\u0644\u0649 \u0627\u0644\u0648\u062d\u062f\u0629",
     oneStep: "\u062e\u0637\u0648\u0629 \u0633\u0631\u064a\u0639\u0629 \u0648\u0627\u062d\u062f\u0629",
-    enterName: "\u0623\u062f\u062e\u0644\u0648\u0627 \u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0630\u064a \u0633\u064a\u064f\u0637\u0628\u0639 \u0639\u0644\u0649 \u0627\u0644\u0634\u0647\u0627\u062f\u0629.",
+    enterName: "\u0623\u062f\u062e\u0644 \u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0630\u064a \u0633\u064a\u064f\u0637\u0628\u0639 \u0639\u0644\u0649 \u0627\u0644\u0634\u0647\u0627\u062f\u0629.",
     fullNamePh: "\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0643\u0627\u0645\u0644",
     cancel: "\u0625\u0644\u063a\u0627\u0621", cont: "\u0645\u062a\u0627\u0628\u0639\u0629",
     backArrow: "\u2192 \u0627\u0644\u0639\u0648\u062f\u0629 \u0625\u0644\u0649 \u0627\u0644\u0648\u062d\u062f\u0629",
-    certEyebrow: "\u0627\u0644\u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0645\u0647\u0646\u064a \u0644\u0644\u0645\u0648\u0638\u0641\u064a\u0646 \u063a\u064a\u0631 \u0627\u0644\u062a\u062f\u0631\u064a\u0633\u064a\u064a\u0646 \u00b7 \u0645\u0634\u0631\u0641 \u0627\u0644\u0642\u0633\u0645",
+    certEyebrow: "\u0627\u0644\u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0645\u0647\u0646\u064a \u0644\u0644\u0645\u0648\u0638\u0641\u064a\u0646 \u063a\u064a\u0631 \u0627\u0644\u062a\u062f\u0631\u064a\u0633\u064a\u064a\u0646 \u00b7 \u0641\u0631\u064a\u0642 \u0627\u0644\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0646\u0641\u0633\u064a\u0629",
     certSeal: "\u0645\u0643\u062a\u0645\u0644<br>\u2713",
     certTitle: "\u0634\u0647\u0627\u062f\u0629 \u0625\u062a\u0645\u0627\u0645",
     certPresented: "\u062a\u0634\u0647\u062f \u0647\u0630\u0647 \u0627\u0644\u0648\u062b\u064a\u0642\u0629 \u0628\u0623\u0646",
-    certBody: "\u0642\u062f \u0623\u062a\u0645(\u062a) \u0628\u0646\u062c\u0627\u062d <b>\u0628\u0631\u0646\u0627\u0645\u062c \u0645\u0634\u0631\u0641 \u0627\u0644\u0642\u0633\u0645 (\u0627\u0644\u0633\u0644\u0648\u0643 \u0648\u0627\u0644\u062d\u0636\u0648\u0631)</b>\u060c \u0627\u0644\u0630\u064a \u064a\u063a\u0637\u064a \u0627\u0644\u0633\u0644\u0648\u0643 (2.1.2) \u0648\u0627\u0644\u062d\u0636\u0648\u0631 \u0648\u0627\u0644\u0627\u0646\u0636\u0628\u0627\u0637 \u0641\u064a \u0627\u0644\u0645\u0648\u0627\u0639\u064a\u062f (2.1.5)\u060c \u0628\u0645\u0627 \u064a\u062a\u0648\u0627\u0641\u0642 \u0645\u0639 \u0625\u0637\u0627\u0631 \u0627\u0644\u062a\u0641\u062a\u064a\u0634 \u0627\u0644\u0645\u062f\u0631\u0633\u064a \u0627\u0644\u0635\u0627\u062f\u0631 \u0639\u0646 \u0648\u0632\u0627\u0631\u0629 \u0627\u0644\u062a\u0631\u0628\u064a\u0629 \u0648\u0627\u0644\u062a\u0639\u0644\u064a\u0645 \u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062a\u064a\u0629.",
+    certBody: "\u0642\u062f \u0623\u062a\u0645(\u062a) \u0628\u0646\u062c\u0627\u062d <b>\u0628\u0631\u0646\u0627\u0645\u062c \u0627\u0644\u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0645\u0647\u0646\u064a \u0644\u0641\u0631\u064a\u0642 \u0627\u0644\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0646\u0641\u0633\u064a\u0629 (\u0627\u0644\u0645\u0631\u0634\u062f \u0627\u0644\u0637\u0644\u0627\u0628\u064a \u0648\u0627\u0644\u0623\u062e\u0635\u0627\u0626\u064a \u0627\u0644\u0627\u062c\u062a\u0645\u0627\u0639\u064a)</b>\u060c \u0627\u0644\u0630\u064a \u064a\u063a\u0637\u064a \u0627\u0644\u0635\u062d\u0629 \u0648\u0627\u0644\u0633\u0644\u0627\u0645\u0629 \u0628\u0645\u0627 \u0641\u064a \u0630\u0644\u0643 \u062d\u0645\u0627\u064a\u0629 \u0627\u0644\u0637\u0641\u0644 (5.1)\u060c \u0648\u0627\u0644\u0631\u0639\u0627\u064a\u0629 \u0648\u0627\u0644\u062f\u0639\u0645 (5.2)\u060c \u0648\u0627\u0644\u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0634\u062e\u0635\u064a (2.1.1\u20132.1.3)\u060c \u0628\u0645\u0627 \u064a\u062a\u0648\u0627\u0641\u0642 \u0645\u0639 \u0625\u0637\u0627\u0631 \u0627\u0644\u062a\u0641\u062a\u064a\u0634 \u0627\u0644\u0645\u062f\u0631\u0633\u064a \u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062a\u064a.",
     scoreLbl: "\u0627\u0644\u062f\u0631\u062c\u0629", dateLbl: "\u0627\u0644\u062a\u0627\u0631\u064a\u062e",
-    editName: "\u062a\u0639\u062f\u064a\u0644 \u0627\u0644\u0627\u0633\u0645", printCert: "\u0637\u0628\u0627\u0639\u0629 / \u062d\u0641\u0638 \u0643\u0645\u0644\u0641 PDF", downloadCert: "\u062a\u0646\u0632\u064a\u0644 \u0627\u0644\u0634\u0647\u0627\u062f\u0629 (PDF)",
-    footProgress: "\u064a\u064f\u062d\u0641\u0638 \u062a\u0642\u062f\u0645\u0643\u0645 \u062a\u0644\u0642\u0627\u0626\u064a\u064b\u0627 \u0623\u062b\u0646\u0627\u0621 \u0627\u0644\u0645\u062a\u0627\u0628\u0639\u0629.",
+    editName: "\u062a\u0639\u062f\u064a\u0644 \u0627\u0644\u0627\u0633\u0645", printCert: "\u0637\u0628\u0627\u0639\u0629 / \u062d\u0641\u0638 \u0643\u0645\u0644\u0641 PDF",
+    footProgress: "\u064a\u064f\u062d\u0641\u0638 \u062a\u0642\u062f\u0645\u0643 \u062a\u0644\u0642\u0627\u0626\u064a\u064b\u0627 \u0623\u062b\u0646\u0627\u0621 \u0627\u0644\u0645\u062a\u0627\u0628\u0639\u0629.",
     resetLink: "\u0625\u0639\u0627\u062f\u0629 \u062a\u0639\u064a\u064a\u0646 \u062a\u0642\u062f\u0645\u064a",
-    indicatorLbl: "\u0627\u0644\u0642\u0633\u0645 "
+    indicatorLbl: "\u0627\u0644\u0645\u0624\u0634\u0631 "
   }
 };
 
-
 const GROUPS_EN = [
-  { code: "2.1.2", title: "Behaviour",
-    intro: "As the person responsible for day-to-day order across a whole section, the supervisor's consistency \u2014 more than any single decision \u2014 is what determines whether the section's behaviour system actually works.",
-    concepts: [
-      { title: "Whole-Section Behaviour Systems & Consistency",
-        body: [
-          "The single biggest threat to a section's behaviour system is inconsistency \u2014 the same infraction handled differently depending on which supervisor is on duty, or which student is involved. Students notice this immediately, and it undermines trust in the whole system.",
-          "A clear, shared escalation ladder (e.g. verbal reminder \u2192 formal warning \u2192 logged consequence \u2192 referral to leadership/pastoral) should be applied the same way by every supervisor in the section, not left to individual discretion each time.",
-          "Modelling calm, consistent authority \u2014 rather than reacting emotionally to provocation \u2014 is itself part of what teaches students self-discipline."
+  {
+    "code": "5.1",
+    "title": "Health & Safety, including Arrangements for Child Protection",
+    "intro": "The wellbeing team sits at the centre of the school's safeguarding response. Counsellors and social workers are often either the Designated Safeguarding Lead (DSL), a deputy, or the first point of referral for a concern — which means understanding exactly where confidentiality ends and the duty to protect begins is not optional.",
+    "concepts": [
+      {
+        "title": "The Wellbeing Team's Central Safeguarding Role",
+        "roles": [
+          "Counsellor",
+          "Social Worker"
         ],
-        checks: [
-          { q: "Two supervisors in the same section handle an identical minor uniform infraction very differently \u2014 one gives a verbal reminder, the other sends the student straight to a formal consequence.", options: ["This inconsistency undermines the whole-section system and should be resolved by applying the shared escalation ladder the same way", "This is fine, since supervisors should use their own judgement", "The stricter response is always the correct one", "This only matters if a parent complains"], correct: 0, explain: "Inconsistent application of consequences is one of the fastest ways to erode a behaviour system's credibility \u2014 the shared escalation ladder exists precisely to prevent this." },
-          { q: "Which is the strongest evidence of consistent behaviour management across a section?", options: ["Each supervisor's personal discretion, exercised case by case", "A documented, shared escalation ladder applied the same way by every supervisor", "A verbal agreement between supervisors with nothing written down", "No documented approach, since every incident is different"], correct: 1, explain: "A documented, consistently-applied escalation ladder is what evidences a genuine system, rather than a set of individual approaches." }
+        "body": [
+          "Therapeutic confidentiality in counselling is not absolute — it has a clearly understood limit at risk of harm. Best practice is to explain this limit to students at the start of any counselling relationship, so a later disclosure doesn't feel like a betrayal.",
+          "When a safeguarding concern arises, the response follows the school's child protection policy, not personal judgement alone: inform the DSL, document factually and promptly, and avoid investigating or promising secrecy.",
+          "Case records for safeguarding matters are stored separately from general counselling notes, with tightly controlled access."
+        ],
+        "checks": [
+          {
+            "q": "During a confidential counselling session, a student discloses thoughts of self-harm. What should the counsellor do?",
+            "options": [
+              "Follow the safeguarding protocol — inform the DSL and document factually, even though it breaks session confidentiality",
+              "Keep it fully confidential, since it was said in a counselling session",
+              "Wait until the next session to see if it comes up again",
+              "Promise the student it will never be shared with anyone"
+            ],
+            "correct": 0,
+            "explain": "Risk of harm overrides therapeutic confidentiality. Good practice sets this expectation with the student in advance, but the safeguarding duty applies regardless."
+          },
+          {
+            "q": "What is the correct standard for documenting a safeguarding concern raised in a wellbeing session?",
+            "options": [
+              "A brief mental note, formalised only if it happens again",
+              "A factual, prompt, dated record, shared with the DSL and stored securely and separately from general notes",
+              "A summary added informally to the student's general file",
+              "No written record, to protect the student's trust"
+            ],
+            "correct": 1,
+            "explain": "Prompt, factual, securely-stored documentation protects the student and creates the evidence trail safeguarding decisions depend on."
+          }
         ]
       },
-      { title: "First Response to Behaviour Incidents",
-        body: [
-          "In the moment, the priority is safety and de-escalation, not an immediate final decision. Separate those involved calmly, ensure everyone is safe, and gather facts from all sides before deciding on a consequence.",
-          "Public confrontation tends to escalate a situation and can humiliate a student in front of peers, making a calm resolution harder. Moving a conversation somewhere quieter, where possible, usually works better.",
-          "A consequence decided in the heat of the moment, based on only one side of the story, is far more likely to be unfair \u2014 and more likely to be challenged or reversed later."
+      {
+        "title": "Multi-Agency Liaison & the Social Worker's Distinctive Role",
+        "roles": [
+          "Social Worker"
         ],
-        checks: [
-          { q: "Two students are in a loud, heated argument in a busy corridor. What should the supervisor do first?", options: ["Immediately issue a consequence to whoever seems most at fault", "Raise their own voice to regain control of the situation", "Separate them calmly, ensure safety, and gather facts from both sides before deciding on a response", "Ignore it unless it becomes physical"], correct: 2, explain: "Safety and calm de-escalation come first; a fair decision depends on hearing both sides, not on the loudest or most visible version of events." },
-          { q: "Which approach is most likely to lead to a fair, lasting resolution of a behaviour incident?", options: ["A quick decision made publicly in front of other students", "Assuming the more familiar or 'usual' student is at fault", "Issuing the maximum consequence to discourage repeat incidents", "Moving the conversation somewhere calmer and gathering both sides before deciding"], correct: 3, explain: "A calmer setting and a fuller picture of what happened produce decisions that are both fairer and more likely to be accepted by everyone involved." }
-        ]
-      },
-      { title: "Behaviour Recording & Escalation Pathways",
-        body: [
-          "Every incident, however minor, is logged promptly and factually \u2014 what happened, action taken, and by whom \u2014 rather than relying on memory or only recording the more serious cases.",
-          "Consistent logging makes it possible to spot patterns: a student with repeated minor incidents, a particular time or location where problems cluster, or a pattern involving the same group of students.",
-          "When a pattern emerges \u2014 or a single incident is serious \u2014 escalation to the Head of Year, pastoral lead, or wellbeing team is the correct next step, rather than repeating the same low-level response indefinitely."
+        "body": [
+          "The social worker's role often extends beyond the school gate — assessing home circumstances, liaising with external child protection or family services, and sometimes conducting home visits, in coordination with the DSL rather than independently.",
+          "The counsellor's contribution is primarily the in-school therapeutic relationship; the social worker's is the wider welfare and family context. Both feed into one coordinated case record rather than working in separate silos.",
+          "Multi-agency meetings (with external social services, health providers, or other authorities) should be documented, with clear actions and follow-up owners."
         ],
-        checks: [
-          { q: "What is the correct standard for logging a behaviour incident?", options: ["A prompt, factual record made the same day \u2014 what happened, action taken, by whom", "A vague note added from memory, days later, if there's time", "Only serious incidents need to be logged", "No log is needed if a verbal warning was given"], correct: 0, explain: "Prompt, factual, same-day logging is what makes pattern-spotting and fair follow-up possible \u2014 delayed or selective logging undermines both." },
-          { q: "A student has received four minor behaviour incidents this term, each handled with the same standard consequence.", options: ["Continue applying the same standard consequence indefinitely", "Recognise the pattern and escalate to the Head of Year/pastoral team rather than repeating the same response", "Ignore it since each incident was individually minor", "Increase the consequence severity without informing anyone else"], correct: 1, explain: "A repeating pattern, even of minor incidents, calls for escalation and a different kind of response \u2014 not just repeating what clearly isn't working." }
-        ]
-      },
-      { title: "Anti-Bullying Oversight",
-        body: [
-          "Bullying tends to cluster in specific places and times \u2014 corridors, toilets, or areas with less direct supervision. Effective supervisors know their section's likely hotspots and deploy their presence accordingly, rather than only reacting after a complaint.",
-          "When a bullying concern arises, the correct response follows the school's anti-bullying policy: both the student who was targeted and the student whose behaviour caused harm typically need appropriate support, and serious or repeated cases are referred to the wellbeing team.",
-          "The supervisor's role is proactive presence, prompt response, and correct referral \u2014 not attempting to resolve serious or repeated bullying cases entirely alone."
-        ],
-        checks: [
-          { q: "Which is the strongest evidence of proactive anti-bullying supervision?", options: ["Only responding after a complaint is made", "Assuming bullying doesn't happen if no one has reported it", "Identifying known hotspots (e.g. unsupervised corridors) and adjusting duty deployment accordingly", "Relying entirely on students to self-report"], correct: 2, explain: "Proactive deployment based on known risk areas prevents incidents rather than only responding after harm has already occurred." },
-          { q: "A bullying concern is reported involving two students. What is the correct scope of the supervisor's response?", options: ["Handle it entirely independently without involving the wellbeing team", "Support only the student who was targeted", "Take no action unless a parent complains", "Follow the anti-bullying policy, provide appropriate initial support to both students, and refer serious or repeated cases to the wellbeing team"], correct: 3, explain: "The supervisor's role is proactive presence and prompt, policy-consistent initial response \u2014 with serious or repeated cases referred on to the wellbeing team, not resolved alone." }
+        "checks": [
+          {
+            "q": "A social worker becomes aware of a concerning family circumstance affecting a student at home. What is the correct next step?",
+            "options": [
+              "Visit the family home personally and address it directly, without informing the school",
+              "Discuss it informally with the student's teachers first",
+              "Assess and escalate through the DSL and, where appropriate, liaise with the relevant external agency",
+              "Wait for the family to raise it themselves"
+            ],
+            "correct": 2,
+            "explain": "Home/family concerns are escalated through the proper safeguarding and multi-agency channels — not handled as an independent, unilateral visit."
+          },
+          {
+            "q": "Which is the strongest evidence of effective multi-agency liaison for inspection purposes?",
+            "options": [
+              "A verbal assurance that agencies are 'in the loop'",
+              "An email sent once with no reply expected",
+              "No documentation, to protect family privacy",
+              "Documented records of multi-agency meetings, with actions and follow-up owners"
+            ],
+            "correct": 3,
+            "explain": "Documented, action-tracked liaison records are what demonstrate genuine, ongoing multi-agency coordination rather than a one-off gesture."
+          }
         ]
       }
     ],
-    evidence: [
-      "Section behaviour log (dated, consistent format, incident + action taken)",
-      "Behaviour policy / escalation ladder document, applied consistently across supervisors",
-      "Anti-bullying casework records specific to the section",
-      "Records of repeat-incident pattern analysis and resulting interventions",
-      "Evidence of parent communication regarding behaviour concerns",
-      "Staff briefing/training records on behaviour expectations and consistent application"
+    "evidence": [
+      "Safeguarding referral/case log, stored separately and confidentially from general counselling notes",
+      "Protocol document defining roles between counsellor, social worker and DSL",
+      "Child protection training records for all wellbeing team members",
+      "Records of multi-agency liaison meetings, with actions and follow-up",
+      "Confidentiality policy specific to counselling and case records",
+      "Risk assessment records for open, high-risk cases"
     ]
   },
-  { code: "2.1.5", title: "Attendance and Punctuality",
-    intro: "Attendance and punctuality data is only useful if it's accurate, consistently recorded, and actually acted on \u2014 the supervisor's role covers all three.",
-    concepts: [
-      { title: "Late-Gate & Arrival Management",
-        body: [
-          "An effective late-gate process records every late arrival accurately and consistently \u2014 time-stamped, not waved through informally \u2014 since this record is what makes pattern-spotting possible later.",
-          "Occasional lateness (traffic, a one-off appointment) is different from habitual lateness, and the response should reflect that distinction rather than treating every case identically.",
-          "Persistent lateness for an individual student should trigger communication with parents and, where the pattern continues, escalation to the Head of Year \u2014 not just repeated late slips with no further action."
+  {
+    "code": "5.2",
+    "title": "Care & Support",
+    "intro": "Beyond crisis response, the wellbeing team provides ongoing, planned support — individual case management, crisis intervention protocols, and clear referral pathways both within and beyond the school.",
+    "concepts": [
+      {
+        "title": "Individual Support & Case Management Plans",
+        "roles": [
+          "Counsellor",
+          "Social Worker"
         ],
-        checks: [
-          { q: "A student arrives late but a supervisor waves them through without recording it, to save time.", options: ["This undermines accurate record-keeping and should always be recorded, even briefly", "This is fine occasionally, to keep things moving", "Only serious lateness needs to be recorded", "Recording is only necessary once a week"], correct: 0, explain: "Every late arrival needs to be recorded consistently \u2014 an unrecorded pattern is invisible, which defeats the purpose of the system." },
-          { q: "A student has arrived late eight times this term, each time receiving the same standard late slip with no further action.", options: ["Continue with the same response indefinitely", "Recognise the pattern, communicate with parents, and escalate to the Head of Year if it continues", "Ignore it since each instance was individually minor", "Stop recording it since it happens so often"], correct: 1, explain: "A persistent pattern calls for escalation and parent communication \u2014 not an indefinitely repeated response that clearly isn't changing the behaviour." }
+        "body": [
+          "Each open case — whether a counselling case or a social-work/family case — has a written support plan: clear goals, planned actions, and a review date, not just a running log of session notes.",
+          "Plans are coordinated with other relevant staff (SEN lead, class teacher, nurse) where the student's needs cross domains, without over-sharing sensitive detail beyond what each person needs to know.",
+          "Reviews check not just whether sessions happened, but whether the plan's goals are actually being met — and adjust the plan if not."
+        ],
+        "checks": [
+          {
+            "q": "A student has been receiving counselling for eight weeks. What should exist alongside the session notes?",
+            "options": [
+              "A written support plan with goals, actions and a review date, checked against actual progress",
+              "Nothing further — session notes are sufficient on their own",
+              "A verbal summary given only if asked",
+              "A plan created once, never revisited"
+            ],
+            "correct": 0,
+            "explain": "A living support plan with clear goals and a review point is what turns a series of sessions into evidenced, purposeful support."
+          },
+          {
+            "q": "A student's case involves both social-emotional needs and a possible SEN need. What is the best coordination practice?",
+            "options": [
+              "The counsellor and SEN lead work entirely separately to protect confidentiality",
+              "Relevant information is shared with the SEN lead on a need-to-know basis, coordinated through the case plan",
+              "The case is handed over entirely to the SEN lead",
+              "No coordination is needed since the domains are different"
+            ],
+            "correct": 1,
+            "explain": "Coordinated, need-to-know sharing lets each specialist contribute without either working blind or oversharing sensitive information."
+          }
         ]
       },
-      { title: "Attendance Monitoring & Follow-Up",
-        body: [
-          "Daily review of the section's absence register, with prompt follow-up on any unexplained absence, is a core part of the role \u2014 not an occasional task.",
-          "An unexplained absence with no message from parents deserves same-day follow-up. Beyond attendance tracking, unexplained absence can occasionally be an early indicator of a wider welfare concern, which is worth keeping in mind rather than treating every case as purely administrative.",
-          "Complete, accurate records \u2014 for every student, not only those flagged as a concern \u2014 are what make meaningful trend analysis possible."
+      {
+        "title": "Crisis Intervention & Referral Pathways",
+        "roles": [
+          "Counsellor",
+          "Social Worker"
         ],
-        checks: [
-          { q: "A student is absent with no message from parents, and it's now midday with no follow-up yet.", options: ["Wait until the end of the week to follow up", "Assume it will resolve itself", "Follow up the same day \u2014 unexplained absence deserves a prompt check, and can occasionally signal a wider concern", "Only follow up if the absence continues for three or more days"], correct: 2, explain: "Same-day follow-up on unexplained absence is both good attendance practice and a basic safeguarding-awareness habit." },
-          { q: "Which is the correct standard for attendance record-keeping?", options: ["Only students flagged as a concern need accurate records", "Records only need to be accurate for the current week", "Verbal tracking is sufficient without written records", "Complete, accurate records for every student, enabling proper trend analysis"], correct: 3, explain: "Complete records across the whole section \u2014 not just flagged cases \u2014 are what make genuine trend analysis and inspection evidence possible." }
-        ]
-      },
-      { title: "Data-Informed Section Oversight",
-        body: [
-          "Attendance and punctuality data is worth reviewing periodically at a section level, not just tracked student-by-student \u2014 patterns like a Monday lateness spike or a particular year group trend often only become visible in aggregate.",
-          "Identified trends should feed into action \u2014 adjusting late-gate staffing, targeted communication to a specific group of parents, or raising a pattern with section leadership \u2014 rather than being noted and set aside.",
-          "This data is also part of the evidence base for the school's own self-evaluation, so periodic, documented review has value beyond the supervisor's day-to-day work."
+        "body": [
+          "A crisis (e.g. active suicidal ideation, a disclosed family emergency) needs an immediate, rehearsed response — not an improvised one. Staff should know exactly who to contact and what the first steps are, at any time of day.",
+          "Referral pathways to external specialist support (e.g. child and adolescent mental health services, external social services) should be clearly mapped, with realistic wait times and a plan for supporting the student while waiting.",
+          "Every referral is followed up — confirming it was received, and checking in with the student and family — rather than treated as complete once the referral is sent."
         ],
-        checks: [
-          { q: "Which best demonstrates data-informed section oversight?", options: ["Periodically reviewing aggregated section data to spot trends, and acting on and reporting what's found", "Reviewing individual student records only when a complaint arises", "Collecting data but never reviewing it in aggregate", "Relying only on informal impressions of attendance patterns"], correct: 0, explain: "Periodic, aggregated review is what turns raw records into genuinely useful oversight \u2014 informal impressions or unreviewed data don't achieve the same thing." },
-          { q: "Which is the strongest evidence of data-informed oversight for inspection purposes?", options: ["Raw attendance registers with no further analysis", "A periodic trend report identifying patterns and the actions taken in response", "A verbal assurance that attendance is 'generally fine'", "No documentation, since the supervisor tracks things mentally"], correct: 1, explain: "A documented trend report with identified patterns and follow-up actions is exactly the kind of evidence that shows data is genuinely being used, not just collected." }
+        "checks": [
+          {
+            "q": "A student discloses active suicidal ideation during a session. What should guide the immediate response?",
+            "options": [
+              "General clinical judgement, decided in the moment",
+              "Waiting until the end of the school day to act",
+              "The school's rehearsed crisis protocol, followed immediately and without delay",
+              "Asking the student to promise not to act on it, and leaving it there"
+            ],
+            "correct": 2,
+            "explain": "A crisis needs the rehearsed protocol followed immediately — not improvisation, and not a promise in place of action."
+          },
+          {
+            "q": "A referral is made to an external specialist service. What is correct practice after the referral is sent?",
+            "options": [
+              "The case is considered closed once the referral is sent",
+              "No further action until the external service responds",
+              "The student is told to contact the service themselves with no further support",
+              "The referral is followed up to confirm receipt, with the student supported in the meantime"
+            ],
+            "correct": 3,
+            "explain": "A referral is the start of a pathway, not the end of the wellbeing team's involvement — follow-up and interim support both matter."
+          }
         ]
       }
     ],
-    evidence: [
-      "Daily attendance / late-gate register for the section",
-      "Persistent lateness/absence tracking log with follow-up actions recorded",
-      "Records of parent communication regarding attendance and punctuality concerns",
-      "Escalation records to the Head of Year/attendance lead for persistent cases",
-      "Periodic attendance/punctuality trend reports used for section-level review",
-      "Records showing links made between unexplained absence and welfare/safeguarding checks where relevant"
+    "evidence": [
+      "Individual wellbeing/case support plans with goals, actions and review dates",
+      "Crisis intervention protocol document, with named contacts and escalation steps",
+      "Mapped referral pathway document (internal and external services)",
+      "Caseload tracking log",
+      "Referral follow-up records confirming receipt and interim support provided",
+      "Records evaluating support-plan outcomes at review points"
+    ]
+  },
+  {
+    "code": "2.1.1",
+    "title": "Attitudes",
+    "intro": "This indicator looks at whether students are developing genuine self-reliance and responding constructively to feedback — which the wellbeing team actively builds through how it works with students, not just what it says to them.",
+    "concepts": [
+      {
+        "title": "Building Self-Reliance Rather Than Dependency",
+        "roles": [
+          "Counsellor",
+          "Social Worker"
+        ],
+        "body": [
+          "Effective support builds a student's own coping skills and confidence — helping them find their own next step — rather than the wellbeing team solving every problem directly, which can quietly create dependency.",
+          "Session approaches that ask more than they tell (e.g. solution-focused questioning) tend to build stronger self-reliance than purely directive advice-giving.",
+          "Progress is evidenced by a student needing less intensive support over time, or successfully using a coping strategy independently — not just by attendance at sessions."
+        ],
+        "checks": [
+          {
+            "q": "A student comes to every session expecting the counsellor to tell them exactly what to do. What is the better long-term approach?",
+            "options": [
+              "Increasingly use questioning approaches that help the student find their own next step",
+              "Keep giving direct instructions, since it's faster",
+              "Refuse to help until the student figures it out alone",
+              "End the counselling relationship"
+            ],
+            "correct": 0,
+            "explain": "Building genuine self-reliance means shifting from telling to asking over time — not abandoning support, but not fostering dependency either."
+          },
+          {
+            "q": "Which is the best evidence that a support intervention is building self-reliance?",
+            "options": [
+              "The student has attended every scheduled session",
+              "The student successfully uses a coping strategy independently, outside of sessions",
+              "The student always agrees with the counsellor's suggestions",
+              "The number of sessions completed"
+            ],
+            "correct": 1,
+            "explain": "Independent use of a strategy outside the session room is the real marker of growing self-reliance — attendance alone doesn't show that."
+          }
+        ]
+      }
+    ],
+    "evidence": [
+      "Records of resilience/self-reliance-focused interventions or programmes",
+      "Anonymised examples of coaching-style (questioning) approaches used in case notes",
+      "Evidence of reduced support intensity over time for successfully-progressed cases"
+    ]
+  },
+  {
+    "code": "2.1.2",
+    "title": "Behaviour",
+    "intro": "The wellbeing team is frequently central to how a school responds to behaviour incidents — not as a disciplinary body, but as the team that helps repair relationships and address root causes alongside the pastoral/behaviour lead.",
+    "concepts": [
+      {
+        "title": "Behaviour Support and Restorative Practice",
+        "roles": [
+          "Counsellor",
+          "Social Worker"
+        ],
+        "body": [
+          "Behaviour support plans are usually co-developed with the pastoral/behaviour lead — the wellbeing team contributes understanding of underlying causes, not just a response to the incident itself.",
+          "Restorative conversations (bringing those involved together to repair harm) are generally more effective long-term than purely punitive responses, though both may be used together depending on severity.",
+          "In bullying casework specifically, both the student who was targeted and the student who caused harm typically need appropriate support — not only consequences for one and comfort for the other."
+        ],
+        "checks": [
+          {
+            "q": "A student has been involved in a serious behaviour incident with a clear underlying emotional cause. What is the wellbeing team's role?",
+            "options": [
+              "Stay out of it entirely, since it's a discipline matter",
+              "Take over the disciplinary decision from the pastoral lead",
+              "Contribute understanding of the underlying cause and support to the behaviour plan, alongside the pastoral lead",
+              "Only get involved if asked directly by the student"
+            ],
+            "correct": 2,
+            "explain": "The wellbeing team's distinctive contribution is understanding root causes and coordinating support — working alongside, not replacing, the pastoral/behaviour lead."
+          },
+          {
+            "q": "In a bullying case, which is the correct scope of support?",
+            "options": [
+              "Support only the student who was targeted",
+              "Support only the student who caused harm, since they need to change",
+              "No support needed once consequences are issued",
+              "Provide appropriate support to both students involved, as relevant to each"
+            ],
+            "correct": 3,
+            "explain": "Effective bullying casework supports both parties appropriately — the student harmed, and the student whose behaviour needs to change — not just one side."
+          }
+        ]
+      }
+    ],
+    "evidence": [
+      "Behaviour support plans co-developed with the pastoral/behaviour lead",
+      "Anti-bullying casework records, including support provided to all students involved",
+      "Records of restorative conversations and their outcomes",
+      "De-escalation incident logs where relevant"
+    ]
+  },
+  {
+    "code": "2.1.3",
+    "title": "Relationships",
+    "intro": "This indicator looks at the quality of relationships among students and with staff — something the wellbeing team actively builds through targeted, evidenced work, not just general goodwill.",
+    "concepts": [
+      {
+        "title": "Fostering Positive Relationships and Social Skills",
+        "roles": [
+          "Counsellor",
+          "Social Worker"
+        ],
+        "body": [
+          "Structured social skills groups and peer mediation programmes give students practical tools for empathy, communication and conflict resolution — rather than relying on relationships to simply develop on their own.",
+          "Vulnerable or SEND students often need deliberate support to be included in peer relationships — the wellbeing team's role includes actively facilitating this, not just monitoring for exclusion.",
+          "Staff-student relationships also matter here: the wellbeing team can model and coach relationship-building approaches for other staff working with students who have relational difficulties."
+        ],
+        "checks": [
+          {
+            "q": "A student with additional needs is consistently excluded from peer groups at break times. What is the wellbeing team's appropriate role?",
+            "options": [
+              "Actively facilitate inclusion — e.g. through a structured social skills group or peer mediation — rather than waiting for it to resolve itself",
+              "Monitor the situation but take no direct action",
+              "Refer the matter entirely to the SEN lead with no further involvement",
+              "Address it only if the student's parents complain"
+            ],
+            "correct": 0,
+            "explain": "Deliberate, structured facilitation is what actually builds inclusion — passive monitoring rarely changes an established social pattern."
+          },
+          {
+            "q": "Which is the strongest evidence of the wellbeing team's contribution to student relationships, for inspection purposes?",
+            "options": [
+              "A general statement that the school has a caring culture",
+              "Records of social skills groups, peer mediation sessions, or relationship-building initiatives, with participation and outcomes noted",
+              "No specific evidence, since relationships are hard to measure",
+              "Attendance records alone"
+            ],
+            "correct": 1,
+            "explain": "Specific, evidenced initiatives with recorded participation and outcomes are what demonstrate active, effective work on relationships — not general claims."
+          }
+        ]
+      }
+    ],
+    "evidence": [
+      "Social skills group / peer mediation session records, with participation noted",
+      "Records of relationship-building initiatives supporting inclusion (e.g. buddy systems for SEND or vulnerable students)",
+      "Evidence of staff coaching/guidance provided on relationship-building approaches"
     ]
   }
 ];
-
 
 const GROUPS_AR = [
   {
-    "code": "2.1.2",
-    "title": "السلوك",
-    "intro": "بصفته الشخص المسؤول عن النظام اليومي في القسم بأكمله، فإن اتساق المشرف — أكثر من أي قرار منفرد — هو ما يحدد ما إذا كان نظام السلوك في القسم يعمل فعليًا أم لا.",
+    "code": "5.1",
+    "title": "الصحة والسلامة، بما في ذلك ترتيبات حماية الطفل",
+    "intro": "يقع فريق الرعاية النفسية في صميم استجابة المدرسة لحماية الطلاب. غالبًا ما يكون المرشدون الطلابيون والأخصائيون الاجتماعيون إما مسؤول الحماية المعتمد، أو نائبه، أو أول جهة تُحال إليها أي مخاوف — مما يعني أن فهم الحد الفاصل بين السرية وواجب الحماية ليس أمرًا اختياريًا.",
     "concepts": [
       {
-        "title": "أنظمة السلوك على مستوى القسم والاتساق",
+        "title": "الدور المحوري لفريق الرعاية النفسية في الحماية",
+        "roles": [
+          "المرشد الطلابي",
+          "الأخصائي الاجتماعي"
+        ],
         "body": [
-          "أكبر تهديد لنظام السلوك في القسم هو عدم الاتساق — معالجة نفس المخالفة بشكل مختلف حسب المشرف المناوب، أو حسب الطالب المعني. يلاحظ الطلاب هذا فورًا، مما يقوض الثقة في النظام بأكمله.",
-          "يجب تطبيق سلم تصعيد واضح ومشترك (مثل: تذكير شفهي ← تحذير رسمي ← عاقبة مسجّلة ← إحالة إلى القيادة/الفريق الإرشادي) بنفس الطريقة من قبل كل مشرف في القسم، وليس تركه للتقدير الفردي في كل مرة.",
-          "إن نمذجة سلطة هادئة ومتسقة — بدلاً من الاستجابة العاطفية للاستفزاز — هي بحد ذاتها جزء مما يُعلّم الطلاب الانضباط الذاتي."
+          "السرية العلاجية في الإرشاد ليست مطلقة — فلها حد واضح ومفهوم عند وجود خطر يهدد السلامة. من أفضل الممارسات توضيح هذا الحد للطلاب في بداية أي علاقة إرشادية، حتى لا يشعر الطالب بالخيانة عند أي إفصاح لاحق.",
+          "عند نشوء مخاوف تتعلق بالحماية، تتبع الاستجابة سياسة حماية الطفل في المدرسة، وليس الحكم الشخصي وحده: إبلاغ مسؤول الحماية، والتوثيق الواقعي والفوري، وتجنّب التحقيق أو الوعد بالسرية.",
+          "تُحفظ سجلات حالات الحماية بشكل منفصل عن ملاحظات الإرشاد العامة، مع وصول محدود بشكل صارم."
         ],
         "checks": [
           {
-            "q": "يتعامل مشرفان في نفس القسم بشكل مختلف تمامًا مع مخالفة زي مدرسي بسيطة ومتطابقة — يعطي أحدهما تذكيرًا شفهيًا، بينما يرسل الآخر الطالب مباشرة إلى عاقبة رسمية.",
+            "q": "خلال جلسة إرشاد سرية، يُفصح طالب عن أفكار إيذاء النفس. ماذا يجب أن يفعل المرشد الطلابي؟",
             "options": [
-              "يقوّض عدم الاتساق هذا نظام القسم بأكمله ويجب حله بتطبيق سلم التصعيد المشترك بنفس الطريقة",
-              "هذا أمر مقبول، لأنه يجب على المشرفين استخدام تقديرهم الخاص",
-              "الاستجابة الأكثر صرامة هي دائمًا الصحيحة",
-              "هذا يهم فقط إذا اشتكى أحد الوالدين"
+              "اتباع بروتوكول الحماية — إبلاغ مسؤول الحماية والتوثيق الواقعي، حتى وإن كسر ذلك سرية الجلسة",
+              "الحفاظ على السرية التامة لأنه قيل في جلسة إرشاد",
+              "الانتظار حتى الجلسة القادمة لمعرفة إن كان سيُذكر مجددًا",
+              "الوعد بأنه لن يُشارك مع أي أحد إطلاقًا"
             ],
             "correct": 0,
-            "explain": "التطبيق غير المتسق للعواقب هو أحد أسرع الطرق لتقويض مصداقية نظام السلوك — سلم التصعيد المشترك موجود بالتحديد لمنع ذلك."
+            "explain": "خطر الإيذاء يتجاوز السرية العلاجية. تقوم الممارسة الجيدة بتوضيح هذا التوقع للطالب مسبقًا، لكن واجب الحماية ينطبق بغض النظر."
           },
           {
-            "q": "ما هو أقوى دليل على إدارة سلوك متسقة في جميع أنحاء القسم؟",
+            "q": "ما هو المعيار الصحيح لتوثيق مخاوف الحماية التي تُثار في جلسة رعاية نفسية؟",
             "options": [
-              "التقدير الشخصي لكل مشرف، الذي يُمارَس حالة بحالة",
-              "سلم تصعيد موثّق ومشترك يُطبَّق بنفس الطريقة من قبل كل مشرف",
-              "اتفاق شفهي بين المشرفين دون أي توثيق كتابي",
-              "عدم وجود نهج موثّق، لأن كل حادثة مختلفة"
+              "ملاحظة ذهنية موجزة، تُوثّق فقط إذا تكررت",
+              "سجل واقعي وفوري ومؤرّخ، يُشارك مع مسؤول الحماية ويُحفظ بأمان ومنفصلًا عن الملاحظات العامة",
+              "ملخص يُضاف بشكل غير رسمي إلى الملف العام للطالب",
+              "عدم وجود سجل مكتوب، للحفاظ على ثقة الطالب"
             ],
             "correct": 1,
-            "explain": "السلم الموثّق والمُطبَّق باتساق — وليس التقدير الفردي — هو ما يثبت وجود اتساق حقيقي."
+            "explain": "التوثيق الفوري والواقعي والمحفوظ بأمان يحمي الطالب ويُنشئ سجل الأدلة الذي تعتمد عليه قرارات الحماية."
           }
         ]
       },
       {
-        "title": "الاستجابة الأولى لحوادث السلوك",
+        "title": "التنسيق متعدد الجهات والدور المميز للأخصائي الاجتماعي",
+        "roles": [
+          "الأخصائي الاجتماعي"
+        ],
         "body": [
-          "في اللحظة، تكون الأولوية للسلامة وتهدئة التصعيد، وليس لاتخاذ قرار نهائي فوري. افصل بين الأطراف المعنية بهدوء، وتأكد من سلامة الجميع، واجمع الحقائق من جميع الأطراف قبل تحديد العاقبة.",
-          "تميل المواجهة العلنية إلى تصعيد الموقف وقد تُهين الطالب أمام أقرانه، مما يجعل الحل الهادئ أصعب. عادةً ما يكون نقل المحادثة إلى مكان أكثر هدوءًا، حيثما أمكن، أكثر فعالية.",
-          "العاقبة التي تُحدَّد في خضم اللحظة، بناءً على جانب واحد فقط من القصة، تكون أكثر عرضة بكثير لأن تكون غير عادلة — وأكثر عرضة للطعن فيها أو عكسها لاحقًا."
+          "غالبًا ما يمتد دور الأخصائي الاجتماعي إلى ما هو أبعد من بوابة المدرسة — تقييم الظروف المنزلية، والتنسيق مع خدمات حماية الطفل أو الأسرة الخارجية، وأحيانًا إجراء زيارات منزلية، بالتنسيق مع مسؤول الحماية وليس بشكل مستقل.",
+          "يتمثل إسهام المرشد الطلابي بشكل أساسي في العلاقة العلاجية داخل المدرسة؛ بينما يتمثل إسهام الأخصائي الاجتماعي في سياق الرفاهية والأسرة الأوسع. يصب كلاهما في سجل حالة واحد منسق، بدلًا من العمل بمعزل عن بعضهما.",
+          "يجب توثيق الاجتماعات متعددة الجهات (مع خدمات اجتماعية خارجية، أو مقدمي رعاية صحية، أو جهات أخرى)، مع تحديد إجراءات واضحة ومسؤولين عن المتابعة."
         ],
         "checks": [
           {
-            "q": "طالبان في جدال صاخب وحاد في ممر مزدحم. ماذا يجب أن يفعل المشرف أولاً؟",
+            "q": "يعلم أخصائي اجتماعي بظرف عائلي مقلق يؤثر على طالب في المنزل. ما الخطوة الصحيحة التالية؟",
             "options": [
-              "فرض عاقبة فورية على من يبدو أنه المخطئ الأكبر",
-              "رفع صوته لاستعادة السيطرة على الموقف",
-              "فصلهما بهدوء، والتأكد من السلامة، وجمع الحقائق من الطرفين قبل تحديد الاستجابة",
-              "تجاهل الأمر ما لم يتحول إلى مشادة جسدية"
+              "زيارة منزل الأسرة شخصيًا ومعالجة الأمر مباشرة، دون إبلاغ المدرسة",
+              "مناقشة الأمر بشكل غير رسمي مع معلمي الطالب أولاً",
+              "التقييم والتصعيد عبر مسؤول الحماية، والتنسيق مع الجهة الخارجية المعنية عند الاقتضاء",
+              "انتظار أن تُثير الأسرة الأمر بنفسها"
             ],
             "correct": 2,
-            "explain": "السلامة وتهدئة التصعيد الهادئة تأتيان أولاً؛ والقرار العادل يعتمد على سماع الطرفين، وليس على النسخة الأعلى صوتًا أو الأكثر وضوحًا من الأحداث."
+            "explain": "تُصعّد المخاوف المنزلية/العائلية عبر قنوات الحماية والتنسيق متعدد الجهات الصحيحة — وليس من خلال زيارة مستقلة وأحادية الجانب."
           },
           {
-            "q": "أي نهج هو الأكثر احتمالاً لأن يؤدي إلى حل عادل ودائم لحادثة سلوك؟",
+            "q": "ما هو أقوى دليل على التنسيق الفعّال متعدد الجهات لأغراض التفتيش؟",
             "options": [
-              "قرار سريع يُتخذ علنًا أمام الطلاب الآخرين",
-              "افتراض أن الطالب الأكثر شهرة أو 'المعتاد' هو المخطئ",
-              "فرض أقصى عاقبة لردع تكرار الحوادث",
-              "نقل المحادثة إلى مكان أكثر هدوءًا وجمع الطرفين قبل اتخاذ القرار"
+              "تأكيد شفهي بأن الجهات 'على اطلاع'",
+              "بريد إلكتروني أرسل مرة واحدة دون توقع رد",
+              "عدم وجود توثيق، لحماية خصوصية الأسرة",
+              "سجلات موثقة لاجتماعات متعددة الجهات، مع إجراءات ومسؤولين عن المتابعة"
             ],
             "correct": 3,
-            "explain": "البيئة الأكثر هدوءًا والصورة الأكمل لما حدث تُنتجان قرارات أكثر عدلاً وقبولاً من جميع المعنيين."
-          }
-        ]
-      },
-      {
-        "title": "تسجيل السلوك ومسارات التصعيد",
-        "body": [
-          "تُسجَّل كل حادثة، مهما كانت بسيطة، فورًا وبشكل واقعي — ما حدث، والإجراء المتخذ، ومن اتخذه — بدلاً من الاعتماد على الذاكرة أو تسجيل الحالات الأكثر خطورة فقط.",
-          "يتيح التسجيل المتسق إمكانية اكتشاف الأنماط: طالب لديه حوادث بسيطة متكررة، أو وقت أو مكان معين تتجمع فيه المشكلات، أو نمط يشمل نفس مجموعة الطلاب.",
-          "عندما يظهر نمط ما — أو تكون حادثة واحدة خطيرة — فإن الإحالة إلى رئيس المرحلة، أو قائد الفريق الإرشادي، أو فريق الرعاية النفسية هي الخطوة التالية الصحيحة، بدلاً من تكرار نفس الاستجابة المنخفضة المستوى إلى أجل غير مسمى."
-        ],
-        "checks": [
-          {
-            "q": "ما هو المعيار الصحيح لتسجيل حادثة سلوكية؟",
-            "options": [
-              "سجل فوري وواقعي يُكتب في نفس اليوم — ما حدث، والإجراء المتخذ، ومن اتخذه",
-              "ملاحظة غامضة تُضاف من الذاكرة، بعد أيام، إذا سمح الوقت",
-              "الحوادث الخطيرة فقط بحاجة إلى التسجيل",
-              "لا حاجة لسجل إذا أُعطي تحذير شفهي"
-            ],
-            "correct": 0,
-            "explain": "التسجيل الفوري والواقعي في نفس اليوم هو ما يجعل اكتشاف الأنماط والمتابعة العادلة ممكنين — التسجيل المتأخر أو الانتقائي يقوّض كليهما."
-          },
-          {
-            "q": "تلقى طالب أربع حوادث سلوكية بسيطة هذا الفصل الدراسي، وتمت معالجة كل منها بنفس العاقبة القياسية.",
-            "options": [
-              "الاستمرار في تطبيق نفس العاقبة القياسية إلى أجل غير مسمى",
-              "التعرف على النمط والإحالة إلى رئيس المرحلة/الفريق الإرشادي بدلاً من تكرار نفس الاستجابة",
-              "تجاهل الأمر لأن كل حادثة كانت بسيطة على حدة",
-              "زيادة شدة العاقبة دون إبلاغ أي شخص آخر"
-            ],
-            "correct": 1,
-            "explain": "النمط المتكرر، حتى لو كان من حوادث بسيطة، يستدعي التصعيد ونوعًا مختلفًا من الاستجابة — وليس تكرار ما هو واضح أنه لا يُجدي."
-          }
-        ]
-      },
-      {
-        "title": "الإشراف على مكافحة التنمر",
-        "body": [
-          "يميل التنمر إلى التجمع في أماكن وأوقات محددة — الممرات، والحمامات، أو المناطق ذات الإشراف المباشر الأقل. يعرف المشرفون الفعّالون النقاط الساخنة المحتملة في قسمهم وينشرون حضورهم وفقًا لذلك، بدلاً من الاستجابة فقط بعد تلقي شكوى.",
-          "عندما ينشأ قلق يتعلق بالتنمر، تتبع الاستجابة الصحيحة سياسة مكافحة التنمر في المدرسة: يحتاج عادةً كل من الطالب الذي استُهدف والطالب الذي تسبب سلوكه بالضرر إلى دعم مناسب، وتُحال الحالات الخطيرة أو المتكررة إلى فريق الرعاية النفسية.",
-          "دور المشرف هو الحضور الاستباقي، والاستجابة الفورية، والإحالة الصحيحة — وليس محاولة حل حالات التنمر الخطيرة أو المتكررة بمفرده تمامًا."
-        ],
-        "checks": [
-          {
-            "q": "ما هو أقوى دليل على الإشراف الاستباقي لمكافحة التنمر؟",
-            "options": [
-              "الاستجابة فقط بعد تقديم شكوى",
-              "افتراض أن التنمر لا يحدث إذا لم يُبلّغ عنه أحد",
-              "تحديد النقاط الساخنة المعروفة (مثل الممرات غير الخاضعة للإشراف) وتعديل توزيع المناوبات وفقًا لذلك",
-              "الاعتماد كليًا على الطلاب للإبلاغ الذاتي"
-            ],
-            "correct": 2,
-            "explain": "النشر الاستباقي بناءً على مناطق الخطر المعروفة يمنع الحوادث بدلاً من الاستجابة فقط بعد وقوع الضرر."
-          },
-          {
-            "q": "أُبلغ عن قلق يتعلق بالتنمر يشمل طالبين. ما هو النطاق الصحيح لاستجابة المشرف؟",
-            "options": [
-              "التعامل معه بشكل مستقل تمامًا دون إشراك فريق الرعاية النفسية",
-              "دعم الطالب الذي استُهدف فقط",
-              "عدم اتخاذ أي إجراء ما لم يشتكِ أحد الوالدين",
-              "اتباع سياسة مكافحة التنمر، وتقديم دعم أولي مناسب لكلا الطالبين، وإحالة الحالات الخطيرة أو المتكررة إلى فريق الرعاية النفسية"
-            ],
-            "correct": 3,
-            "explain": "دور المشرف هو الحضور الاستباقي والاستجابة الأولية الفورية والمتسقة مع السياسة — مع إحالة الحالات الخطيرة أو المتكررة إلى فريق الرعاية النفسية، وليس حلها بمفرده."
+            "explain": "سجلات التنسيق الموثقة والمتابعة للإجراءات هي ما يُظهر تنسيقًا حقيقيًا ومستمرًا متعدد الجهات، وليس مجرد لفتة لمرة واحدة."
           }
         ]
       }
     ],
     "evidence": [
-      "سجل سلوك القسم (مؤرخ، بتنسيق متسق، الحادثة + الإجراء المتخذ)",
-      "وثيقة سياسة السلوك / سلم التصعيد، المُطبَّقة باتساق بين المشرفين",
-      "سجلات حالات مكافحة التنمر الخاصة بالقسم",
-      "سجلات تحليل أنماط الحوادث المتكررة والتدخلات الناتجة",
-      "أدلة على التواصل مع أولياء الأمور بخصوص مخاوف السلوك",
-      "سجلات إحاطة/تدريب الموظفين حول توقعات السلوك وتطبيقها المتسق"
+      "سجل إحالات/حالات الحماية، محفوظ بشكل منفصل وسري عن ملاحظات الإرشاد العامة",
+      "وثيقة بروتوكول تحدد الأدوار بين المرشد الطلابي والأخصائي الاجتماعي ومسؤول الحماية",
+      "سجلات تدريب حماية الطفل لجميع أعضاء فريق الرعاية النفسية",
+      "سجلات اجتماعات التنسيق متعدد الجهات، مع الإجراءات والمتابعة",
+      "سياسة سرية خاصة بسجلات الإرشاد والحالات",
+      "سجلات تقييم المخاطر للحالات المفتوحة عالية الخطورة"
     ]
   },
   {
-    "code": "2.1.5",
-    "title": "الحضور والانضباط في المواعيد",
-    "intro": "لا تكون بيانات الحضور والانضباط مفيدة إلا إذا كانت دقيقة، ومسجّلة باتساق، ويُتصرف بناءً عليها فعليًا — يغطي دور المشرف هذه الجوانب الثلاثة.",
+    "code": "5.2",
+    "title": "الرعاية والدعم",
+    "intro": "إلى جانب الاستجابة للأزمات، يقدم فريق الرعاية النفسية دعمًا مستمرًا ومخططًا — إدارة الحالات الفردية، وبروتوكولات التدخل في الأزمات، ومسارات إحالة واضحة داخل المدرسة وخارجها.",
     "concepts": [
       {
-        "title": "بوابة التأخير وإدارة الوصول",
+        "title": "خطط الدعم الفردي وإدارة الحالات",
+        "roles": [
+          "المرشد الطلابي",
+          "الأخصائي الاجتماعي"
+        ],
         "body": [
-          "تُسجّل عملية بوابة التأخير الفعّالة كل وصول متأخر بدقة واتساق — بختم زمني، وليس بالسماح بالمرور بشكل غير رسمي — لأن هذا السجل هو ما يجعل اكتشاف الأنماط ممكنًا لاحقًا.",
-          "التأخر العرضي (الازدحام المروري، موعد لمرة واحدة) يختلف عن التأخر المعتاد، ويجب أن تعكس الاستجابة هذا التمييز بدلاً من معاملة كل حالة بنفس الطريقة.",
-          "يجب أن يؤدي التأخر المستمر لطالب فردي إلى التواصل مع أولياء الأمور، وعندما يستمر النمط، إلى الإحالة إلى رئيس المرحلة — وليس مجرد إيصالات تأخير متكررة دون أي إجراء إضافي."
+          "لكل حالة مفتوحة — سواء كانت حالة إرشاد أو حالة عمل اجتماعي/أسري — خطة دعم مكتوبة: أهداف واضحة، وإجراءات مخططة، وتاريخ مراجعة، وليس مجرد سجل متواصل لملاحظات الجلسات.",
+          "تُنسّق الخطط مع الموظفين المعنيين الآخرين (مسؤول التربية الخاصة، معلم الصف، الممرضة) عندما تتقاطع احتياجات الطالب بين عدة مجالات، دون الإفراط في مشاركة التفاصيل الحساسة بما يتجاوز حاجة كل شخص لمعرفته.",
+          "لا تتحقق المراجعات فقط من انعقاد الجلسات، بل من تحقق أهداف الخطة فعليًا — وتُعدّل الخطة إذا لم يتحقق ذلك."
         ],
         "checks": [
           {
-            "q": "يصل طالب متأخرًا لكن المشرف يسمح له بالمرور دون تسجيل ذلك، لتوفير الوقت.",
+            "q": "يتلقى طالب الإرشاد منذ ثمانية أسابيع. ما الذي يجب أن يوجد إلى جانب ملاحظات الجلسات؟",
             "options": [
-              "هذا يقوّض دقة حفظ السجلات ويجب دائمًا تسجيله، ولو بإيجاز",
-              "هذا مقبول أحيانًا، للحفاظ على سير الأمور",
-              "التأخر الخطير فقط يحتاج إلى التسجيل",
-              "التسجيل ضروري مرة واحدة أسبوعيًا فقط"
+              "خطة دعم مكتوبة بأهداف وإجراءات وتاريخ مراجعة، تُقارن بالتقدم الفعلي",
+              "لا شيء آخر — ملاحظات الجلسات كافية بمفردها",
+              "ملخص شفهي يُقدّم فقط عند الطلب",
+              "خطة تُوضع مرة واحدة ولا تُراجع أبدًا"
             ],
             "correct": 0,
-            "explain": "يحتاج كل وصول متأخر إلى تسجيل متسق — فالنمط غير المسجَّل غير مرئي، مما يُبطل الغرض من النظام."
+            "explain": "خطة الدعم الحية بأهداف واضحة ونقطة مراجعة هي ما يحوّل سلسلة الجلسات إلى دعم موثق وهادف."
           },
           {
-            "q": "وصل طالب متأخرًا ثماني مرات هذا الفصل الدراسي، وحصل في كل مرة على نفس إيصال التأخير القياسي دون أي إجراء إضافي.",
+            "q": "تتضمّن حالة طالب احتياجات اجتماعية-عاطفية واحتمال حاجة للتربية الخاصة. ما أفضل ممارسة للتنسيق؟",
             "options": [
-              "الاستمرار بنفس الاستجابة إلى أجل غير مسمى",
-              "التعرف على النمط، والتواصل مع أولياء الأمور، والإحالة إلى رئيس المرحلة إذا استمر",
-              "تجاهل الأمر لأن كل حالة كانت بسيطة على حدة",
-              "التوقف عن تسجيله لأنه يحدث كثيرًا"
+              "يعمل المرشد الطلابي ومسؤول التربية الخاصة بشكل منفصل تمامًا لحماية السرية",
+              "تُشارك المعلومات ذات الصلة مع مسؤول التربية الخاصة وفق مبدأ الحاجة إلى المعرفة، بالتنسيق عبر خطة الحالة",
+              "تُسلّم الحالة بالكامل لمسؤول التربية الخاصة",
+              "لا حاجة للتنسيق لاختلاف المجالين"
             ],
             "correct": 1,
-            "explain": "النمط المستمر يستدعي التصعيد والتواصل مع أولياء الأمور — وليس استجابة متكررة إلى أجل غير مسمى من الواضح أنها لا تُغيّر السلوك."
+            "explain": "المشاركة المنسقة وفق مبدأ الحاجة إلى المعرفة تتيح لكل مختص الإسهام دون العمل بمعزل أو الإفراط في مشاركة المعلومات الحساسة."
           }
         ]
       },
       {
-        "title": "مراقبة الحضور والمتابعة",
+        "title": "التدخل في الأزمات ومسارات الإحالة",
+        "roles": [
+          "المرشد الطلابي",
+          "الأخصائي الاجتماعي"
+        ],
         "body": [
-          "تُعد المراجعة اليومية لسجل غياب القسم، مع متابعة فورية لأي غياب غير مبرر، جزءًا أساسيًا من الدور — وليست مهمة عرضية.",
-          "يستحق الغياب غير المبرر دون رسالة من أولياء الأمور متابعة في نفس اليوم. بالإضافة إلى تتبع الحضور، يمكن أن يكون الغياب غير المبرر أحيانًا مؤشرًا مبكرًا على قلق أوسع يتعلق بالرعاية، وهو أمر يستحق أخذه بعين الاعتبار بدلاً من معاملة كل حالة على أنها إدارية بحتة.",
-          "السجلات الكاملة والدقيقة — لكل طالب، وليس فقط أولئك المُصنَّفين كمصدر قلق — هي ما يجعل تحليل الاتجاهات ذا معنى ممكنًا."
+          "تحتاج الأزمة (مثل أفكار انتحارية نشطة، أو حالة طوارئ عائلية مُفصح عنها) إلى استجابة فورية ومُتدرّب عليها — وليست ارتجالية. يجب أن يعرف الموظفون بالضبط من يجب الاتصال به وما هي الخطوات الأولى، في أي وقت من اليوم.",
+          "يجب أن تكون مسارات الإحالة إلى الدعم المتخصص الخارجي (مثل خدمات الصحة النفسية للأطفال والمراهقين، أو الخدمات الاجتماعية الخارجية) محدّدة بوضوح، مع أوقات انتظار واقعية وخطة لدعم الطالب أثناء الانتظار.",
+          "تُتابع كل إحالة — بتأكيد استلامها، والاطمئنان على الطالب والأسرة — بدلًا من اعتبارها مكتملة بمجرد إرسالها."
         ],
         "checks": [
           {
-            "q": "طالب غائب دون رسالة من والديه، والوقت الآن منتصف النهار دون أي متابعة بعد.",
+            "q": "يُفصح طالب عن أفكار انتحارية نشطة خلال جلسة. ما الذي يجب أن يوجّه الاستجابة الفورية؟",
             "options": [
-              "الانتظار حتى نهاية الأسبوع للمتابعة",
-              "افتراض أن الأمر سيُحل من تلقاء نفسه",
-              "المتابعة في نفس اليوم — الغياب غير المبرر يستحق تحققًا فوريًا، وقد يُشير أحيانًا إلى قلق أوسع",
-              "المتابعة فقط إذا استمر الغياب ثلاثة أيام أو أكثر"
+              "الحكم السريري الفردي، يُتخذ في اللحظة",
+              "الانتظار حتى نهاية اليوم الدراسي للتصرف",
+              "بروتوكول الأزمات المُتدرّب عليه في المدرسة، يُتبع فورًا ودون تأخير",
+              "طلب وعد من الطالب بعدم التصرف بناء عليه، دون أي خطوات أخرى"
             ],
             "correct": 2,
-            "explain": "المتابعة في نفس اليوم للغياب غير المبرر هي ممارسة جيدة للحضور وعادة أساسية للوعي بالحماية."
+            "explain": "يلزم اتباع البروتوكول المُتدرّب عليه فورًا في الأزمة — وليس الارتجال، ولا وعد يحل محل الإجراء."
           },
           {
-            "q": "ما هو المعيار الصحيح لحفظ سجلات الحضور؟",
+            "q": "تُقدّم إحالة إلى خدمة متخصصة خارجية. ما الممارسة الصحيحة بعد إرسال الإحالة؟",
             "options": [
-              "الطلاب المُصنَّفون كمصدر قلق فقط بحاجة إلى سجلات دقيقة",
-              "تحتاج السجلات إلى الدقة للأسبوع الحالي فقط",
-              "التتبع الشفهي كافٍ دون سجلات مكتوبة",
-              "سجلات كاملة ودقيقة لكل طالب، مما يتيح تحليل اتجاهات صحيحًا"
+              "تُعتبر الحالة مغلقة بمجرد إرسال الإحالة",
+              "لا إجراء آخر حتى ترد الجهة الخارجية",
+              "يُطلب من الطالب التواصل مع الخدمة بنفسه دون دعم إضافي",
+              "تُتابع الإحالة لتأكيد الاستلام، مع دعم الطالب في الأثناء"
             ],
             "correct": 3,
-            "explain": "السجلات الكاملة عبر القسم بأكمله — وليس الحالات المُصنَّفة فقط — هي ما يجعل تحليل الاتجاهات الحقيقي وأدلة التفتيش ممكنة."
-          }
-        ]
-      },
-      {
-        "title": "الإشراف على القسم المستند إلى البيانات",
-        "body": [
-          "تستحق بيانات الحضور والانضباط المراجعة الدورية على مستوى القسم، وليس فقط تتبعها طالبًا بطالب — فالأنماط مثل ارتفاع التأخر يوم الاثنين أو اتجاه معين لمرحلة عمرية محددة غالبًا ما تصبح مرئية فقط عند التجميع.",
-          "يجب أن تُترجَم الاتجاهات المُحدَّدة إلى إجراءات — تعديل طاقم بوابة التأخير، أو التواصل الموجّه مع مجموعة معينة من أولياء الأمور، أو إثارة نمط ما مع قيادة القسم — بدلاً من ملاحظتها ووضعها جانبًا.",
-          "تُعد هذه البيانات أيضًا جزءًا من قاعدة الأدلة للتقييم الذاتي للمدرسة، لذا فإن المراجعة الدورية الموثقة لها قيمة تتجاوز العمل اليومي للمشرف."
-        ],
-        "checks": [
-          {
-            "q": "أي مما يلي يُظهر بأفضل شكل الإشراف على القسم المستند إلى البيانات؟",
-            "options": [
-              "مراجعة بيانات القسم المجمّعة دوريًا لاكتشاف الاتجاهات، والتصرف بناءً على ما يُكتشف والإبلاغ عنه",
-              "مراجعة سجلات الطلاب الفردية فقط عند نشوء شكوى",
-              "جمع البيانات دون مراجعتها إجمالاً أبدًا",
-              "الاعتماد فقط على الانطباعات غير الرسمية لأنماط الحضور"
-            ],
-            "correct": 0,
-            "explain": "المراجعة الدورية والمجمَّعة هي ما يحوّل السجلات الخام إلى إشراف مفيد حقًا — الانطباعات غير الرسمية أو البيانات غير المُراجَعة لا تحقق الشيء نفسه."
-          },
-          {
-            "q": "ما هو أقوى دليل على الإشراف المستند إلى البيانات لأغراض التفتيش؟",
-            "options": [
-              "سجلات حضور خام دون أي تحليل إضافي",
-              "تقرير اتجاهات دوري يحدد الأنماط والإجراءات المتخذة استجابةً لها",
-              "تأكيد شفهي بأن الحضور 'جيد بشكل عام'",
-              "دون أي توثيق، لأن المشرف يتتبع الأمور ذهنيًا"
-            ],
-            "correct": 1,
-            "explain": "تقرير الاتجاهات الموثّق مع الأنماط المُحدَّدة وإجراءات المتابعة هو بالضبط نوع الدليل الذي يُظهر أن البيانات تُستخدم فعليًا، وليس مجرد جمعها."
+            "explain": "الإحالة بداية مسار وليست نهاية مشاركة فريق الرعاية النفسية — فالمتابعة والدعم المؤقت كلاهما مهمان."
           }
         ]
       }
     ],
     "evidence": [
-      "سجل الحضور اليومي / بوابة التأخير الخاص بالقسم",
-      "سجل تتبع التأخر/الغياب المستمر مع تسجيل إجراءات المتابعة",
-      "سجلات التواصل مع أولياء الأمور بخصوص مخاوف الحضور والانضباط في المواعيد",
-      "سجلات الإحالة إلى رئيس المرحلة/مسؤول الحضور للحالات المستمرة",
-      "تقارير اتجاهات الحضور/الانضباط الدورية المستخدمة للمراجعة على مستوى القسم",
-      "سجلات تُظهر الروابط بين الغياب غير المبرر وفحوصات الرعاية/الحماية حيثما كان ذلك ذا صلة"
+      "خطط دعم فردية للرعاية النفسية/الحالات بأهداف وإجراءات وتواريخ مراجعة",
+      "وثيقة بروتوكول التدخل في الأزمات، مع جهات اتصال محددة وخطوات تصعيد",
+      "وثيقة مسار إحالة محدد (خدمات داخلية وخارجية)",
+      "سجل متابعة عبء الحالات",
+      "سجلات متابعة الإحالة تؤكد الاستلام والدعم المؤقت المقدم",
+      "سجلات تقييم نتائج خطة الدعم في نقاط المراجعة"
+    ]
+  },
+  {
+    "code": "2.1.1",
+    "title": "الاتجاهات",
+    "intro": "ينظر هذا المؤشر إلى ما إذا كان الطلاب يطورون اعتمادًا حقيقيًا على الذات ويستجيبون بشكل بناء للتغذية الراجعة — وهو ما يبنيه فريق الرعاية النفسية بفاعلية من خلال أسلوب عمله مع الطلاب، وليس فقط ما يقوله لهم.",
+    "concepts": [
+      {
+        "title": "بناء الاعتماد على الذات بدلًا من الاتكالية",
+        "roles": [
+          "المرشد الطلابي",
+          "الأخصائي الاجتماعي"
+        ],
+        "body": [
+          "يبني الدعم الفعّال مهارات التكيف الخاصة بالطالب وثقته بنفسه — بمساعدته على إيجاد خطوته التالية بنفسه — بدلًا من أن يحل فريق الرعاية النفسية كل مشكلة مباشرة، مما قد يُنشئ اتكالية بصمت.",
+          "تميل أساليب الجلسات التي تسأل أكثر مما توجّه (مثل الأسئلة المركزة على الحلول) إلى بناء اعتماد أقوى على الذات مقارنة بتقديم النصائح التوجيهية البحتة.",
+          "يتجلى التقدم في حاجة الطالب إلى دعم أقل كثافة بمرور الوقت، أو نجاحه في استخدام استراتيجية تكيف بشكل مستقل — وليس فقط بحضور الجلسات."
+        ],
+        "checks": [
+          {
+            "q": "يأتي طالب إلى كل جلسة متوقعًا أن يخبره المرشد الطلابي بالضبط بما يجب فعله. ما هو النهج الأفضل على المدى الطويل؟",
+            "options": [
+              "استخدام أساليب الأسئلة بشكل متزايد لمساعدة الطالب على إيجاد خطوته التالية بنفسه",
+              "الاستمرار في إعطاء تعليمات مباشرة لأنها أسرع",
+              "رفض المساعدة حتى يكتشف الطالب الأمر بمفرده",
+              "إنهاء العلاقة الإرشادية"
+            ],
+            "correct": 0,
+            "explain": "بناء الاعتماد الحقيقي على الذات يعني الانتقال تدريجيًا من التوجيه إلى السؤال — دون التخلي عن الدعم، ودون تعزيز الاتكالية أيضًا."
+          },
+          {
+            "q": "ما هو أفضل دليل على أن تدخل الدعم يبني الاعتماد على الذات؟",
+            "options": [
+              "حضر الطالب كل جلسة مقررة",
+              "نجاح الطالب في استخدام استراتيجية تكيف بشكل مستقل، خارج الجلسات",
+              "موافقة الطالب دائمًا على اقتراحات المرشد الطلابي",
+              "عدد الجلسات المكتملة"
+            ],
+            "correct": 1,
+            "explain": "الاستخدام المستقل لاستراتيجية خارج غرفة الجلسة هو المؤشر الحقيقي لنمو الاعتماد على الذات — الحضور وحده لا يُظهر ذلك."
+          }
+        ]
+      }
+    ],
+    "evidence": [
+      "سجلات تدخلات أو برامج تركز على المرونة/الاعتماد على الذات",
+      "أمثلة مجهولة الهوية لأساليب التوجيه بالأسئلة المستخدمة في ملاحظات الحالات",
+      "أدلة على انخفاض كثافة الدعم بمرور الوقت للحالات التي أحرزت تقدمًا ناجحًا"
+    ]
+  },
+  {
+    "code": "2.1.2",
+    "title": "السلوك",
+    "intro": "غالبًا ما يكون فريق الرعاية النفسية محوريًا في كيفية استجابة المدرسة لحوادث السلوك — ليس كجهة تأديبية، بل كفريق يساعد في إصلاح العلاقات ومعالجة الأسباب الجذرية جنبًا إلى جنب مع مسؤول الرعاية/السلوك.",
+    "concepts": [
+      {
+        "title": "دعم السلوك والممارسة التصالحية",
+        "roles": [
+          "المرشد الطلابي",
+          "الأخصائي الاجتماعي"
+        ],
+        "body": [
+          "تُوضع خطط دعم السلوك عادة بالتعاون مع مسؤول الرعاية/السلوك — يُسهم فريق الرعاية النفسية بفهم الأسباب الكامنة، وليس فقط بالاستجابة للحادثة نفسها.",
+          "المحادثات التصالحية (جمع المعنيين معًا لإصلاح الضرر) أكثر فعالية عمومًا على المدى الطويل من الاستجابات العقابية البحتة، رغم إمكانية استخدام كليهما معًا حسب شدة الحادثة.",
+          "في حالات التنمر تحديدًا، يحتاج كل من الطالب المستهدف والطالب المتسبب في الضرر عادة إلى دعم مناسب — وليس فقط عواقب لأحدهما ومواساة للآخر."
+        ],
+        "checks": [
+          {
+            "q": "شارك طالب في حادثة سلوكية جسيمة ذات سبب عاطفي كامن واضح. ما هو دور فريق الرعاية النفسية؟",
+            "options": [
+              "البقاء بمنأى عن الأمر لأنه مسألة تأديبية",
+              "تولي القرار التأديبي بدلًا من مسؤول الرعاية",
+              "الإسهام بفهم السبب الكامن والدعم في خطة السلوك، جنبًا إلى جنب مع مسؤول الرعاية",
+              "التدخل فقط إذا طلب الطالب ذلك مباشرة"
+            ],
+            "correct": 2,
+            "explain": "الإسهام المميز لفريق الرعاية النفسية هو فهم الأسباب الجذرية وتنسيق الدعم — ليس استبدال دور مسؤول الرعاية/السلوك."
+          },
+          {
+            "q": "في حالة تنمر، ما هو النطاق الصحيح للدعم؟",
+            "options": [
+              "دعم الطالب المستهدف فقط",
+              "دعم الطالب المتسبب في الضرر فقط، لأنه بحاجة للتغيير",
+              "لا حاجة لأي دعم بمجرد صدور العواقب",
+              "تقديم الدعم المناسب لكلا الطالبين المعنيين، بحسب حاجة كل منهما"
+            ],
+            "correct": 3,
+            "explain": "تدعم إدارة حالات التنمر الفعّالة الطرفين بشكل مناسب، معالجة الضرر الواقع والسلوك الذي يحتاج إلى تغيير."
+          }
+        ]
+      }
+    ],
+    "evidence": [
+      "خطط دعم السلوك المُعدة بالتعاون مع مسؤول الرعاية/السلوك",
+      "سجلات حالات مكافحة التنمر، بما في ذلك الدعم المقدم لجميع الطلاب المعنيين",
+      "سجلات المحادثات التصالحية ونتائجها",
+      "سجلات حوادث تهدئة التصعيد عند الاقتضاء"
+    ]
+  },
+  {
+    "code": "2.1.3",
+    "title": "العلاقات",
+    "intro": "ينظر هذا المؤشر إلى جودة العلاقات بين الطلاب ومع الموظفين — وهو ما يبنيه فريق الرعاية النفسية بفاعلية من خلال عمل موجّه وموثق، وليس فقط النوايا الحسنة العامة.",
+    "concepts": [
+      {
+        "title": "تعزيز العلاقات الإيجابية والمهارات الاجتماعية",
+        "roles": [
+          "المرشد الطلابي",
+          "الأخصائي الاجتماعي"
+        ],
+        "body": [
+          "توفر مجموعات المهارات الاجتماعية المنظمة وبرامج الوساطة بين الأقران للطلاب أدوات عملية للتعاطف والتواصل وحل النزاعات — بدلًا من الاعتماد على تطور العلاقات من تلقاء نفسها.",
+          "غالبًا ما يحتاج الطلاب الضعفاء أو ذوو الاحتياجات الخاصة إلى دعم مقصود للاندماج في العلاقات مع الأقران — ويشمل دور فريق الرعاية النفسية تيسير ذلك بفاعلية، وليس مراقبة الإقصاء فقط.",
+          "تُعد العلاقات بين الموظفين والطلاب مهمة أيضًا هنا: يمكن لفريق الرعاية النفسية أن يكون نموذجًا وأن يوجّه أساليب بناء العلاقات للموظفين الآخرين الذين يعملون مع طلاب يواجهون صعوبات في العلاقات."
+        ],
+        "checks": [
+          {
+            "q": "يُستبعد طالب ذو احتياجات إضافية باستمرار من مجموعات الأقران في أوقات الاستراحة. ما هو الدور المناسب لفريق الرعاية النفسية؟",
+            "options": [
+              "التيسير الفعّال للاندماج — مثلًا من خلال مجموعة مهارات اجتماعية منظمة أو وساطة بين الأقران — بدلًا من انتظار حل الأمر من تلقاء نفسه",
+              "مراقبة الوضع دون اتخاذ إجراء مباشر",
+              "إحالة الأمر بالكامل إلى مسؤول التربية الخاصة دون أي مشاركة أخرى",
+              "معالجة الأمر فقط إذا اشتكى أولياء أمر الطالب"
+            ],
+            "correct": 0,
+            "explain": "التيسير المقصود والمنظم هو ما يبني الاندماج فعليًا — نادرًا ما تغيّر المراقبة السلبية نمطًا اجتماعيًا راسخًا."
+          },
+          {
+            "q": "ما هو أقوى دليل على إسهام فريق الرعاية النفسية في علاقات الطلاب؟",
+            "options": [
+              "بيان عام بأن المدرسة تتمتع بثقافة رعاية",
+              "سجلات مجموعات المهارات الاجتماعية أو جلسات الوساطة أو مبادرات بناء العلاقات، مع توثيق المشاركة والنتائج",
+              "سجلات الحضور وحدها",
+              "لا يُتوقّع دليل محدد لهذا المؤشر"
+            ],
+            "correct": 1,
+            "explain": "المبادرات المحددة والموثقة بمشاركة ونتائج مسجلة هي قاعدة الأدلة الحقيقية — الادعاءات العامة غير كافية."
+          }
+        ]
+      }
+    ],
+    "evidence": [
+      "سجلات جلسات مجموعات المهارات الاجتماعية/الوساطة بين الأقران، مع توثيق المشاركة",
+      "سجلات مبادرات بناء العلاقات الداعمة للاندماج (مثل أنظمة الرفيق للطلاب ذوي الاحتياجات الخاصة أو الضعفاء)",
+      "أدلة على توجيه/إرشاد الموظفين المقدم حول أساليب بناء العلاقات"
     ]
   }
 ];
 
-
 const EXAM_EN = [
-  { tag: "2.1.2", q: "Two supervisors respond very differently to the same type of minor infraction. What is the core issue?", options: ["Nothing \u2014 supervisors should use personal judgement", "The stricter supervisor is always right", "Inconsistency undermines the credibility of the whole behaviour system", "It only matters if a parent notices"], correct: 2, explain: "Consistency across supervisors is what makes a behaviour system function fairly and be trusted by students." },
-  { tag: "2.1.2", q: "A heated argument breaks out between two students in a corridor. What is the correct first step?", options: ["Issue an immediate consequence to whoever seems most at fault", "Raise your voice to regain control", "Walk away unless it becomes physical", "Separate them calmly, ensure safety, and gather facts from both sides"], correct: 3, explain: "Safety and calm de-escalation come first, followed by a fact-gathering approach before any decision is made." },
-  { tag: "2.1.2", q: "What is the correct standard for logging behaviour incidents?", options: ["Prompt, factual records made the same day for every incident", "Only serious incidents need logging", "A general summary once a term", "Logging is optional if a verbal warning was given"], correct: 0, explain: "Prompt, factual, same-day logging for every incident is what enables fair follow-up and pattern-spotting." },
-  { tag: "2.1.2", q: "A student has four minor incidents this term, each met with the same standard response.", options: ["Continue the same response indefinitely", "Recognise the pattern and escalate to the Head of Year/pastoral team", "Ignore it since each incident was minor", "Increase severity without telling anyone else"], correct: 1, explain: "A repeating pattern calls for escalation and a different kind of response, not indefinite repetition of something that isn't working." },
-  { tag: "2.1.2", q: "Which best demonstrates proactive anti-bullying supervision?", options: ["Waiting for a complaint before acting", "Assuming no reports means no bullying", "Identifying known hotspots and adjusting duty deployment accordingly", "Relying solely on student self-reporting"], correct: 2, explain: "Proactive deployment based on known risk patterns prevents incidents rather than only reacting after harm occurs." },
-  { tag: "2.1.2", q: "A bullying concern involves two students. What is the correct scope of the supervisor's response?", options: ["Resolve it entirely alone without involving anyone else", "Support only the student who was targeted", "Take no action unless parents complain", "Follow the anti-bullying policy, provide initial support to both students, and refer serious/repeated cases to the wellbeing team"], correct: 3, explain: "The supervisor's role is prompt, policy-consistent initial response with correct referral \u2014 not resolving serious cases entirely independently." },
-  { tag: "2.1.2", q: "Which evidences a genuinely consistent whole-section behaviour system?", options: ["A documented, shared escalation ladder applied the same way by all supervisors", "Each supervisor's individual discretion", "An unwritten verbal understanding", "No documented approach"], correct: 0, explain: "A documented, consistently-applied system \u2014 not individual discretion \u2014 is what evidences genuine consistency." },
-  { tag: "2.1.2", q: "Which setting is most likely to produce a fair resolution to a behaviour incident?", options: ["A public confrontation in front of peers", "A calmer setting, after gathering both sides of the story", "An immediate decision based on first impressions", "The harshest available consequence, as a deterrent"], correct: 1, explain: "A calmer setting and fuller picture of events lead to fairer, more accepted outcomes than a rushed, public decision." },
-  { tag: "2.1.5", q: "A supervisor waves a late student through without recording it, to save time.", options: ["This is fine occasionally", "Only serious lateness needs recording", "This should always be recorded \u2014 an unrecorded pattern is invisible", "Recording is only needed once a week"], correct: 2, explain: "Every late arrival needs consistent recording, or patterns simply can't be identified later." },
-  { tag: "2.1.5", q: "A student has arrived late eight times this term with no escalation beyond a standard late slip each time.", options: ["Continue the same response indefinitely", "Ignore it since each instance was minor", "Stop recording it since it's frequent", "Recognise the pattern, communicate with parents, and escalate if it continues"], correct: 3, explain: "A persistent pattern needs escalation and parent communication, not an indefinitely repeated response." },
-  { tag: "2.1.5", q: "A student is absent with no parent message, and it's now midday with no follow-up.", options: ["Follow up the same day \u2014 this is both good practice and a safeguarding-aware habit", "Wait until the end of the week", "Assume it will resolve itself", "Only act after three or more days"], correct: 0, explain: "Same-day follow-up on unexplained absence is standard good practice and can occasionally surface a wider welfare concern." },
-  { tag: "2.1.5", q: "What is the correct standard for attendance record-keeping across a section?", options: ["Only flagged students need accurate records", "Complete, accurate records for every student", "Records only need to be current for the present week", "Verbal tracking is sufficient"], correct: 1, explain: "Complete records for every student are what make genuine trend analysis and inspection evidence possible." },
-  { tag: "2.1.5", q: "Which best demonstrates data-informed section oversight?", options: ["Reviewing records only when a complaint arises", "Collecting data but never reviewing it", "Periodically reviewing aggregated data to spot trends, and acting on what's found", "Relying on informal impressions only"], correct: 2, explain: "Periodic, aggregated review and action is what turns raw records into genuine oversight." },
-  { tag: "2.1.5", q: "Which is the strongest evidence of data-informed oversight for inspection purposes?", options: ["Raw registers with no analysis", "A verbal assurance attendance is 'generally fine'", "No documentation at all", "A documented trend report identifying patterns and actions taken"], correct: 3, explain: "A documented trend report with clear patterns and follow-up actions is the evidence an inspection expects to see." },
-  { tag: "2.1.5", q: "Occasional lateness (e.g. a one-off appointment) versus habitual lateness should be treated:", options: ["Differently \u2014 the response should reflect whether the pattern is occasional or habitual", "Identically in every case", "As always requiring the maximum consequence", "As never worth recording either way"], correct: 0, explain: "Distinguishing occasional from habitual lateness allows a fair, proportionate response rather than a one-size-fits-all reaction." }
+  {
+    "tag": "5.1",
+    "q": "A student tells the counsellor something that suggests they may be at risk of harm, during a session the counsellor described as confidential.",
+    "options": [
+      "Confidentiality is absolute in counselling, so it stays private",
+      "Only share if the student gives permission",
+      "The safeguarding duty overrides session confidentiality; the DSL must be informed and it must be documented",
+      "Wait to see if the student mentions it again"
+    ],
+    "correct": 2,
+    "explain": "Risk of harm overrides confidentiality in every case — this is a non-negotiable safeguarding principle."
+  },
+  {
+    "tag": "5.1",
+    "q": "Who typically holds the distinctive role of assessing home/family circumstances and liaising with external child-protection agencies?",
+    "options": [
+      "The counsellor, always",
+      "Neither — this is outside the wellbeing team's remit",
+      "Any available staff member",
+      "The social worker, in coordination with the DSL"
+    ],
+    "correct": 3,
+    "explain": "The social worker's role characteristically extends into home/family context and external agency liaison, coordinated through the DSL."
+  },
+  {
+    "tag": "5.1",
+    "q": "Where should safeguarding case records be stored relative to general counselling notes?",
+    "options": [
+      "Separately, with tightly controlled access",
+      "In the same file, for simplicity",
+      "Not recorded at all, to protect privacy",
+      "Shared openly with all pastoral staff"
+    ],
+    "correct": 0,
+    "explain": "Safeguarding records need separation and controlled access — not merged into general notes or shared without a need-to-know basis."
+  },
+  {
+    "tag": "5.2",
+    "q": "What should exist for every open counselling or social-work case, beyond session notes?",
+    "options": [
+      "Nothing further is needed",
+      "A written support plan with goals, actions and a review date",
+      "A plan only if the case becomes serious",
+      "Verbal updates only, given informally"
+    ],
+    "correct": 1,
+    "explain": "A written, reviewable support plan is what evidences purposeful, monitored support rather than an unstructured series of sessions."
+  },
+  {
+    "tag": "5.2",
+    "q": "After a referral is made to an external specialist service, what is correct practice?",
+    "options": [
+      "Consider the case closed once the referral is sent",
+      "Wait indefinitely for the external service to respond with no further contact",
+      "Follow up to confirm receipt, and support the student while waiting",
+      "Tell the student to follow up themselves"
+    ],
+    "correct": 2,
+    "explain": "A referral is a step in the pathway, not an endpoint — follow-up and interim support remain the wellbeing team's responsibility."
+  },
+  {
+    "tag": "5.2",
+    "q": "A student's needs cross into both wellbeing and SEN territory. What is the best coordination approach?",
+    "options": [
+      "Keep the two entirely separate to protect confidentiality",
+      "Hand the whole case to the SEN lead",
+      "No coordination is necessary",
+      "Share relevant information on a need-to-know basis, coordinated through the case plan"
+    ],
+    "correct": 3,
+    "explain": "Coordinated, need-to-know information sharing allows both specialists to contribute effectively without oversharing."
+  },
+  {
+    "tag": "2.1.1",
+    "q": "A student relies heavily on the counsellor to solve every problem directly. What is the better long-term approach?",
+    "options": [
+      "Gradually shift toward questioning approaches that help the student find their own solutions",
+      "Continue solving problems directly, since it's efficient",
+      "Stop supporting the student to force independence",
+      "End the counselling relationship immediately"
+    ],
+    "correct": 0,
+    "explain": "Building self-reliance means gradually shifting from directive advice-giving toward approaches that develop the student's own problem-solving."
+  },
+  {
+    "tag": "2.1.1",
+    "q": "Which is the strongest evidence that an intervention is building genuine self-reliance?",
+    "options": [
+      "High attendance at scheduled sessions",
+      "The student successfully using a coping strategy independently, outside of sessions",
+      "The student always agreeing with the counsellor",
+      "A long case history"
+    ],
+    "correct": 1,
+    "explain": "Independent use of a strategy outside the session is the real marker of self-reliance, not attendance or agreement."
+  },
+  {
+    "tag": "2.1.2",
+    "q": "A serious behaviour incident has a clear underlying emotional cause. What is the wellbeing team's role?",
+    "options": [
+      "Take over the disciplinary decision entirely",
+      "Stay uninvolved since it's a discipline matter",
+      "Contribute understanding of the root cause and support, alongside the pastoral/behaviour lead",
+      "Only respond if asked by the student directly"
+    ],
+    "correct": 2,
+    "explain": "The wellbeing team's distinctive value is understanding root causes and contributing coordinated support — not replacing the pastoral lead's role."
+  },
+  {
+    "tag": "2.1.2",
+    "q": "In a bullying case, correct practice is to:",
+    "options": [
+      "Support only the student who was targeted",
+      "Support only the student who caused harm",
+      "Provide no support once consequences are issued",
+      "Provide appropriate support to both students involved, as relevant to each"
+    ],
+    "correct": 3,
+    "explain": "Effective bullying casework supports both parties appropriately, addressing both the harm caused and the behaviour that needs to change."
+  },
+  {
+    "tag": "2.1.3",
+    "q": "A vulnerable student is consistently excluded from peer groups. What is the appropriate wellbeing team response?",
+    "options": [
+      "Actively facilitate inclusion through structured initiatives such as social skills groups or peer mediation",
+      "Monitor only, without direct action",
+      "Refer entirely to the SEN lead with no further involvement",
+      "Wait for a parental complaint before acting"
+    ],
+    "correct": 0,
+    "explain": "Deliberate, structured facilitation is what actually shifts an established exclusion pattern — passive monitoring rarely does."
+  },
+  {
+    "tag": "2.1.3",
+    "q": "Which is the strongest evidence of the wellbeing team's impact on student relationships?",
+    "options": [
+      "A general statement about the school's caring culture",
+      "Records of specific relationship-building initiatives with participation and outcomes noted",
+      "Attendance records alone",
+      "No specific evidence is expected for this indicator"
+    ],
+    "correct": 1,
+    "explain": "Specific, evidenced initiatives with recorded participation and outcomes are the real evidence base — general claims are not enough."
+  },
+  {
+    "tag": "5.1",
+    "q": "A multi-agency meeting takes place regarding a student's welfare. What should follow?",
+    "options": [
+      "Nothing further — the meeting itself is sufficient",
+      "A verbal summary passed on only if asked",
+      "A documented record of the meeting, with actions and follow-up owners",
+      "No record, to protect confidentiality"
+    ],
+    "correct": 2,
+    "explain": "Documented, action-tracked records are what demonstrate genuine ongoing coordination, and are the evidence an inspection will expect."
+  },
+  {
+    "tag": "5.2",
+    "q": "A crisis situation arises (e.g. active suicidal ideation). What should guide the response?",
+    "options": [
+      "Individual clinical judgement in the moment",
+      "Waiting until end of day to assess further",
+      "A promise from the student that they won't act on it, with no further steps",
+      "The school's rehearsed crisis protocol, followed immediately"
+    ],
+    "correct": 3,
+    "explain": "A rehearsed, immediately-followed protocol is essential in a crisis — not improvisation or a verbal promise in place of action."
+  },
+  {
+    "tag": "2.1.1",
+    "q": "How should progress in building self-reliance typically be evidenced over time?",
+    "options": [
+      "The student needing less intensive support, or using coping strategies independently",
+      "The number of sessions attended",
+      "The student never disagreeing with guidance given",
+      "There is no way to evidence this"
+    ],
+    "correct": 0,
+    "explain": "Reduced need for intensive support, or independent use of strategies, is the meaningful evidence of growing self-reliance."
+  }
 ];
-
 
 const EXAM_AR = [
   {
-    "tag": "2.1.2",
-    "q": "يستجيب مشرفان بشكل مختلف تمامًا لنفس نوع المخالفة البسيطة. ما هي المشكلة الجوهرية؟",
+    "tag": "5.1",
+    "q": "يخبر طالب المرشد الطلابي بشيء يشير إلى احتمال تعرضه للخطر، خلال جلسة وصفها المرشد بأنها سرية.",
     "options": [
-      "لا شيء — يجب على المشرفين استخدام تقديرهم الشخصي",
-      "المشرف الأكثر صرامة محق دائمًا",
-      "عدم الاتساق يقوّض مصداقية نظام السلوك بأكمله",
-      "يهم فقط إذا لاحظ أحد الوالدين ذلك"
+      "السرية مطلقة في الإرشاد، لذا تبقى خاصة",
+      "المشاركة فقط إذا أذن الطالب بذلك",
+      "واجب الحماية يتجاوز سرية الجلسة؛ يجب إبلاغ مسؤول الحماية وتوثيق الأمر",
+      "الانتظار لمعرفة إن كان الطالب سيذكر الأمر مجددًا"
     ],
     "correct": 2,
-    "explain": "الاتساق بين المشرفين هو ما يجعل نظام السلوك يعمل بعدالة ويحظى بثقة الطلاب."
+    "explain": "خطر الإيذاء يتجاوز السرية في كل الحالات — هذا مبدأ حماية غير قابل للتفاوض."
   },
   {
-    "tag": "2.1.2",
-    "q": "يندلع جدال حاد بين طالبين في أحد الممرات. ما هي الخطوة الأولى الصحيحة؟",
+    "tag": "5.1",
+    "q": "من يتولى عادة الدور المميز في تقييم الظروف المنزلية/العائلية والتنسيق مع جهات حماية الطفل الخارجية؟",
     "options": [
-      "فرض عاقبة فورية على من يبدو أنه المخطئ الأكبر",
-      "رفع صوتك لاستعادة السيطرة",
-      "الابتعاد ما لم يتحول الأمر إلى مشادة جسدية",
-      "فصلهما بهدوء، والتأكد من السلامة، وجمع الحقائق من الطرفين"
+      "المرشد الطلابي دائمًا",
+      "لا أحد — هذا خارج نطاق فريق الرعاية النفسية",
+      "أي موظف متاح",
+      "الأخصائي الاجتماعي، بالتنسيق مع مسؤول الحماية"
     ],
     "correct": 3,
-    "explain": "السلامة وتهدئة التصعيد الهادئة تأتيان أولاً، يليهما جمع الحقائق قبل اتخاذ أي قرار."
+    "explain": "يمتد دور الأخصائي الاجتماعي عادة إلى السياق المنزلي/العائلي والتنسيق مع الجهات الخارجية، بالتنسيق مع مسؤول الحماية."
   },
   {
-    "tag": "2.1.2",
-    "q": "ما هو المعيار الصحيح لتسجيل حوادث السلوك؟",
+    "tag": "5.1",
+    "q": "أين يجب تخزين سجلات حالات الحماية بالنسبة لملاحظات الإرشاد العامة؟",
     "options": [
-      "سجلات فورية وواقعية تُكتب في نفس يوم كل حادثة",
-      "الحوادث الخطيرة فقط بحاجة إلى التسجيل",
-      "ملخص عام مرة واحدة في الفصل الدراسي",
-      "التسجيل اختياري إذا أُعطي تحذير شفهي"
+      "بشكل منفصل، مع وصول محدود بشكل صارم",
+      "في نفس الملف، للتبسيط",
+      "عدم تسجيلها إطلاقًا، لحماية الخصوصية",
+      "مشاركة علنية مع جميع موظفي الرعاية"
     ],
     "correct": 0,
-    "explain": "التسجيل الفوري والواقعي في نفس اليوم لكل حادثة هو ما يُمكّن من المتابعة العادلة واكتشاف الأنماط."
+    "explain": "تحتاج سجلات الحماية إلى فصل ووصول محدود — وليس دمجها في الملاحظات العامة أو مشاركتها دون مبدأ الحاجة إلى المعرفة."
   },
   {
-    "tag": "2.1.2",
-    "q": "لدى طالب أربع حوادث بسيطة هذا الفصل الدراسي، وقُوبلت كل منها بنفس الاستجابة القياسية.",
+    "tag": "5.2",
+    "q": "ماذا يجب أن يوجد لكل حالة إرشاد أو عمل اجتماعي مفتوحة، إلى جانب ملاحظات الجلسات؟",
     "options": [
-      "الاستمرار بنفس الاستجابة إلى أجل غير مسمى",
-      "التعرف على النمط والإحالة إلى رئيس المرحلة/الفريق الإرشادي",
-      "تجاهل الأمر لأن كل حادثة كانت بسيطة",
-      "زيادة الشدة دون إبلاغ أي شخص آخر"
+      "لا شيء آخر مطلوب",
+      "خطة دعم مكتوبة بأهداف وإجراءات وتاريخ مراجعة",
+      "خطة فقط إذا أصبحت الحالة خطيرة",
+      "تحديثات شفهية غير رسمية فقط"
     ],
     "correct": 1,
-    "explain": "النمط المتكرر يستدعي التصعيد ونوعًا مختلفًا من الاستجابة، وليس التكرار إلى أجل غير مسمى لشيء من الواضح أنه لا يُجدي."
+    "explain": "خطة الدعم المكتوبة والقابلة للمراجعة هي ما يوثق الدعم الهادف والمُراقب، وليس سلسلة جلسات غير منظمة."
   },
   {
-    "tag": "2.1.2",
-    "q": "أي مما يلي يُظهر بأفضل شكل الإشراف الاستباقي لمكافحة التنمر؟",
+    "tag": "5.2",
+    "q": "بعد تقديم إحالة إلى خدمة متخصصة خارجية، ما الممارسة الصحيحة؟",
     "options": [
-      "انتظار شكوى قبل التصرف",
-      "افتراض أن عدم وجود بلاغات يعني عدم وجود تنمر",
-      "تحديد النقاط الساخنة المعروفة وتعديل توزيع المناوبات وفقًا لذلك",
-      "الاعتماد فقط على الإبلاغ الذاتي من الطلاب"
+      "اعتبار الحالة مغلقة بمجرد إرسال الإحالة",
+      "الانتظار إلى ما لا نهاية دون تواصل آخر",
+      "المتابعة لتأكيد الاستلام، ودعم الطالب أثناء الانتظار",
+      "إخبار الطالب بمتابعة الأمر بنفسه"
     ],
     "correct": 2,
-    "explain": "النشر الاستباقي بناءً على أنماط الخطر المعروفة يمنع الحوادث بدلاً من الاستجابة فقط بعد وقوع الضرر."
+    "explain": "الإحالة خطوة ضمن المسار وليست نهاية — تبقى المتابعة والدعم المؤقت من مسؤوليات فريق الرعاية النفسية."
   },
   {
-    "tag": "2.1.2",
-    "q": "يتعلق قلق بشأن التنمر بطالبين. ما هو النطاق الصحيح لاستجابة المشرف؟",
+    "tag": "5.2",
+    "q": "تتقاطع احتياجات طالب بين الرعاية النفسية والتربية الخاصة. ما أفضل نهج للتنسيق؟",
     "options": [
-      "حله بمفرده تمامًا دون إشراك أي شخص آخر",
-      "دعم الطالب الذي استُهدف فقط",
-      "عدم اتخاذ أي إجراء ما لم يشتكِ أولياء الأمور",
-      "اتباع سياسة مكافحة التنمر، وتقديم دعم أولي لكلا الطالبين، وإحالة الحالات الخطيرة/المتكررة إلى فريق الرعاية النفسية"
+      "إبقاء المجالين منفصلين تمامًا لحماية السرية",
+      "تسليم الحالة بالكامل لمسؤول التربية الخاصة",
+      "لا حاجة للتنسيق",
+      "مشاركة المعلومات ذات الصلة وفق مبدأ الحاجة إلى المعرفة، بالتنسيق عبر خطة الحالة"
     ],
     "correct": 3,
-    "explain": "دور المشرف هو الاستجابة الأولية الفورية والمتسقة مع السياسة مع الإحالة الصحيحة — وليس حل الحالات الخطيرة بمفرده تمامًا."
+    "explain": "تتيح المشاركة المنسقة وفق مبدأ الحاجة إلى المعرفة لكلا المختصين الإسهام بفاعلية دون الإفراط في المشاركة."
   },
   {
-    "tag": "2.1.2",
-    "q": "أي مما يلي يُثبت وجود نظام سلوك متسق حقًا على مستوى القسم بأكمله؟",
+    "tag": "2.1.1",
+    "q": "يعتمد طالب بشكل كبير على المرشد الطلابي لحل كل مشكلة مباشرة. ما النهج الأفضل على المدى الطويل؟",
     "options": [
-      "سلم تصعيد موثّق ومشترك يُطبَّق بنفس الطريقة من قبل جميع المشرفين",
-      "التقدير الفردي لكل مشرف",
-      "تفاهم شفهي غير مكتوب",
-      "عدم وجود نهج موثّق"
+      "التحول التدريجي نحو أساليب الأسئلة التي تساعد الطالب على إيجاد حلوله الخاصة",
+      "الاستمرار في حل المشكلات مباشرة لأنه أكثر كفاءة",
+      "التوقف عن دعم الطالب لفرض الاستقلالية",
+      "إنهاء العلاقة الإرشادية فورًا"
     ],
     "correct": 0,
-    "explain": "النظام الموثّق والمُطبَّق باتساق — وليس التقدير الفردي — هو ما يُثبت الاتساق الحقيقي."
+    "explain": "بناء الاعتماد على الذات يعني الانتقال التدريجي من تقديم النصائح المباشرة نحو أساليب تنمّي قدرة الطالب على حل مشكلاته بنفسه."
   },
   {
-    "tag": "2.1.2",
-    "q": "أي بيئة هي الأكثر احتمالاً لإنتاج حل عادل لحادثة سلوكية؟",
+    "tag": "2.1.1",
+    "q": "ما هو أقوى دليل على أن التدخل يبني اعتمادًا حقيقيًا على الذات؟",
     "options": [
-      "مواجهة علنية أمام الأقران",
-      "بيئة أكثر هدوءًا، بعد جمع طرفي القصة",
-      "قرار فوري بناءً على الانطباعات الأولى",
-      "أقسى عاقبة متاحة، كرادع"
+      "حضور مرتفع في الجلسات المقررة",
+      "نجاح الطالب في استخدام استراتيجية تكيف بشكل مستقل، خارج الجلسات",
+      "موافقة الطالب دائمًا مع المرشد",
+      "سجل حالة طويل"
     ],
     "correct": 1,
-    "explain": "البيئة الأكثر هدوءًا والصورة الأكمل للأحداث تؤديان إلى نتائج أكثر عدلاً وقبولاً من قرار متسرع وعلني."
+    "explain": "الاستخدام المستقل لاستراتيجية خارج الجلسة هو المؤشر الحقيقي للاعتماد على الذات، وليس الحضور أو الموافقة."
   },
   {
-    "tag": "2.1.5",
-    "q": "يسمح مشرف لطالب متأخر بالمرور دون تسجيل ذلك، لتوفير الوقت.",
+    "tag": "2.1.2",
+    "q": "حادثة سلوكية جسيمة ذات سبب عاطفي كامن واضح. ما هو دور فريق الرعاية النفسية؟",
     "options": [
-      "هذا مقبول أحيانًا",
-      "التأخر الخطير فقط يحتاج إلى التسجيل",
-      "يجب دائمًا تسجيل هذا — فالنمط غير المسجَّل غير مرئي",
-      "التسجيل ضروري مرة واحدة أسبوعيًا فقط"
+      "تولي القرار التأديبي بالكامل",
+      "البقاء بمنأى لأنها مسألة تأديبية",
+      "الإسهام بفهم السبب الجذري والدعم، جنبًا إلى جنب مع مسؤول الرعاية/السلوك",
+      "الاستجابة فقط إذا طلب الطالب ذلك مباشرة"
     ],
     "correct": 2,
-    "explain": "يحتاج كل وصول متأخر إلى تسجيل متسق، وإلا فلن يكون من الممكن تحديد الأنماط لاحقًا."
+    "explain": "القيمة المميزة لفريق الرعاية النفسية هي فهم الأسباب الجذرية والإسهام بدعم منسق — وليس استبدال دور مسؤول الرعاية."
   },
   {
-    "tag": "2.1.5",
-    "q": "وصل طالب متأخرًا ثماني مرات هذا الفصل الدراسي دون أي تصعيد يتجاوز إيصال التأخير القياسي في كل مرة.",
+    "tag": "2.1.2",
+    "q": "في حالة تنمر، الممارسة الصحيحة هي:",
     "options": [
-      "الاستمرار بنفس الاستجابة إلى أجل غير مسمى",
-      "تجاهل الأمر لأن كل حالة كانت بسيطة",
-      "التوقف عن تسجيله لأنه متكرر",
-      "التعرف على النمط، والتواصل مع أولياء الأمور، والتصعيد إذا استمر"
+      "دعم الطالب المستهدف فقط",
+      "دعم الطالب المتسبب في الضرر فقط",
+      "عدم تقديم أي دعم بمجرد صدور العواقب",
+      "تقديم الدعم المناسب لكلا الطالبين المعنيين، بحسب حاجة كل منهما"
     ],
     "correct": 3,
-    "explain": "النمط المستمر يحتاج إلى التصعيد والتواصل مع أولياء الأمور، وليس استجابة متكررة إلى أجل غير مسمى."
+    "explain": "تدعم إدارة حالات التنمر الفعّالة الطرفين بشكل مناسب، معالجة كل من الضرر الواقع والسلوك الذي يحتاج إلى تغيير."
   },
   {
-    "tag": "2.1.5",
-    "q": "طالب غائب دون رسالة من والديه، والوقت الآن منتصف النهار دون أي متابعة.",
+    "tag": "2.1.3",
+    "q": "يُستبعد طالب ضعيف باستمرار من مجموعات الأقران. ما هي الاستجابة المناسبة من فريق الرعاية النفسية؟",
     "options": [
-      "المتابعة في نفس اليوم — هذه ممارسة جيدة وعادة واعية بالحماية",
-      "الانتظار حتى نهاية الأسبوع",
-      "افتراض أن الأمر سيُحل من تلقاء نفسه",
-      "التصرف فقط بعد ثلاثة أيام أو أكثر"
+      "التيسير الفعّال للاندماج من خلال مبادرات منظمة مثل مجموعات المهارات الاجتماعية أو الوساطة بين الأقران",
+      "المراقبة فقط دون إجراء مباشر",
+      "الإحالة بالكامل لمسؤول التربية الخاصة دون أي مشاركة أخرى",
+      "الانتظار حتى تقديم شكوى من أولياء الأمور قبل التصرف"
     ],
     "correct": 0,
-    "explain": "المتابعة في نفس اليوم للغياب غير المبرر ممارسة جيدة قياسية وعادة أساسية للوعي بالحماية."
+    "explain": "التيسير المقصود والمنظم هو ما يغيّر فعليًا نمط الإقصاء الراسخ — نادرًا ما تفعل المراقبة السلبية ذلك."
   },
   {
-    "tag": "2.1.5",
-    "q": "ما هو المعيار الصحيح لحفظ سجلات الحضور في القسم بأكمله؟",
+    "tag": "2.1.3",
+    "q": "ما هو أقوى دليل على أثر فريق الرعاية النفسية على علاقات الطلاب؟",
     "options": [
-      "الطلاب المُصنَّفون فقط بحاجة إلى سجلات دقيقة",
-      "سجلات كاملة ودقيقة لكل طالب",
-      "تحتاج السجلات إلى أن تكون محدَّثة للأسبوع الحالي فقط",
-      "التتبع الشفهي كافٍ"
+      "بيان عام حول ثقافة الرعاية في المدرسة",
+      "سجلات مبادرات محددة لبناء العلاقات مع توثيق المشاركة والنتائج",
+      "سجلات الحضور وحدها",
+      "لا يُتوقّع دليل محدد لهذا المؤشر"
     ],
     "correct": 1,
-    "explain": "السجلات الكاملة لكل طالب هي ما يجعل تحليل الاتجاهات الحقيقي وأدلة التفتيش ممكنة."
+    "explain": "المبادرات المحددة والموثقة بمشاركة ونتائج مسجلة هي قاعدة الأدلة الحقيقية — الادعاءات العامة غير كافية."
   },
   {
-    "tag": "2.1.5",
-    "q": "أي مما يلي يُظهر بأفضل شكل الإشراف على القسم المستند إلى البيانات؟",
+    "tag": "5.1",
+    "q": "يُعقد اجتماع متعدد الجهات بخصوص رفاهية طالب. ماذا يجب أن يتلي ذلك؟",
     "options": [
-      "مراجعة السجلات فقط عند نشوء شكوى",
-      "جمع البيانات دون مراجعتها أبدًا",
-      "مراجعة البيانات المجمّعة دوريًا لاكتشاف الاتجاهات، والتصرف بناءً على ما يُكتشف",
-      "الاعتماد على الانطباعات غير الرسمية فقط"
+      "لا شيء آخر — الاجتماع نفسه كافٍ",
+      "ملخص شفهي يُنقل فقط عند الطلب",
+      "سجل موثق للاجتماع، مع إجراءات ومسؤولين عن المتابعة",
+      "لا سجل، لحماية السرية"
     ],
     "correct": 2,
-    "explain": "المراجعة الدورية والمجمّعة والتصرف بناءً عليها هما ما يحوّلان السجلات الخام إلى إشراف حقيقي."
+    "explain": "السجلات الموثّقة والمتابعة للإجراءات هي ما يُظهر تنسيقًا حقيقيًا ومستمرًا، وهي الدليل الذي يتوقعه المفتشون."
   },
   {
-    "tag": "2.1.5",
-    "q": "ما هو أقوى دليل على الإشراف المستند إلى البيانات لأغراض التفتيش؟",
+    "tag": "5.2",
+    "q": "تنشأ حالة أزمة (مثل أفكار انتحارية نشطة). ما الذي يجب أن يوجّه الاستجابة؟",
     "options": [
-      "سجلات خام دون أي تحليل",
-      "تأكيد شفهي بأن الحضور 'جيد بشكل عام'",
-      "عدم وجود أي توثيق على الإطلاق",
-      "تقرير اتجاهات موثّق يحدد الأنماط والإجراءات المتخذة"
+      "الحكم السريري الفردي في اللحظة",
+      "الانتظار حتى نهاية اليوم لمزيد من التقييم",
+      "وعد من الطالب بعدم التصرف بناءً عليه، دون خطوات أخرى",
+      "بروتوكول الأزمات المُتدرّب عليه في المدرسة، يُتبع فورًا"
     ],
     "correct": 3,
-    "explain": "تقرير الاتجاهات الموثّق مع الأنماط الواضحة وإجراءات المتابعة هو الدليل الذي تتوقعه عملية التفتيش."
+    "explain": "البروتوكول المُتدرّب عليه والمُتبَع فورًا ضروري في الأزمة — وليس الارتجال أو وعد شفهي يحل محل الإجراء."
   },
   {
-    "tag": "2.1.5",
-    "q": "يجب التعامل مع التأخر العرضي (مثل موعد لمرة واحدة) مقابل التأخر المعتاد:",
+    "tag": "2.1.1",
+    "q": "كيف يُفترض عادة توثيق التقدم في بناء الاعتماد على الذات بمرور الوقت؟",
     "options": [
-      "بشكل مختلف — يجب أن تعكس الاستجابة ما إذا كان النمط عرضيًا أم معتادًا",
-      "بنفس الطريقة في كل حالة",
-      "بأنه يتطلب دائمًا أقصى عاقبة",
-      "بأنه لا يستحق التسجيل في كلتا الحالتين"
+      "حاجة الطالب إلى دعم أقل كثافة، أو استخدام استراتيجيات التكيف بشكل مستقل",
+      "عدد الجلسات المحضورة",
+      "عدم اختلاف الطالب أبدًا مع التوجيه المقدم",
+      "لا توجد طريقة لتوثيق ذلك"
     ],
     "correct": 0,
-    "explain": "التمييز بين التأخر العرضي والمعتاد يسمح باستجابة عادلة ومتناسبة بدلاً من رد فعل واحد يناسب الجميع."
+    "explain": "انخفاض الحاجة إلى دعم مكثف، أو الاستخدام المستقل للاستراتيجيات، هو الدليل الحقيقي على نمو الاعتماد على الذات."
   }
 ];
-
 
 const PASS_THRESHOLD = 0.8;
 let progress = null, currentView = "concepts", examAnswers = {}, lastResult = null, storageReady = false;
 let wrongAttempts = {}; // transient, per-question: last incorrect pick, NOT persisted -- lets a student retry until correct
-const STORAGE_KEY = "cpd-section-supervisor-progress-bilingual";
+const STORAGE_KEY = "cpd-wellbeing-team-progress-bilingual";
 
 function defaultProgress(){ return { checks:{}, examAttempts:0, examBest:0, examPassed:false, certName:"", lang:"en" }; }
 async function loadProgress(){
@@ -963,42 +1400,6 @@ function submitCertName(){ const input=document.getElementById("cert-name-input"
 function editCertName(){ progress.certName=""; render(); }
 function backFromCertificate(){ currentView="concepts"; render(); window.scrollTo({top:0,behavior:"smooth"}); }
 function printCertificate(){ window.print(); }
-function downloadCertPDF(btn){
-  const certEl = document.getElementById('certificate-print-area');
-  if(!certEl){ alert('Please generate your certificate first.'); return; }
-  if(typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined'){
-    alert('The PDF download tool could not load (this can happen with no internet connection). Please try the Print / Save as PDF option instead.');
-    return;
-  }
-  const originalText = btn.textContent;
-  btn.textContent = 'Preparing PDF...';
-  btn.disabled = true;
-  try {
-  html2canvas(certEl, { scale:2, backgroundColor:'#ffffff', useCORS:true }).then(function(canvas){
-    const imgData = canvas.toDataURL('image/png');
-    const jsPDFCtor = window.jspdf.jsPDF;
-    const pdf = new jsPDFCtor({
-      orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
-      unit: 'px',
-      format: [canvas.width, canvas.height]
-    });
-    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-    pdf.save('CPD_Certificate.pdf');
-    btn.textContent = originalText;
-    btn.disabled = false;
-  }).catch(function(err){
-    console.error('PDF generation failed:', err);
-    alert('Sorry, something went wrong generating the PDF. Please try the Print / Save as PDF option instead.');
-    btn.textContent = originalText;
-    btn.disabled = false;
-  });
-  } catch(err){
-    console.error(err);
-    btn.textContent = originalText;
-    btn.disabled = false;
-    alert('Sorry, something went wrong generating the PDF. Please try the Print / Save as PDF option instead.');
-  }
-}
 function escapeHtml(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
 function render(){
@@ -1065,7 +1466,7 @@ function renderConcepts(){
     html+='<p style="color:#4a5670; font-size:14.3px; max-width:760px; margin:0 0 16px;">'+g.intro+'</p>';
     g.concepts.forEach((c,ci)=>{
       html+='<div class="concept" id="concept-'+gi+'-'+ci+'">';
-      html+='<div class="concept-num">'+g.code+' \u00b7 '+s.topicOf(ci+1,g.concepts.length)+'</div>';
+      html+='<div class="concept-num">'+g.code+' \u00b7 '+s.topicOf(ci+1,g.concepts.length)+' \u00b7 '+s.roleJoin(c.roles)+'</div>';
       html+='<h3>'+c.title+'</h3>';
       c.body.forEach(p=>html+='<p>'+p+'</p>');
       html+='<div class="check-block"><div class="check-label">'+s.checkUnderstanding+'</div>';
@@ -1174,7 +1575,7 @@ function renderCertificate(){
   const dateStr=new Date().toLocaleDateString(undefined, {year:"numeric",month:"long",day:"numeric"});
   return '<div class="app"><div class="cert-wrap">'+
     '<a class="cert-back" onclick="backFromCertificate()">'+s.backArrow+'</a>'+
-    '<div class="certificate" id="certificate-print-area"><div class="certificate-inner">'+
+    '<div class="certificate"><div class="certificate-inner">'+
       '<img class="cert-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">'+
       '<div class="cert-eyebrow">'+s.certEyebrow+'</div>'+
       '<div class="cert-seal">'+s.certSeal+'</div>'+
@@ -1187,7 +1588,7 @@ function renderCertificate(){
         '<div>'+s.dateLbl+'<strong>'+dateStr+'</strong></div>'+
       '</div>'+
     '</div></div>'+
-    '<div class="cert-actions"><button class="btn ghost" onclick="downloadCertPDF(this)">'+s.downloadCert+'</button><button class="btn" onclick="printCertificate()">'+s.printCert+'</button></div>'+
+    '<div class="cert-actions"><button class="btn" onclick="printCertificate()">'+s.printCert+'</button></div>'+
     '</div></div>';
 }
 function renderFooter(){
@@ -1195,8 +1596,6 @@ function renderFooter(){
   return '<footer class="foot"><span>'+s.footProgress+'</span><a class="reset-link" onclick="resetProgress()">'+s.resetLink+'</a></footer>';
 }
 loadProgress();
-</script>
-
 </script>
 </body>
 </html>
