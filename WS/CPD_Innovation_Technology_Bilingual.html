@@ -89,11 +89,12 @@
   .q-text{font-weight:600; font-size:14.5px; margin-bottom:9px; color:var(--ink);}
   .opt{display:flex; align-items:flex-start; gap:9px; padding:9px 11px; border:1px solid var(--line); border-radius:7px; margin-bottom:7px; cursor:pointer; font-size:14px; color:#33405c;}
   .opt:hover{border-color:#b8b6a4;}
-  .opt.selected{border-color:var(--ink); background:#F7F7F2;}
+  .opt.selected{border-color:var(--ink); background:#F7F7F2; box-shadow:inset 0 0 0 1px var(--ink);}
   .opt.correct{border-color:var(--teal); background:var(--teal-soft); color:var(--teal); font-weight:600;}
   .opt.incorrect{border-color:var(--red); background:var(--red-soft); color:var(--red); font-weight:600;}
   .opt.disabled{cursor:default;}
   .opt-bullet{width:16px;height:16px;border-radius:50%;border:1.5px solid #b8b6a4;flex:none;margin-top:1px;}
+  .opt.selected .opt-bullet{border-color:var(--ink); background:var(--ink); box-shadow:inset 0 0 0 3px #fff;}
   .opt.correct .opt-bullet{border-color:var(--teal); background:var(--teal);}
   .opt.incorrect .opt-bullet{border-color:var(--red); background:var(--red);}
   .feedback{margin-top:6px; padding:9px 12px; border-radius:7px; font-size:13.3px; background:#F7F7F2; color:#4a5670; border-left:3px solid var(--ink-soft);}
@@ -156,10 +157,11 @@
   .certificate{ background:#fff; border:2px solid var(--wb); border-radius:6px; padding:6px; }
   .certificate-inner{ border:1px solid var(--wb); padding:48px 50px; text-align:center; position:relative; }
   .cert-eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--wb); margin-bottom:18px; }
+  .cert-logo{ width:64px; height:64px; border-radius:50%; object-fit:cover; margin:0 auto 16px; display:block; box-shadow:0 2px 6px rgba(0,0,0,0.15); }
   .cert-title{ font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:var(--ink); margin:0 0 26px; }
   .cert-presented{ font-size:13px; color:var(--ink-soft); margin-bottom:6px; letter-spacing:.04em; }
   .cert-name{ font-family:'Source Serif 4',serif; font-style:italic; font-size:32px; color:var(--wb); margin:6px 0 22px; border-bottom:1px solid var(--line); display:inline-block; padding:0 20px 10px; }
-  .cert-body{ font-size:14.5px; color:#33405c; max-width:540px; margin:0 auto 26px; line-height:1.6; }
+  .cert-body{ font-size:14.5px; color:#33405c; max-width:540px; margin:0 auto 26px; line-height:1.6; text-align:justify; }
   .cert-body b{ color:var(--ink); }
   .cert-meta-row{ display:flex; justify-content:center; gap:40px; margin:26px 0 30px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); }
   .cert-meta-row div strong{ display:block; color:var(--ink); font-size:13px; font-family:'Inter',sans-serif; margin-top:3px; }
@@ -244,7 +246,7 @@ const STR = {
     moduleHeadP: "Work through all seven sections below, then pass the module exam (80%+) to complete it and generate your certificate.",
     topicOf: (a,b)=>"Topic "+a+" of "+b,
     checkUnderstanding: "Check your understanding",
-    correctPrefix: "Correct. ", wrongPrefix: "Not quite. ",
+    correctPrefix: "Correct. ", wrongPrefix: "Not quite. ", tryAgainHint: "Choose another option to try again.",
     evidenceTitle: "\ud83d\udcc1 Evidence to Prepare for Inspection \u2014 ",
     evidenceSub: "Documents and records you should be able to produce, up to date, if asked during an inspection visit.",
     examPassedH: (s)=>"Module exam passed \u2014 "+s+"%",
@@ -296,7 +298,7 @@ const STR = {
     moduleHeadP: "\u0623\u0643\u0645\u0644\u0648\u0627 \u0627\u0644\u0639\u0645\u0644 \u0639\u0628\u0631 \u0627\u0644\u0623\u0642\u0633\u0627\u0645 \u0627\u0644\u0633\u0628\u0639\u0629 \u0623\u062f\u0646\u0627\u0647\u060c \u062b\u0645 \u0627\u062c\u062a\u0627\u0632\u0648\u0627 \u0627\u062e\u062a\u0628\u0627\u0631 \u0627\u0644\u0648\u062d\u062f\u0629 (80% \u0641\u0623\u0639\u0644\u0649) \u0644\u0625\u062a\u0645\u0627\u0645\u0647\u0627 \u0648\u0627\u0644\u062d\u0635\u0648\u0644 \u0639\u0644\u0649 \u0634\u0647\u0627\u062f\u062a\u0643\u0645.",
     topicOf: (a,b)=>"\u0627\u0644\u0645\u0648\u0636\u0648\u0639 "+a+" \u0645\u0646 "+b,
     checkUnderstanding: "\u062a\u062d\u0642\u0642\u0648\u0627 \u0645\u0646 \u0641\u0647\u0645\u0643\u0645",
-    correctPrefix: "\u0625\u062c\u0627\u0628\u0629 \u0635\u062d\u064a\u062d\u0629. ", wrongPrefix: "\u0644\u064a\u0633\u062a \u0635\u062d\u064a\u062d\u0629 \u062a\u0645\u0627\u0645\u064b\u0627. ",
+    correctPrefix: "\u0625\u062c\u0627\u0628\u0629 \u0635\u062d\u064a\u062d\u0629. ", wrongPrefix: "\u0644\u064a\u0633\u062a \u0635\u062d\u064a\u062d\u0629 \u062a\u0645\u0627\u0645\u064b\u0627. ", tryAgainHint: "\u0627\u062e\u062a\u0631 \u0625\u062c\u0627\u0628\u0629 \u0623\u062e\u0631\u0649 \u0644\u0644\u0645\u062d\u0627\u0648\u0644\u0629 \u0645\u0631\u0629 \u0623\u062e\u0631\u0649.",
     evidenceTitle: "\ud83d\udcc1 \u0627\u0644\u0623\u062f\u0644\u0629 \u0627\u0644\u0648\u0627\u062c\u0628 \u062a\u062c\u0647\u064a\u0632\u0647\u0627 \u0644\u0644\u062a\u0641\u062a\u064a\u0634 \u2014 ",
     evidenceSub: "\u0627\u0644\u0645\u0633\u062a\u0646\u062f\u0627\u062a \u0648\u0627\u0644\u0633\u062c\u0644\u0627\u062a \u0627\u0644\u062a\u064a \u064a\u062c\u0628 \u0623\u0646 \u062a\u0643\u0648\u0646\u0648\u0627 \u0642\u0627\u062f\u0631\u064a\u0646 \u0639\u0644\u0649 \u062a\u0642\u062f\u064a\u0645\u0647\u0627\u060c \u0645\u062d\u062f\u0651\u062b\u0629\u060c \u0625\u0630\u0627 \u0637\u064f\u0644\u0628 \u0630\u0644\u0643 \u0623\u062b\u0646\u0627\u0621 \u0632\u064a\u0627\u0631\u0629 \u062a\u0641\u062a\u064a\u0634\u064a\u0629.",
     examPassedH: (s)=>"\u062a\u0645 \u0627\u062c\u062a\u064a\u0627\u0632 \u0627\u062e\u062a\u0628\u0627\u0631 \u0627\u0644\u0648\u062d\u062f\u0629 \u2014 "+s+"%",
@@ -1362,6 +1364,7 @@ const EXAM_AR = [
 
 const PASS_THRESHOLD = 0.8;
 let progress = null, currentView = "concepts", examAnswers = {}, lastResult = null, storageReady = false;
+let wrongAttempts = {}; // transient, per-question: last incorrect pick, NOT persisted -- lets a student retry until correct
 const STORAGE_KEY = "cpd-innovation-1-3-4-progress-bilingual";
 
 function defaultProgress(){ return { checks:{}, examAttempts:0, examBest:0, examPassed:false, certName:"", lang:"en" }; }
@@ -1378,7 +1381,19 @@ function checksTotal(){ let n=0; G().forEach(g=>g.concepts.forEach(c=>n+=c.check
 function checksAnswered(){ let n=0; G().forEach((g,gi)=>g.concepts.forEach((c,ci)=>c.checks.forEach((chk,qi)=>{ if(progress.checks[gi+"_"+ci+"_"+qi]!==undefined) n++; }))); return n; }
 function allChecksDone(){ return checksAnswered()===checksTotal(); }
 function toggleLang(){ progress.lang = progress.lang==="ar" ? "en" : "ar"; saveProgress(); render(); }
-function answerCheck(gi,ci,qi,optIdx){ const key=gi+"_"+ci+"_"+qi; if(progress.checks[key]!==undefined) return; progress.checks[key]=optIdx; saveProgress(); render(); }
+function answerCheck(gi,ci,qi,optIdx){
+  const key=gi+"_"+ci+"_"+qi;
+  if(progress.checks[key]!==undefined) return; // already answered correctly and locked in
+  const chk = G()[gi].concepts[ci].checks[qi];
+  if(optIdx === chk.correct){
+    progress.checks[key]=optIdx;
+    delete wrongAttempts[key];
+    saveProgress();
+  } else {
+    wrongAttempts[key]=optIdx; // remember the wrong pick just long enough to show feedback; question stays open for retry
+  }
+  render();
+}
 function startExam(){ examAnswers={}; currentView="exam"; render(); window.scrollTo({top:0,behavior:"smooth"}); }
 function selectExamAnswer(qi,optIdx){ examAnswers[qi]=optIdx; render(); }
 function submitExam(){
@@ -1534,17 +1549,25 @@ function renderConcepts(){
 }
 function renderCheckQuestion(gi,ci,qi,chk){
   const s=L();
-  const key=gi+"_"+ci+"_"+qi; const answered=progress.checks[key];
+  const key=gi+"_"+ci+"_"+qi; const locked=progress.checks[key]; const wrongPick=wrongAttempts[key];
   let html='<div class="question"><div class="q-text">'+chk.q+'</div>';
   chk.options.forEach((opt,oi)=>{
     let cls="opt";
-    if(answered!==undefined){ cls+=" disabled"; if(oi===chk.correct) cls+=" correct"; else if(oi===answered) cls+=" incorrect"; }
-    const onclick=answered===undefined?"answerCheck("+gi+","+ci+","+qi+","+oi+")":"";
+    let onclick;
+    if(locked!==undefined){
+      cls+=" disabled";
+      if(oi===chk.correct) cls+=" correct";
+      onclick="";
+    } else {
+      onclick="answerCheck("+gi+","+ci+","+qi+","+oi+")";
+      if(wrongPick===oi) cls+=" incorrect";
+    }
     html+='<div class="'+cls+'" onclick="'+onclick+'"><div class="opt-bullet"></div><div>'+opt+'</div></div>';
   });
-  if(answered!==undefined){
-    const right=answered===chk.correct;
-    html+='<div class="feedback '+(right?"right":"wrong")+'">'+(right?s.correctPrefix:s.wrongPrefix)+chk.explain+'</div>';
+  if(locked!==undefined){
+    html+='<div class="feedback right">'+s.correctPrefix+chk.explain+'</div>';
+  } else if(wrongPick!==undefined){
+    html+='<div class="feedback wrong">'+s.wrongPrefix+s.tryAgainHint+'</div>';
   }
   html+='</div>';
   return html;
@@ -1606,6 +1629,7 @@ function renderCertificate(){
   return '<div class="app"><div class="cert-wrap">'+
     '<a class="cert-back" onclick="backFromCertificate()">'+s.backArrow+'</a>'+
     '<div class="certificate" id="certificate-print-area"><div class="certificate-inner">'+
+      '<img class="cert-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">'+
       '<div class="cert-eyebrow">'+s.certEyebrow+'</div>'+
       '<div class="cert-seal">'+s.certSeal+'</div>'+
       '<div class="cert-title">'+s.certTitle+'</div>'+
