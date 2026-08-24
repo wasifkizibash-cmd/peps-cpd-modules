@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEPS Photosynthesis Simulator - Year 8</title>
+<style>
+    :root {
+        --primary: #007A87;
+        --primary-dark: #005A64;
+        --accent: #FF9E1B;
+        --bg: #F4F7F6;
+        --card-bg: #FFFFFF;
+        --text: #333333;
+        --on: #2E8B57;
+        --off: #B7C4C0;
+    }
+    * { box-sizing: border-box; }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+    }
+    .container { max-width: 900px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 28px; }
+    .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .header h1 { color: var(--primary); margin: 0 0 8px 0; font-size: 27px; }
+    .header p { margin: 0; color: #666; font-style: italic; font-size: 14.5px; }
+    .section-label { font-size: 13px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: .04em; margin: 0 0 4px; }
+    .section-sub { font-size: 13.5px; color: #667; margin: 0 0 18px; }
+    section.block { margin-bottom: 40px; }
+
+    /* ===== Section 1: leaf + toggles ===== */
+    .reaction-layout { display: grid; grid-template-columns: 1fr 260px; gap: 28px; align-items: start; }
+    @media (max-width: 700px) { .reaction-layout { grid-template-columns: 1fr; } }
+
+    .leaf-stage {
+        background: #F3F8F7;
+        border-radius: 12px;
+        padding: 24px;
+        min-height: 260px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    .leaf-shape {
+        font-size: 100px;
+        transition: filter .4s, opacity .4s;
+        position: relative;
+        z-index: 2;
+    }
+    .leaf-shape.no-chlorophyll { filter: grayscale(1) brightness(1.3); }
+    .leaf-shape.dim { opacity: 0.45; }
+
+    .cue { position: absolute; font-size: 22px; opacity: 0; transition: opacity .4s; z-index: 1; }
+    .cue.on { opacity: 1; }
+    .cue-sun { top: 14px; right: 20px; }
+    .cue-water { bottom: 16px; left: 24px; }
+    .cue-co2 { top: 20px; left: 20px; }
+
+    .bubble {
+        position: absolute;
+        bottom: 20px;
+        width: 10px; height: 10px;
+        background: #9FD8C9;
+        border-radius: 50%;
+        opacity: 0;
+    }
+    .bubble.rise { animation: bubbleRise 1.8s ease-in forwards; }
+    @keyframes bubbleRise {
+        0% { opacity: 0.9; bottom: 20px; }
+        90% { opacity: 0.7; }
+        100% { opacity: 0; bottom: 220px; }
+    }
+
+    .toggle-panel { display: flex; flex-direction: column; gap: 10px; }
+    .toggle-item {
+        display: flex; align-items: center; justify-content: space-between;
+        background: #FAFBFB; border: 1.5px solid #E2E9E7; border-radius: 8px;
+        padding: 10px 12px; cursor: pointer; transition: border-color .2s;
+    }
+    .toggle-item:hover { border-color: var(--primary); }
+    .toggle-item .label { font-size: 13.5px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .switch { width: 40px; height: 22px; border-radius: 12px; background: var(--off); position: relative; transition: background .25s; flex-shrink: 0; }
+    .switch.on { background: var(--on); }
+    .switch .knob { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: left .25s; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+    .switch.on .knob { left: 20px; }
+
+    .btn-row { display: flex; gap: 14px; margin-top: 16px; flex-wrap: wrap; }
+    button { padding: 11px 20px; font-size: 14.5px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; transition: background .2s; font-family: inherit; }
+    .btn-run { background-color: var(--primary); color: #fff; }
+    .btn-run:hover { background-color: var(--primary-dark); }
+    .btn-reset { background-color: #fff; color: var(--primary); border: 2px solid var(--primary); }
+    .btn-reset:hover { background-color: #F3F8F7; }
+
+    .equation-strip {
+        margin-top: 22px;
+        background: #FAFBFB;
+        border: 2px dashed #D0DEDC;
+        border-radius: 10px;
+        padding: 16px;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 600;
+    }
+    .equation-strip .term { padding: 4px 8px; border-radius: 6px; transition: background .3s, color .3s; }
+    .equation-strip .term.lit { background: #EAF7EF; color: var(--on); }
+    .equation-strip .arrow-word { font-size: 11px; color: #8a5a1f; display: block; margin-top: 2px; }
+
+    .result-msg { margin-top: 14px; font-size: 14px; font-weight: 600; min-height: 20px; text-align: center; }
+    .result-msg.success { color: var(--on); }
+    .result-msg.missing { color: #D64545; }
+
+    /* ===== Section 2: sliders ===== */
+    .rate-layout { display: grid; grid-template-columns: 1fr 220px; gap: 30px; align-items: center; }
+    @media (max-width: 700px) { .rate-layout { grid-template-columns: 1fr; } }
+
+    .slider-group { display: flex; flex-direction: column; gap: 20px; }
+    .slider-item .slider-top { display: flex; justify-content: space-between; font-size: 13.5px; font-weight: 600; margin-bottom: 6px; }
+    .slider-item .slider-top .val { color: var(--primary); font-family: 'Courier New', monospace; }
+    input[type=range] { width: 100%; accent-color: var(--primary); }
+
+    .rate-gauge {
+        background: #F3F8F7;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+    }
+    .rate-gauge .bubble-count { font-size: 40px; font-weight: 800; color: var(--primary); line-height: 1; }
+    .rate-gauge .bubble-label { font-size: 11.5px; color: #667; margin-top: 4px; text-transform: uppercase; letter-spacing: .03em; }
+    .rate-gauge .limiting-tag {
+        margin-top: 14px; padding: 8px 10px; border-radius: 7px;
+        background: #FFF6E9; color: #8a5a1f; font-size: 12px; font-weight: 700;
+    }
+
+    .rate-note { background: #F3F8F7; border-radius: 8px; padding: 12px 16px; font-size: 13.5px; line-height: 1.55; margin-top: 18px; }
+
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>Photosynthesis Simulator</h1>
+        <p>Year 8 Science &mdash; What a Plant Needs, and What Controls Its Rate</p>
+    </div>
+
+    <section class="block">
+        <p class="section-label">Part 1 &middot; Build the Reaction</p>
+        <p class="section-sub">Switch each requirement on or off, then try running photosynthesis.</p>
+
+        <div class="reaction-layout">
+            <div class="leaf-stage" id="leafStage">
+                <span class="cue cue-sun" id="cueSun">&#9728;&#65039;</span>
+                <span class="cue cue-water" id="cueWater">&#128167;</span>
+                <span class="cue cue-co2" id="cueCo2">&#8203;CO&#8322;</span>
+                <span class="leaf-shape no-chlorophyll dim" id="leafShape">&#127807;</span>
+            </div>
+            <div class="toggle-panel">
+                <div class="toggle-item" onclick="toggleInput('light')">
+                    <span class="label">&#9728;&#65039; Sunlight</span>
+                    <div class="switch" id="switch-light"><div class="knob"></div></div>
+                </div>
+                <div class="toggle-item" onclick="toggleInput('water')">
+                    <span class="label">&#128167; Water</span>
+                    <div class="switch" id="switch-water"><div class="knob"></div></div>
+                </div>
+                <div class="toggle-item" onclick="toggleInput('co2')">
+                    <span class="label">&#8203;&#127788;&#65039; Carbon Dioxide</span>
+                    <div class="switch" id="switch-co2"><div class="knob"></div></div>
+                </div>
+                <div class="toggle-item" onclick="toggleInput('chlorophyll')">
+                    <span class="label">&#127811; Chlorophyll</span>
+                    <div class="switch" id="switch-chlorophyll"><div class="knob"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn-run" onclick="runPhotosynthesis()">Run Photosynthesis</button>
+            <button class="btn-reset" onclick="resetSection1()">Reset</button>
+        </div>
+
+        <div class="equation-strip" id="equationStrip">
+            <span class="term" id="term-co2">Carbon Dioxide</span> +
+            <span class="term" id="term-water">Water</span>
+            &rarr;
+            <span class="term" id="term-glucose">Glucose</span> +
+            <span class="term" id="term-oxygen">Oxygen</span>
+            <span class="arrow-word">(needs light energy &amp; chlorophyll)</span>
+        </div>
+        <div class="result-msg" id="resultMsg"></div>
+    </section>
+
+    <section class="block">
+        <p class="section-label">Part 2 &middot; Explore the Rate &mdash; Limiting Factors</p>
+        <p class="section-sub">Drag the sliders and watch how the rate of photosynthesis responds, live.</p>
+
+        <div class="rate-layout">
+            <div class="slider-group">
+                <div class="slider-item">
+                    <div class="slider-top"><span>&#9728;&#65039; Light Intensity</span><span class="val" id="val-light">100%</span></div>
+                    <input type="range" min="0" max="100" value="100" id="slider-light" oninput="updateRate()">
+                </div>
+                <div class="slider-item">
+                    <div class="slider-top"><span>&#127788;&#65039; Carbon Dioxide Level</span><span class="val" id="val-co2">100%</span></div>
+                    <input type="range" min="0" max="100" value="100" id="slider-co2" oninput="updateRate()">
+                </div>
+                <div class="slider-item">
+                    <div class="slider-top"><span>&#128167; Water Level</span><span class="val" id="val-water">100%</span></div>
+                    <input type="range" min="0" max="100" value="100" id="slider-water" oninput="updateRate()">
+                </div>
+            </div>
+            <div class="rate-gauge">
+                <div class="bubble-count" id="bubbleCount">20</div>
+                <div class="bubble-label">Oxygen Bubbles / Minute</div>
+                <div class="limiting-tag" id="limitingTag">All factors equal</div>
+            </div>
+        </div>
+
+        <div class="rate-note">
+            The rate of photosynthesis is controlled by whichever factor is in shortest supply &mdash; this is called the <b>limiting factor</b>. Even if light and water are perfect, low carbon dioxide alone can hold the whole reaction back. Try dragging just one slider down and see which one becomes the limiting factor.
+        </div>
+    </section>
+</div>
+
+<script>
+let inputs = { light: false, water: false, co2: false, chlorophyll: false };
+
+function toggleInput(key){
+    inputs[key] = !inputs[key];
+    const sw = document.getElementById('switch-' + key);
+    sw.classList.toggle('on', inputs[key]);
+    updateLeafVisual();
+}
+
+function updateLeafVisual(){
+    document.getElementById('cueSun').classList.toggle('on', inputs.light);
+    document.getElementById('cueWater').classList.toggle('on', inputs.water);
+    document.getElementById('cueCo2').classList.toggle('on', inputs.co2);
+    const leaf = document.getElementById('leafShape');
+    leaf.classList.toggle('no-chlorophyll', !inputs.chlorophyll);
+    leaf.classList.toggle('dim', !(inputs.light && inputs.water && inputs.co2));
+}
+
+function runPhotosynthesis(){
+    const msg = document.getElementById('resultMsg');
+    const allOn = inputs.light && inputs.water && inputs.co2 && inputs.chlorophyll;
+
+    ['co2','water','glucose','oxygen'].forEach(t => document.getElementById('term-' + t).classList.remove('lit'));
+
+    if(allOn){
+        ['co2','water','glucose','oxygen'].forEach(t => document.getElementById('term-' + t).classList.add('lit'));
+        msg.textContent = "Photosynthesis is happening! Oxygen and glucose are being produced.";
+        msg.className = 'result-msg success';
+        spawnBubbles();
+    } else {
+        const missing = [];
+        if(!inputs.light) missing.push('sunlight');
+        if(!inputs.water) missing.push('water');
+        if(!inputs.co2) missing.push('carbon dioxide');
+        if(!inputs.chlorophyll) missing.push('chlorophyll');
+        msg.textContent = "Nothing happens \u2014 this plant is missing: " + missing.join(', ') + ".";
+        msg.className = 'result-msg missing';
+    }
+}
+
+function spawnBubbles(){
+    const stage = document.getElementById('leafStage');
+    for(let i = 0; i < 6; i++){
+        const b = document.createElement('div');
+        b.className = 'bubble rise';
+        b.style.left = (30 + Math.random() * 140) + 'px';
+        b.style.animationDelay = (i * 0.15) + 's';
+        stage.appendChild(b);
+    }
+}
+
+function resetSection1(){
+    inputs = { light: false, water: false, co2: false, chlorophyll: false };
+    ['light','water','co2','chlorophyll'].forEach(k => document.getElementById('switch-' + k).classList.remove('on'));
+    updateLeafVisual();
+    document.getElementById('resultMsg').textContent = '';
+    document.getElementById('resultMsg').className = 'result-msg';
+    ['co2','water','glucose','oxygen'].forEach(t => document.getElementById('term-' + t).classList.remove('lit'));
+}
+
+function updateRate(){
+    const light = parseInt(document.getElementById('slider-light').value);
+    const co2 = parseInt(document.getElementById('slider-co2').value);
+    const water = parseInt(document.getElementById('slider-water').value);
+
+    document.getElementById('val-light').textContent = light + '%';
+    document.getElementById('val-co2').textContent = co2 + '%';
+    document.getElementById('val-water').textContent = water + '%';
+
+    const minVal = Math.min(light, co2, water);
+    const rate = Math.round((minVal / 100) * 20); // max 20 bubbles/min when all factors at 100%
+    document.getElementById('bubbleCount').textContent = rate;
+
+    const tag = document.getElementById('limitingTag');
+    if(light === co2 && co2 === water){
+        tag.textContent = 'All factors equal';
+    } else if(minVal === light){
+        tag.textContent = 'Limiting factor: Light Intensity';
+    } else if(minVal === co2){
+        tag.textContent = 'Limiting factor: Carbon Dioxide';
+    } else {
+        tag.textContent = 'Limiting factor: Water';
+    }
+}
+
+updateLeafVisual();
+updateRate();
+</script>
+</body>
+</html>
