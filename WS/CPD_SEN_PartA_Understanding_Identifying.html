@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Handling SEN Part A: Understanding & Identifying Students of Determination</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2A4A; --ink-soft:#4a5670;
+    --paper:#EDEFE8; --card:#FFFFFF;
+    --teal:#1F5C4C; --teal-soft:#E3ECE6;
+    --gold:#B7862C; --gold-soft:#F5EBD6;
+    --red:#A23B3B; --red-soft:#F5E5E1;
+    --line:#DBDACF;
+    --sen:#5B4B8A; --sen-soft:#ECE7F5;
+    --shadow: 0 1px 2px rgba(27,42,74,0.06), 0 4px 14px rgba(27,42,74,0.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; font-size:15.5px; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  .app{max-width:1180px; margin:0 auto; padding:0 22px 60px;}
+
+  header.topbar{padding:34px 0 20px; border-bottom:1px solid var(--line); margin-bottom:26px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--sen); font-weight:600;}
+  h1.programme-title{font-family:'Source Serif 4',serif; font-weight:700; font-size:34px; margin:6px 0 8px; color:var(--ink);}
+  .programme-sub{color:var(--ink-soft); max-width:700px; margin:0 0 14px;}
+  .prereq{display:inline-flex; align-items:center; gap:8px; background:var(--sen-soft); color:var(--sen); border:1px solid #d0c5e6; border-radius:20px; padding:7px 14px; font-size:12.5px; font-family:'IBM Plex Mono',monospace;}
+  .disclaimer{margin-top:14px; font-size:12.3px; color:var(--ink-soft); max-width:700px; border-left:3px solid var(--gold); padding:8px 12px; background:var(--gold-soft); border-radius:0 6px 6px 0;}
+
+  .layout{display:grid; grid-template-columns:250px 1fr; gap:26px; align-items:start;}
+  @media (max-width:820px){ .layout{grid-template-columns:1fr;} }
+
+  nav.sidebar{position:sticky; top:20px; background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; box-shadow:var(--shadow);}
+  .sb-head{padding:14px 16px 10px; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); border-bottom:1px solid var(--line);}
+  .sb-item{display:flex; align-items:flex-start; gap:10px; padding:13px 16px; border-bottom:1px solid var(--line); cursor:pointer;}
+  .sb-item:last-child{border-bottom:none;}
+  .sb-item:hover{background:#F7F7F2;}
+  .sb-mark{width:22px;height:22px;border-radius:50%;flex:none;margin-top:1px; display:flex;align-items:center;justify-content:center; font-size:12px; font-weight:700; border:1.5px solid var(--line); color:var(--ink-soft); background:#fff;}
+  .sb-mark.passed{background:var(--teal); border-color:var(--teal); color:#fff;}
+  .sb-mark.done{background:var(--sen); border-color:var(--sen); color:#fff;}
+  .sb-item-title{font-weight:600; font-size:13.3px; color:var(--ink);}
+  .sb-item-meta{font-size:11.5px; color:var(--ink-soft); margin-top:2px;}
+
+  main.content{min-height:400px;}
+
+  .module-head{background:var(--sen); color:#fff; border-radius:12px; padding:26px 28px; margin-bottom:24px; position:relative; overflow:hidden;}
+  .module-head::after{content:""; position:absolute; right:-40px; top:-40px; width:160px; height:160px; border:1px solid rgba(255,255,255,.14); border-radius:50%;}
+  .module-head .code{font-family:'IBM Plex Mono',monospace; font-size:12px; color:#dcd3ef; letter-spacing:.08em;}
+  .module-head h2{font-family:'Source Serif 4',serif; font-size:26px; margin:6px 0 10px; font-weight:700;}
+  .module-head p{color:#e9e3f4; max-width:660px; margin:0; font-size:14.5px;}
+
+  .indicator-head{background:var(--ink); color:#fff; border-radius:10px; padding:16px 22px; margin:8px 0 18px;}
+  .indicator-head .code{font-family:'IBM Plex Mono',monospace; font-size:12px; color:#cdd6ea; letter-spacing:.06em;}
+  .indicator-head h3{font-family:'Source Serif 4',serif; font-size:20px; margin:4px 0 0; font-weight:700;}
+
+  .concept{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:24px 26px; margin-bottom:20px; box-shadow:var(--shadow);}
+  .concept-num{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--sen); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px;}
+  .concept h3{font-family:'Source Serif 4',serif; font-size:21px; margin:0 0 12px; color:var(--ink);}
+  .concept p{color:#33405c; margin:0 0 10px; font-size:14.8px;}
+
+  .check-block{margin-top:18px; padding-top:16px; border-top:1px dashed var(--line);}
+  .check-label{font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); margin-bottom:8px;}
+  .question{margin-bottom:16px;}
+  .question:last-child{margin-bottom:0;}
+  .q-text{font-weight:600; font-size:14.5px; margin-bottom:9px; color:var(--ink);}
+  .opt{display:flex; align-items:flex-start; gap:9px; padding:9px 11px; border:1px solid var(--line); border-radius:7px; margin-bottom:7px; cursor:pointer; font-size:14px; color:#33405c;}
+  .opt:hover{border-color:#b8b6a4;}
+  .opt.selected{border-color:var(--ink); background:#F7F7F2; box-shadow:inset 0 0 0 1px var(--ink);}
+  .opt.correct{border-color:var(--teal); background:var(--teal-soft); color:var(--teal); font-weight:600;}
+  .opt.incorrect{border-color:var(--red); background:var(--red-soft); color:var(--red); font-weight:600;}
+  .opt.disabled{cursor:default;}
+  .opt-bullet{width:16px;height:16px;border-radius:50%;border:1.5px solid #b8b6a4;flex:none;margin-top:1px;}
+  .opt.selected .opt-bullet{border-color:var(--ink); background:var(--ink); box-shadow:inset 0 0 0 3px #fff;}
+  .opt.correct .opt-bullet{border-color:var(--teal); background:var(--teal);}
+  .opt.incorrect .opt-bullet{border-color:var(--red); background:var(--red);}
+  .feedback{margin-top:6px; padding:9px 12px; border-radius:7px; font-size:13.3px; background:#F7F7F2; color:#4a5670; border-left:3px solid var(--ink-soft);}
+  .feedback.right{border-left-color:var(--teal); color:#1a4437;}
+  .feedback.wrong{border-left-color:var(--red); color:#6e2a2a;}
+
+  .evidence-box{background:var(--sen-soft); border:1px solid #d0c5e6; border-radius:10px; padding:20px 24px; margin:6px 0 22px;}
+  .evidence-box h4{font-family:'Source Serif 4',serif; font-size:17px; margin:0 0 4px; color:var(--sen); display:flex; align-items:center; gap:8px;}
+  .evidence-box p.sub{font-size:12.8px; color:#443a5c; margin:0 0 12px;}
+  .evidence-box ul{margin:0; padding-left:20px;}
+  .evidence-box li{font-size:13.6px; color:#372e4a; margin-bottom:6px;}
+
+  .exam-cta{background:var(--gold-soft); border:1px solid #e6cf9e; border-radius:10px; padding:22px 26px; text-align:center; margin-top:8px;}
+  .exam-cta.locked{background:#F1F1EA; border-color:var(--line);}
+  .exam-cta h4{font-family:'Source Serif 4',serif; font-size:19px; margin:0 0 6px; color:var(--ink);}
+  .exam-cta p{color:var(--ink-soft); font-size:13.8px; margin:0 0 14px;}
+  button.btn{font-family:'Inter',sans-serif; font-weight:600; font-size:14px; background:var(--sen); color:#fff; border:none; border-radius:7px; padding:11px 22px; cursor:pointer;}
+  button.btn:hover{background:#4a3d72;}
+  button.btn:disabled{background:#c7c6bb; cursor:not-allowed;}
+  button.btn.ghost{background:transparent; color:var(--sen); border:1.5px solid var(--sen);}
+  button.btn.ghost:hover{background:#fff;}
+
+  .exam-head{margin-bottom:16px;}
+  .exam-head .eyebrow2{font-family:'IBM Plex Mono',monospace; color:var(--red); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;}
+  .exam-head h2{font-family:'Source Serif 4',serif; font-size:24px; margin:6px 0 4px;}
+  .exam-head p{color:var(--ink-soft); font-size:13.8px; margin:0;}
+  .exam-progress{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); margin:10px 0 18px;}
+  .submit-row{display:flex; justify-content:flex-end; margin-top:8px;}
+
+  .results{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:34px 30px; text-align:center; box-shadow:var(--shadow);}
+  .stamp{display:inline-block; border:3px double var(--teal); color:var(--teal); font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:20px; padding:14px 26px; border-radius:10px; transform:rotate(-4deg); letter-spacing:.06em; margin-bottom:16px; animation:stampIn .35s ease-out;}
+  .stamp.fail{border:2px solid var(--red); color:var(--red); border-style:solid;}
+  @keyframes stampIn{ from{transform:rotate(-4deg) scale(1.6); opacity:0;} to{transform:rotate(-4deg) scale(1); opacity:1;} }
+  .score-line{font-family:'Source Serif 4',serif; font-size:22px; margin:6px 0 4px;}
+  .score-sub{color:var(--ink-soft); font-size:14px; margin-bottom:22px;}
+  .review-list{text-align:left; max-width:660px; margin:0 auto 22px; border-top:1px solid var(--line); padding-top:16px;}
+  .review-item{display:flex; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); font-size:13.8px;}
+  .review-item:last-child{border-bottom:none;}
+  .review-tag{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--sen); flex:none; width:56px;}
+  .btn-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+
+  footer.foot{margin-top:36px; padding-top:18px; border-top:1px solid var(--line); font-size:12px; color:#8b8f7f; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;}
+  a.reset-link{color:#8b8f7f; text-decoration:underline; cursor:pointer;}
+
+  .final-banner{background:linear-gradient(135deg,#5B4B8A,#7A69AC); color:#fff; border-radius:12px; padding:30px 28px; text-align:center; margin-top:24px;}
+  .final-banner h2{font-family:'Source Serif 4',serif; font-size:26px; margin:0 0 8px;}
+  .final-banner p{color:#e9e3f4; font-size:14.5px; max-width:560px; margin:0 auto;}
+
+  .name-gate{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:40px 34px; text-align:center; max-width:480px; margin:40px auto; box-shadow:var(--shadow); }
+  .name-gate h4{ font-family:'Source Serif 4',serif; font-size:20px; margin:0 0 8px; color:var(--ink); }
+  .name-gate p{ color:var(--ink-soft); font-size:13.8px; margin:0 0 18px; }
+  .name-gate input{ width:100%; padding:10px 12px; border:1.5px solid var(--line); border-radius:7px; font-family:'Inter',sans-serif; font-size:14.5px; margin-bottom:14px; box-sizing:border-box; }
+  .name-gate input:focus{ outline:none; border-color:var(--sen); }
+  .cert-wrap{ max-width:760px; margin:20px auto; }
+  .cert-back{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft); cursor:pointer; margin-bottom:16px; display:inline-block; text-decoration:underline; }
+  .certificate{ background:#fff; border:2px solid var(--sen); border-radius:6px; padding:6px; }
+  .certificate-inner{ border:1px solid var(--sen); padding:48px 50px; text-align:center; position:relative; }
+  .cert-eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--sen); margin-bottom:18px; }
+  .cert-logo{ width:64px; height:64px; border-radius:50%; object-fit:cover; margin:0 auto 16px; display:block; box-shadow:0 2px 6px rgba(0,0,0,0.15); }
+  .cert-title{ font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:var(--ink); margin:0 0 26px; }
+  .cert-presented{ font-size:13px; color:var(--ink-soft); margin-bottom:6px; letter-spacing:.04em; }
+  .cert-name{ font-family:'Source Serif 4',serif; font-style:italic; font-size:32px; color:var(--sen); margin:6px 0 22px; border-bottom:1px solid var(--line); display:inline-block; padding:0 20px 10px; }
+  .cert-body{ font-size:14.5px; color:#33405c; max-width:540px; margin:0 auto 26px; line-height:1.6; text-align:justify; }
+  .cert-body b{ color:var(--ink); }
+  .cert-meta-row{ display:flex; justify-content:center; gap:40px; margin:26px 0 30px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); }
+  .cert-meta-row div strong{ display:block; color:var(--ink); font-size:13px; font-family:'Inter',sans-serif; margin-top:3px; }
+  .cert-seal{ width:78px; height:78px; border-radius:50%; border:2px double var(--sen); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; color:var(--sen); font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:10.5px; text-align:center; line-height:1.3; }
+  .cert-actions{ margin-top:26px; display:flex; gap:10px; justify-content:center; }
+
+  @media print{
+    body{ background:#fff; }
+    .app > header.topbar, .layout > nav.sidebar, .cert-back, .cert-actions, footer.foot { display:none !important; }
+    .app{ padding:0; max-width:none; }
+    .layout{ display:block; }
+    .certificate{ box-shadow:none; }
+    .cert-wrap{ margin:0; max-width:none; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+/* ---- Persistent storage polyfill: backs window.storage with real localStorage ----
+   window.storage is a Claude-artifact-only API; this shim makes the same interface
+   work on any real web host (Google Sites, Drive, etc.) using standard localStorage. */
+if (!window.storage) {
+  window.storage = {
+    get: async function(key){
+      try { var v = localStorage.getItem(key); return v === null ? null : { key: key, value: v }; }
+      catch(e){ return null; }
+    },
+    set: async function(key, value){
+      try { localStorage.setItem(key, value); return { key: key, value: value }; }
+      catch(e){ return null; }
+    },
+    delete: async function(key){
+      try { localStorage.removeItem(key); return { key: key, deleted: true }; }
+      catch(e){ return null; }
+    }
+  };
+}
+
+/* =========================================================================
+   CONTENT: HANDLING SEN — PART A: UNDERSTANDING & IDENTIFYING
+   STUDENTS OF DETERMINATION (ADHD, DYSLEXIA, AUTISM)
+   Audience: Teachers & Teaching Assistants / Learning Support
+   Aligned to: UAE Ministerial Resolution No. 647/2020 (Inclusive Education
+   Policy) and the UAE School Inspection Framework's standards on curriculum
+   adaptation, differentiated teaching, and inclusion of Students of
+   Determination (SoD).
+   ========================================================================= */
+const MODULE_TITLE = "Handling SEN Part A: Understanding & Identifying Students of Determination";
+const EST_DURATION = "Fully self-paced \u2014 no fixed limit (typically about 3 hours to work through thoroughly)";
+
+const GROUPS = [
+  {
+    code: "1", title: "UAE Inclusive Education: Context & Terminology",
+    intro: "Before looking at specific needs, it helps to understand the framework this school works within, and the language the UAE uses to talk about additional educational needs. Getting the terminology and the school's duty right is the foundation everything else in this module builds on.",
+    concepts: [
+      {
+        title: "What 'Students of Determination' Means \u2014 and Why the Term Matters",
+        body: [
+          "The UAE uses the term \u2018Students of Determination\u2019 (SoD) rather than labels like \u2018special needs\u2019 or \u2018disabled\u2019. It reflects a national policy choice \u2014 under the leadership of the UAE\u2019s Higher Committee on the Rights of People of Determination \u2014 to describe a person\u2019s strength and perseverance rather than a deficit.",
+          "A Student of Determination is any student who needs additional or different educational provision because they experience significantly greater difficulty in learning than most students their age, or because a disability or recognised disorder affects their access to the standard curriculum or facilities.",
+          "The term is deliberately broad. It includes students with a formal diagnosis and students who show clear, sustained difficulty without (yet) having one \u2014 both groups are entitled to the school noticing, recording, and acting on their needs."
+        ],
+        checks: [
+          { q: "A student shows sustained, significant difficulty accessing lessons, but has no formal diagnosis yet. Are they a Student of Determination under UAE policy?", options: ["No \u2014 only students with a confirmed diagnosis count", "Yes \u2014 significant, sustained difficulty is enough on its own to warrant identification and support", "Only if a parent requests it", "Only if the difficulty affects behaviour, not learning"], correct: 1, explain: "UAE policy defines a Student of Determination by the level of difficulty they experience, not by whether a diagnosis exists yet. Formal diagnosis can follow identification \u2014 it isn't a precondition for support." },
+          { q: "Why does the UAE use the term 'Students of Determination' rather than 'special needs'?", options: ["It is simply a translation convention with no policy significance", "It reflects a deliberate national policy choice to frame the person by strength and perseverance rather than deficit", "It only applies to students with physical disabilities", "It is used interchangeably and has no defined meaning"], correct: 1, explain: "The terminology is a deliberate framing choice tied to the UAE\u2019s National Policy for Empowering People of Determination \u2014 it carries real policy weight, not just style." }
+        ]
+      },
+      {
+        title: "The School's Duty Under UAE Inclusive Education Policy",
+        body: [
+          "Ministerial Resolution No. 647 of 2020 on the Policy of Inclusive Education directs schools to adapt themselves to the needs of Students of Determination, rather than expecting the student to fit an unchanged system. Inclusion is framed as a gradual shift in school culture and everyday practice, not a one-off project.",
+          "In practice this means every teacher and teaching assistant has a role \u2014 not just the SEN/Inclusion team. Identification, reasonable classroom adjustments, and day-to-day support are shared responsibilities across the staff a student meets.",
+          "School inspections (aligned to the UAE School Inspection Framework) look specifically at how well a school identifies, provides for, and includes Students of Determination \u2014 it is one of the most closely scrutinised areas of provision, not a peripheral add-on."
+        ],
+        checks: [
+          { q: "Under UAE inclusive education policy, whose responsibility is it to identify and support a Student of Determination in a mainstream classroom?", options: ["Only the SEN/Inclusion team", "Only the class teacher", "Every teacher and teaching assistant who works with the student, alongside the SEN/Inclusion team", "Only the parents, since they know their child best"], correct: 2, explain: "Inclusion is framed as a shared, whole-staff responsibility. The SEN/Inclusion team coordinates and advises, but day-to-day identification and support sit with every adult working with the student." },
+          { q: "What does Ministerial Resolution No. 647 of 2020 primarily direct schools to do?", options: ["Refer all Students of Determination to specialist schools", "Adapt the school itself to meet the needs of Students of Determination, rather than expecting students to fit an unchanged system", "Limit inclusive education to a designated resource room", "Focus inclusion efforts solely on physical accessibility"], correct: 1, explain: "The policy\u2019s central principle is that schools adapt to students, embedding inclusion into everyday culture and practice \u2014 not a narrow or purely physical accommodation." }
+        ]
+      }
+    ],
+    evidence: [
+      "School's Inclusive Education Policy document, referencing Ministerial Resolution 647/2020",
+      "Whole-staff induction/training records on Students of Determination terminology and duties",
+      "SEN/Inclusion team structure chart showing roles and escalation routes"
+    ]
+  },
+  {
+    code: "2", title: "The Range of Special Educational Needs",
+    intro: "ADHD, Dyslexia and Autism are the three needs most present in your student population right now \u2014 but they sit within a much wider picture. Understanding that wider picture helps you recognise a need you haven't been specifically trained to spot, and understand why two students with the same diagnosis can look very different in your classroom.",
+    concepts: [
+      {
+        title: "Four Broad Areas of Need",
+        body: [
+          "Schools commonly group special educational needs into four broad areas: Communication & Interaction (e.g. autism, speech and language needs); Cognition & Learning (e.g. dyslexia, dyscalculia, general learning difficulties); Social, Emotional & Mental Health (e.g. anxiety, ADHD-related self-regulation difficulties); and Sensory & Physical (e.g. hearing or visual impairment, physical disabilities).",
+          "These categories are a practical starting point, not rigid boxes. A single student's profile often draws on more than one area at once \u2014 a student with autism may also have sensory needs and anxiety, for example.",
+          "Knowing these four areas helps you ask the right question when something doesn't add up: not 'what's wrong with this student', but 'which area of need might explain what I'm seeing, and who should I talk to about it'."
+        ],
+        checks: [
+          { q: "What is the main practical value of the four broad areas of need (Communication & Interaction, Cognition & Learning, Social/Emotional/Mental Health, Sensory & Physical)?", options: ["They are strict categories \u2014 every student fits exactly one", "They give a starting framework to help identify which area of need might explain a difficulty you're observing", "They replace the need for a formal diagnosis", "They only apply to primary-age students"], correct: 1, explain: "The four areas are a practical thinking tool for staff, not a rigid classification system \u2014 many students' needs span more than one area." },
+          { q: "A student with autism also shows strong anxiety and sensitivity to loud noises. What does this illustrate?", options: ["The student has been misdiagnosed", "A student's needs can span more than one broad area at once", "Anxiety and sensory sensitivity are unrelated to autism", "This is unusual and should be treated as a separate, additional diagnosis every time"], correct: 1, explain: "Overlapping needs across categories are common and expected \u2014 it's a reason to look at the whole student, not a sign something is wrong with the categorisation." }
+        ]
+      },
+      {
+        title: "Where ADHD, Dyslexia and Autism Sit \u2014 and Why Labels Alone Don't Tell You Enough",
+        body: [
+          "ADHD typically sits in the Social, Emotional & Mental Health area (though it has a strong cognitive/attention component too); Dyslexia sits in Cognition & Learning; Autism sits primarily in Communication & Interaction, often with sensory needs alongside it.",
+          "These three needs frequently co-occur with each other and with anxiety \u2014 a student can have both ADHD and dyslexia, for example. A diagnosis label is a useful starting point, but it never fully describes an individual student.",
+          "This is why this module spends as much time on classroom signs and myths as it does on definitions: two students with the exact same diagnosis can need quite different support, and the same classroom behaviour can have several different underlying explanations."
+        ],
+        checks: [
+          { q: "Two students both have a diagnosis of ADHD, but behave quite differently in class. What does this tell you?", options: ["One of the diagnoses is probably wrong", "A diagnosis label doesn't fully describe an individual student \u2014 support needs to be based on the student in front of you, not the label alone", "ADHD only has one true presentation", "Teachers should treat both students identically regardless of what they observe"], correct: 1, explain: "A diagnosis is a useful starting point, but individual presentation varies widely \u2014 effective support is based on the specific student, informed by (not dictated by) the label." },
+          { q: "Why is it common for a student to have more than one of ADHD, Dyslexia, anxiety, or Autism at the same time?", options: ["It isn't common \u2014 co-occurrence is rare", "These needs frequently co-occur with each other, which is why a single label rarely tells the whole story", "Only Autism can co-occur with other conditions", "Co-occurrence only happens if the school misses the first diagnosis"], correct: 1, explain: "Co-occurrence (sometimes called comorbidity) is well-documented and common across these needs \u2014 it's a normal part of the picture, not an exception." }
+        ]
+      }
+    ],
+    evidence: [
+      "School's categorisation/coding of needs on its SEN register",
+      "Staff CPD records showing awareness of the range of need, not just headline diagnoses",
+      "Examples of provision maps showing overlapping/co-occurring needs addressed together"
+    ]
+  },
+  {
+    code: "ADHD", title: "Understanding & Identifying ADHD",
+    intro: "ADHD (Attention-Deficit/Hyperactivity Disorder) is one of the most common needs you'll see in a mainstream classroom \u2014 and one of the most misunderstood. This section covers what it actually is, how it typically shows up in lessons, and where common assumptions go wrong.",
+    concepts: [
+      {
+        title: "What ADHD Is (and Isn't)",
+        body: [
+          "ADHD is a neurodevelopmental condition affecting the brain's executive function systems \u2014 the mental processes involved in regulating attention, impulse control, and activity level. It is not a result of poor parenting, laziness, or a lack of discipline.",
+          "ADHD has three recognised presentations: predominantly inattentive, predominantly hyperactive-impulsive, and combined. A student with the inattentive presentation may sit quietly and still be missing most of what's happening \u2014 which is why ADHD is sometimes missed in students who aren't disruptive.",
+          "ADHD is not simply 'high energy' or 'a student who doesn't try hard enough'. It's a genuine difference in how the brain regulates attention and impulses, and it typically requires consistent, structured support rather than willpower alone to manage."
+        ],
+        checks: [
+          { q: "A quiet student consistently loses track of instructions and forgets homework, but never disrupts the class. Could this be ADHD?", options: ["No \u2014 ADHD always involves visible hyperactivity", "Yes \u2014 the inattentive presentation of ADHD can look quiet and easily go unnoticed", "No \u2014 this is always just poor organisation and nothing more", "Yes, but only if the student is also disruptive at home"], correct: 1, explain: "The inattentive presentation of ADHD often doesn't involve visible hyperactivity, which is exactly why it's more likely to be missed in a classroom that only watches for disruptive behaviour." },
+          { q: "What is the most accurate description of what ADHD actually is?", options: ["A result of poor parenting or lack of discipline", "A neurodevelopmental condition affecting executive function systems that regulate attention, impulse control and activity level", "Simply having a lot of energy", "A learned behaviour that can be trained away with strict enough consequences"], correct: 1, explain: "ADHD is a genuine neurodevelopmental difference in executive function \u2014 not a behavioural choice, parenting outcome, or personality trait." }
+        ]
+      },
+      {
+        title: "Classroom Signs Across the School Day",
+        body: [
+          "Common signs include difficulty sustaining attention on tasks (especially ones that aren't immediately engaging), losing or forgetting materials and instructions, fidgeting or restlessness, blurting out answers or interrupting, and difficulty waiting turns or transitioning between activities.",
+          "Signs often look different by subject and time of day: a student may cope well in a hands-on practical lesson but struggle badly during a long, quiet written task, or unravel in the last lesson of the day when self-regulation resources are depleted.",
+          "A single instance of any of these signs isn't evidence of ADHD \u2014 what matters for identification purposes is a consistent, cross-setting pattern that's noticeably greater than what's typical for the student's age, not an isolated bad day."
+        ],
+        checks: [
+          { q: "A student is calm and focused during a hands-on science practical but restless and distracted during a long written comprehension task. What does this most likely suggest?", options: ["The student definitely does not have ADHD, since they can focus sometimes", "Attention and self-regulation difficulties often vary by task type \u2014 this pattern is consistent with, not against, an ADHD-related profile", "The student is simply choosing to misbehave in one lesson", "This pattern is unrelated to attention and should be ignored"], correct: 1, explain: "Variable attention by task type and engagement level is a well-recognised ADHD pattern \u2014 it doesn't rule ADHD out, and can actually be a useful observation to record." },
+          { q: "What matters most when deciding whether a pattern of behaviour is significant enough to flag as a possible ADHD-related need?", options: ["A single dramatic incident in one lesson", "Whether it happened during an assessment", "A consistent, cross-setting pattern noticeably greater than what's typical for the student's age", "Whether the student's parents have already mentioned it"], correct: 2, explain: "Identification is based on consistent, cross-setting patterns compared to age-typical development \u2014 not isolated incidents, however dramatic." }
+        ]
+      },
+      {
+        title: "Common Myths vs Facts about ADHD",
+        body: [
+          "Myth: 'ADHD isn't real, it's just bad behaviour.' Fact: ADHD is a well-evidenced neurodevelopmental condition recognised by every major medical and educational authority worldwide.",
+          "Myth: 'Students with ADHD just need to try harder / want more discipline.' Fact: ADHD affects the brain systems that make 'trying harder' consistently difficult without structural and environmental support \u2014 punitive approaches alone typically make things worse, not better.",
+          "Myth: 'ADHD only affects boys, and only looks like hyperactivity.' Fact: ADHD is under-diagnosed in girls in particular, partly because the inattentive presentation is quieter and less disruptive, and therefore easier for adults to overlook."
+        ],
+        checks: [
+          { q: "A colleague says a student with ADHD 'just needs more discipline to sit still.' What is the most accurate response?", options: ["Agree \u2014 stricter consequences are the main solution", "ADHD affects the brain's regulation of attention and impulses; consistent structure and environmental support are far more effective than discipline alone", "ADHD isn't a real condition, so any approach will do", "Only medication can help, so classroom strategy doesn't matter"], correct: 1, explain: "Punitive-only approaches misunderstand what ADHD actually is. Structural and environmental support, alongside any medical intervention a family pursues, is the evidence-based direction." },
+          { q: "Why might ADHD be under-identified in girls specifically?", options: ["Girls are less likely to have ADHD at all", "The inattentive presentation is quieter and less disruptive, making it easier for adults to overlook", "ADHD criteria officially exclude girls", "Girls always outgrow ADHD by adolescence"], correct: 1, explain: "The quieter, inattentive presentation is more common in girls' identified cases and is easy to miss without deliberate attention to non-disruptive signs." }
+        ]
+      }
+    ],
+    evidence: [
+      "Staff training records on ADHD awareness/identification",
+      "Examples of classroom observation notes describing cross-setting attention/self-regulation patterns (non-diagnostic, factual)",
+      "SEN register entries showing consistent, evidence-based identification rather than single-incident flags"
+    ]
+  },
+  {
+    code: "DYS", title: "Understanding & Identifying Dyslexia",
+    intro: "Dyslexia is one of the most common specific learning difficulties, and one of the easiest to mistake for low ability or lack of effort if you don't know what to look for. This section covers what it is, how it typically shows up, and the myths that most often get in the way of early identification.",
+    concepts: [
+      {
+        title: "What Dyslexia Is (and Isn't)",
+        body: [
+          "Dyslexia is a specific learning difficulty that primarily affects the accuracy and fluency of word reading and spelling. It is neurological in origin and unrelated to a student's overall intelligence \u2014 many students with dyslexia are highly capable thinkers who struggle specifically with decoding print.",
+          "It typically involves difficulties with phonological processing (breaking words into sounds), which affects how easily a student learns to link letters to sounds, decode unfamiliar words, and spell accurately \u2014 even after repeated teaching that works for most peers.",
+          "Dyslexia is not a sign of low intelligence, laziness, or 'just needing to read more'. A student can be an excellent verbal reasoner and a strong contributor in class discussion, and still find written text a genuine, persistent barrier."
+        ],
+        checks: [
+          { q: "A student contributes excellent, insightful ideas in class discussion but reads and spells well below age expectation despite consistent teaching. What does this suggest?", options: ["The student is not trying hard enough at reading", "This pattern \u2014 strong verbal reasoning alongside a persistent, specific reading/spelling difficulty \u2014 is a classic dyslexia profile, not a sign of low ability", "The student should be moved to a lower-ability group across all subjects", "This is not related to dyslexia since the student is clearly intelligent"], correct: 1, explain: "This is a textbook dyslexia profile: strong general reasoning combined with a specific, persistent decoding/spelling difficulty. It's exactly why dyslexia is easy to miss in able, articulate students." },
+          { q: "What underlying processing difficulty is most commonly associated with dyslexia?", options: ["Visual processing of colour", "Phonological processing \u2014 breaking words into sounds and linking them to letters", "General memory for facts", "Difficulty understanding spoken instructions only"], correct: 1, explain: "Phonological processing difficulty is the most consistently identified underlying feature of dyslexia, affecting decoding and spelling in particular." }
+        ]
+      },
+      {
+        title: "Classroom Signs of Dyslexia",
+        body: [
+          "Common signs include slow, effortful, or inaccurate reading relative to age and ability; poor or inconsistent spelling (the same word spelled differently in different places); difficulty copying from the board; reversing or confusing similar-looking letters or numbers beyond the age this is typical; and reluctance to read aloud.",
+          "Signs often show up more clearly in written output than in verbal contribution \u2014 a student may answer confidently out loud but produce written work that looks noticeably behind what their spoken understanding suggests they're capable of.",
+          "As with all these needs, a single spelling mistake or slow reading day isn't evidence. What matters is a persistent gap between a student's verbal/reasoning ability and their reading/spelling accuracy, sustained over time and across subjects."
+        ],
+        checks: [
+          { q: "A student's spoken answers in class discussion are consistently strong, but their written work is disorganised with frequent, inconsistent spelling errors. What is the most useful next step?", options: ["Assume the student isn't concentrating on writing and move on", "Note the gap between verbal and written performance as a pattern worth raising with the SEN/Inclusion team", "Reduce all writing expectations for the student without further investigation", "Conclude the student definitely has dyslexia without any further process"], correct: 1, explain: "A sustained gap between verbal and written performance is a meaningful pattern to flag through the proper identification pathway \u2014 not something to diagnose yourself or ignore." },
+          { q: "Which of the following is the strongest signal worth recording as a possible dyslexia indicator?", options: ["One misspelled word on a single spelling test", "The same word spelled differently in different pieces of work, sustained over time and across subjects", "A student who reads slightly slower than the fastest reader in class", "A student who dislikes reading aloud on one occasion"], correct: 1, explain: "Inconsistent spelling of the same word, sustained over time and across contexts, is a more reliable indicator than a single low score or a one-off preference." }
+        ]
+      },
+      {
+        title: "Common Myths vs Facts about Dyslexia",
+        body: [
+          "Myth: 'Dyslexia just means seeing letters backwards.' Fact: letter reversals can be one sign, but dyslexia is primarily about phonological processing, fluency and spelling \u2014 many students with dyslexia never reverse letters at all.",
+          "Myth: 'Dyslexia means a student can't be a strong student overall.' Fact: dyslexia affects specific literacy skills, not general intelligence \u2014 students with dyslexia are found across the full range of academic ability.",
+          "Myth: 'Students grow out of dyslexia.' Fact: dyslexia is a lifelong neurological difference. Good support and strategies help students manage it very effectively, but it doesn't disappear with age."
+        ],
+        checks: [
+          { q: "A colleague says a student 'can't have dyslexia because they're clearly one of the brightest students in the year.' What's the most accurate response?", options: ["Agree \u2014 dyslexia only affects lower-ability students", "Dyslexia affects specific literacy skills, not general intelligence \u2014 able students can and do have dyslexia", "Dyslexia is always visible in every subject, so this rules it out", "Only students who reverse letters can have dyslexia"], correct: 1, explain: "Dyslexia is unrelated to general intellectual ability. High-achieving students are sometimes the ones most likely to be missed, precisely because of this myth." },
+          { q: "Does dyslexia go away as a student gets older?", options: ["Yes, most students grow out of it by secondary school", "No \u2014 it's a lifelong neurological difference, though good strategies help students manage it very effectively", "Only if the student stops reading for pleasure", "Yes, but only for students diagnosed after age 12"], correct: 1, explain: "Dyslexia is lifelong. Effective strategies and support change how much it limits a student \u2014 they don't make the underlying difference disappear." }
+        ]
+      }
+    ],
+    evidence: [
+      "Reading/spelling screening or assessment records",
+      "Examples of a student's written work alongside notes on verbal ability, showing the gap pattern",
+      "Staff training records on dyslexia awareness and identification"
+    ]
+  },
+  {
+    code: "ASD", title: "Understanding & Identifying Autism",
+    intro: "Autism is a spectrum \u2014 which means it looks different in almost every student who has it. This section covers what autism actually is, how it commonly shows up in a mainstream classroom, and the myths that most often lead to it being missed or misread as 'difficult behaviour'.",
+    concepts: [
+      {
+        title: "What Autism Is (and Isn't)",
+        body: [
+          "Autism Spectrum Disorder is a neurodevelopmental difference affecting social communication and interaction, alongside restricted or repetitive patterns of behaviour, interests, or activities \u2014 often including differences in sensory processing (over- or under-sensitivity to sound, light, texture, and so on).",
+          "It's called a spectrum because it varies enormously between individuals \u2014 in how much support someone needs, in verbal ability, in social interest and style, and in sensory profile. Two autistic students can look almost nothing alike.",
+          "Autism is not a behavioural choice, a result of poor discipline, or something a student can simply be told to 'snap out of'. Many autistic students are also masking \u2014 consciously suppressing autistic traits to fit in \u2014 which can make autism harder to spot, and is often exhausting for the student."
+        ],
+        checks: [
+          { q: "Two students both have an autism diagnosis but seem completely different from each other in class \u2014 one is very verbal and social, the other rarely speaks and avoids group work. What does this reflect?", options: ["One of the diagnoses must be wrong", "Autism is a spectrum \u2014 presentation varies enormously between individuals, and both patterns are consistent with autism", "Only the quiet student can really be autistic", "Autism always looks the same, so this shouldn't happen"], correct: 1, explain: "Wide variation between individuals is exactly what 'spectrum' means in Autism Spectrum Disorder \u2014 it's expected, not a sign of misdiagnosis." },
+          { q: "What does 'masking' mean in the context of autism?", options: ["Wearing a face covering", "Consciously suppressing autistic traits to appear more 'typical', which can make autism harder to spot and is often exhausting for the student", "A medical treatment for autism", "A sign that a student does not actually have autism"], correct: 1, explain: "Masking is a well-documented coping strategy, especially common in students who are more socially motivated \u2014 it can hide real, ongoing difficulty rather than indicate its absence." }
+        ]
+      },
+      {
+        title: "Classroom Signs of Autism",
+        body: [
+          "Common signs include difficulty reading social cues or unwritten social rules, taking language very literally, strong preference for routine and difficulty with unexpected change, intense or narrow interests, and sensory reactions to noise, light, texture or crowded spaces that seem disproportionate to the trigger.",
+          "A student may struggle more at transitions (end of lesson, change of teacher, unstructured time like break or lunch) than during structured, predictable activities \u2014 because transitions remove the routine and predictability that helps them self-regulate.",
+          "What looks like 'defiance' or a 'meltdown' is very often sensory or communication overload rather than deliberate misbehaviour \u2014 the distinction matters enormously for how you respond, and misreading it tends to make things worse, not better."
+        ],
+        checks: [
+          { q: "A student who copes well during a structured lesson becomes distressed and shuts down during the unstructured transition to break time. What is the most likely explanation?", options: ["The student is being deliberately difficult to avoid the lesson", "Transitions remove routine and predictability, which can be especially hard to self-regulate through for an autistic student", "This has nothing to do with autism and should be treated as simple misbehaviour", "The student should be punished to discourage the pattern"], correct: 1, explain: "Difficulty specifically at transitions, contrasted with coping well in structured time, is a well-recognised autism-related pattern rooted in loss of predictability \u2014 not defiance." },
+          { q: "A student appears to have a meltdown after a fire alarm test. What's the most useful first interpretation?", options: ["The student is overreacting and should be told to calm down immediately", "This is likely sensory/communication overload rather than deliberate misbehaviour, and should be responded to accordingly", "This proves the student is not really autistic, since a real meltdown would look different", "Ignore it \u2014 meltdowns don't need any different response than ordinary misbehaviour"], correct: 1, explain: "A loud, unexpected sensory event like a fire alarm is a classic overload trigger. Reading it as overload rather than defiance changes the response \u2014 and getting this right matters a great deal for the student." }
+        ]
+      },
+      {
+        title: "Common Myths vs Facts about Autism",
+        body: [
+          "Myth: 'Autistic students don't want friends or social connection.' Fact: many autistic students want connection just as much as anyone else \u2014 they may simply need different support to build and sustain it, not less interest in it.",
+          "Myth: 'A meltdown is the same as a tantrum, and should be handled the same way.' Fact: a tantrum is typically goal-directed and stops once the goal is reached or abandoned; a meltdown is an involuntary response to overload and needs a calm, low-stimulation response, not a consequence.",
+          "Myth: 'If a student can talk normally and does well academically, they can't really be autistic.' Fact: many autistic students are highly verbal and academically strong \u2014 autism affects social communication style and sensory processing, not general intelligence or vocabulary."
+        ],
+        checks: [
+          { q: "What is the key difference between a meltdown and a tantrum?", options: ["There is no real difference \u2014 they should always be handled identically", "A tantrum is typically goal-directed and stops once the goal is met or abandoned; a meltdown is an involuntary response to overload needing a calm, low-stimulation response", "A meltdown only happens in older students", "A tantrum only happens in autistic students"], correct: 1, explain: "This distinction changes the correct response completely \u2014 treating a meltdown like a tantrum (e.g. with consequences) tends to escalate distress rather than resolve it." },
+          { q: "A highly verbal, academically strong student is diagnosed with autism. Does this fit the profile?", options: ["No \u2014 verbal, academically strong students cannot be autistic", "Yes \u2014 autism affects social communication style and sensory processing, not general intelligence or vocabulary", "Only if they also have a learning difficulty", "This must be a misdiagnosis"], correct: 1, explain: "Verbal ability and academic strength are entirely compatible with an autism diagnosis. Autism is not a marker of general intelligence." }
+        ]
+      }
+    ],
+    evidence: [
+      "Staff training records on autism awareness and identification",
+      "Individual sensory/communication profile notes (where developed with the SEN/Inclusion team)",
+      "Records distinguishing sensory overload responses from behavioural incidents, used to inform support planning"
+    ]
+  },
+  {
+    code: "6", title: "From Concern to Support: Identification & Referral",
+    intro: "Noticing a pattern is only the first step. This final section covers how to raise a concern properly, what happens next in your school's pathway, and how to work with families as genuine partners rather than as an afterthought.",
+    concepts: [
+      {
+        title: "Raising a Concern the Right Way",
+        body: [
+          "Your role as a teacher or teaching assistant is to observe and record factually \u2014 what you saw, when, how often, and in what context \u2014 not to diagnose. Phrases like 'I think this student has ADHD' are less useful (and less appropriate) than 'over three weeks, this student has needed instructions repeated individually in 8 of 10 lessons, despite whole-class instructions being clear and visible.'",
+          "Good observations are specific, dated, and comparative \u2014 they describe what's different about this student relative to typical development for their age, not just 'this student is difficult'.",
+          "Raise the concern through your school's normal channel \u2014 usually the SEN/Inclusion Coordinator or your Head of Year/Section \u2014 rather than waiting to be certain, and rather than trying to manage a significant, sustained concern alone indefinitely."
+        ],
+        checks: [
+          { q: "Which of the following is the most useful way to record a classroom observation to support identification?", options: ["'This student definitely has ADHD.'", "'Over three weeks, this student has needed instructions repeated individually in 8 of 10 lessons, despite clear whole-class instructions.'", "'This student is difficult and disruptive.'", "No record is needed \u2014 just mention it verbally if it comes up"], correct: 1, explain: "Specific, dated, factual, comparative observations are far more useful for the identification process than a diagnostic label or a vague behavioural complaint \u2014 and diagnosing isn't the teacher's role." },
+          { q: "When should a teacher raise a sustained, significant concern about a student through the school's SEN pathway?", options: ["Only once they are completely certain of a diagnosis", "Through the normal channel (SEN/Inclusion Coordinator or Head of Year/Section), without waiting for certainty or trying to manage it alone indefinitely", "Never \u2014 concerns should only come from parents", "Only at the end of the academic year"], correct: 1, explain: "Concerns should be raised promptly through the proper channel once a pattern is evident \u2014 delaying until certainty, or managing a significant concern alone, both work against the student's interests." }
+        ]
+      },
+      {
+        title: "The School's Identification & Referral Pathway",
+        body: [
+          "Once a concern is raised, the SEN/Inclusion team typically gathers further evidence (classroom observations, work samples, sometimes school-based screening tools), and decides whether in-school monitoring, additional school-based support, or referral for an external specialist assessment is the right next step.",
+          "A formal diagnosis (from an external specialist) isn't required for a school to begin providing support \u2014 many students receive school-based provision, recorded on a Provision Map or Individual Education Plan (IEP), well before or entirely without a formal diagnosis.",
+          "An IEP or Provision Map sets out a student's specific targets, the adjustments and support in place, and a review date \u2014 it is a working document the SEN team, class teachers, and (where appropriate) the student and family should all know how to access and act on."
+        ],
+        checks: [
+          { q: "Does a student need a formal external diagnosis before a school can put support in place?", options: ["Yes, support cannot begin until diagnosis is confirmed", "No \u2014 schools can and often do provide school-based support, recorded on a Provision Map or IEP, before or without a formal diagnosis", "Only for physical disabilities", "Only if requested in writing by a doctor"], correct: 1, explain: "Waiting for formal diagnosis before acting would leave many students unsupported for a long time, or indefinitely. School-based provision can and should begin as soon as a genuine need is evident." },
+          { q: "What is the main purpose of a Provision Map or IEP?", options: ["A record kept solely for inspection purposes and rarely used day-to-day", "A working document setting out a student's specific targets, adjustments/support in place, and review date, that relevant staff should know how to access and act on", "A permanent, unchangeable record", "A document only the SEN Coordinator ever needs to see"], correct: 1, explain: "An IEP/Provision Map is meant to be a living, working tool that informs day-to-day teaching and support, not a static file that only exists for inspection." }
+        ]
+      },
+      {
+        title: "Partnering with Families",
+        body: [
+          "Parents and carers usually know their child's needs and history better than anyone in the building. Approaching a conversation about a possible need as a genuine, respectful partnership \u2014 rather than delivering a verdict \u2014 leads to far better outcomes and far less defensiveness.",
+          "Some families are anxious or defensive about the possibility of a label, sometimes because of past negative experiences or cultural stigma around disability. Staying factual, warm, and focused on 'how can we help your child access learning' rather than 'what's wrong with your child' helps keep the conversation productive.",
+          "Ongoing communication matters as much as the first conversation \u2014 families should be kept informed as a Provision Map or IEP develops and is reviewed, not just told about it once and left out of the loop afterward."
+        ],
+        checks: [
+          { q: "What is the most effective way to open a conversation with a family about a possible SEN concern?", options: ["Lead with the suspected diagnosis and insist they seek assessment immediately", "Approach it as a genuine partnership, factual and focused on how the school can help the child access learning", "Avoid raising it directly and hope the family notices themselves", "Only communicate through a formal letter, with no conversation"], correct: 1, explain: "A collaborative, factual, solution-focused approach builds trust and cooperation. Leading with a diagnosis or avoiding the conversation both tend to produce worse outcomes for the student." },
+          { q: "Why might some families respond defensively to a conversation about a possible SEN concern?", options: ["They never have a valid reason to be concerned", "Past negative experiences or cultural stigma around disability can make the topic sensitive \u2014 this is a reason for a careful, respectful approach, not a reason to avoid the conversation", "Defensiveness means the concern is definitely wrong", "Families should be excluded from the process if they seem defensive"], correct: 1, explain: "Understanding why defensiveness happens helps staff respond with patience and care rather than giving up on the conversation or communication going forward." }
+        ]
+      }
+    ],
+    evidence: [
+      "Copies of factual, dated classroom observation records used to support identification",
+      "Sample Provision Map / IEP template used by the school",
+      "Records of family communication and review meetings related to identification and support planning"
+    ]
+  }
+];
+
+const EXAM = [
+  { tag: "1", q: "Under UAE Ministerial Resolution 647/2020, what is the central principle of inclusive education policy?", options: ["Students of Determination must attend separate schools", "Schools should adapt themselves to meet the needs of Students of Determination", "Only the SEN/Inclusion team is responsible for inclusion", "Inclusion is optional for private schools"], correct: 1, explain: "The policy's core principle is that schools adapt to students, not the reverse." },
+  { tag: "1", q: "Who is considered a 'Student of Determination' under UAE policy?", options: ["Only students with a confirmed medical diagnosis", "Any student with significant, sustained difficulty accessing learning, with or without a formal diagnosis", "Only students with physical disabilities", "Only students identified by their parents"], correct: 1, explain: "The definition is based on level of difficulty experienced, not on diagnosis status." },
+  { tag: "2", q: "What is the main practical purpose of the four broad areas of need?", options: ["To assign every student to exactly one fixed category", "To provide a starting framework for identifying which area of need might explain an observed difficulty", "To replace formal diagnosis entirely", "To determine which students should be excluded from mainstream classes"], correct: 1, explain: "The four areas are a practical thinking tool, not a rigid or exclusive classification." },
+  { tag: "2", q: "Why is it important to know that ADHD, dyslexia, autism and anxiety commonly co-occur?", options: ["It isn't important, since each need is entirely separate", "Because a single diagnosis label rarely tells the whole story about an individual student's needs", "Because only one of these needs can be true at a time", "Because co-occurrence means a diagnosis is probably wrong"], correct: 1, explain: "Awareness of common co-occurrence prevents staff from assuming one label fully explains a student's profile." },
+  { tag: "ADHD", q: "What is the underlying nature of ADHD?", options: ["A behavioural choice reflecting poor discipline", "A neurodevelopmental condition affecting executive function systems that regulate attention, impulses and activity level", "Simply having high energy", "A learned habit that can be removed through strict punishment"], correct: 1, explain: "ADHD is a genuine neurodevelopmental difference, not a discipline or personality issue." },
+  { tag: "ADHD", q: "Why might the inattentive presentation of ADHD go unnoticed in a classroom?", options: ["It always involves visible hyperactivity, so it's easy to spot", "It's often quiet and non-disruptive, so it doesn't draw the same attention as hyperactive-impulsive behaviour", "It only affects adult behaviour, not children", "Teachers are trained to spot it more easily than the hyperactive presentation"], correct: 1, explain: "Because it doesn't disrupt the class, the inattentive presentation is one of the most commonly missed patterns." },
+  { tag: "ADHD", q: "A student focuses well in hands-on lessons but struggles significantly during long written tasks. What should a teacher conclude?", options: ["The student is choosing to misbehave only in written tasks", "This variable pattern is consistent with, not evidence against, an ADHD-related profile", "ADHD cannot explain any variation across lesson types", "The student should be moved down a set immediately"], correct: 1, explain: "Task-dependent variation in attention is a recognised ADHD pattern, and worth recording rather than dismissing." },
+  { tag: "DYS", q: "What is the primary nature of dyslexia?", options: ["A general sign of low intelligence", "A specific learning difficulty, neurological in origin, primarily affecting accuracy and fluency of word reading and spelling", "A vision problem causing letters to physically appear backwards", "A temporary developmental delay that always resolves by adulthood"], correct: 1, explain: "Dyslexia specifically affects literacy skills via phonological processing, and is unrelated to general intelligence." },
+  { tag: "DYS", q: "A highly articulate student with strong verbal reasoning has persistent, unexplained difficulty with reading and spelling accuracy. What does this suggest?", options: ["The student cannot have dyslexia, since they are clearly intelligent", "This is a classic dyslexia profile \u2014 strong reasoning alongside a specific, persistent literacy difficulty", "The student is not trying hard enough", "This should be ignored since verbal ability is strong"], correct: 1, explain: "This exact profile \u2014 strong reasoning, weak decoding/spelling \u2014 is why dyslexia is so often missed in able students." },
+  { tag: "DYS", q: "What is the most reliable classroom indicator worth recording as a possible dyslexia sign?", options: ["A single low mark on one spelling test", "The same word spelled inconsistently across different pieces of work, over time and across subjects", "A student who reads one page more slowly than their fastest peer", "A student who dislikes reading aloud once"], correct: 1, explain: "Sustained, cross-context inconsistency is a far more reliable signal than a single low score or one-off preference." },
+  { tag: "DYS", q: "Does dyslexia go away with age?", options: ["Yes, most students grow out of it", "No \u2014 it's a lifelong neurological difference, though strategies help manage it effectively", "Only if diagnosed early enough", "Yes, once a student learns to read fluently in one subject"], correct: 1, explain: "Dyslexia is lifelong; support changes how much it limits a student, not whether the underlying difference exists." },
+  { tag: "ASD", q: "What does it mean that autism is described as a 'spectrum'?", options: ["It only affects a narrow, uniform group of students", "Presentation varies enormously between individuals \u2014 in support needs, verbal ability, social style and sensory profile", "It means symptoms always get worse over time", "It means every autistic student needs the same support plan"], correct: 1, explain: "'Spectrum' reflects genuine, wide variation between individuals \u2014 not severity on a single fixed scale." },
+  { tag: "ASD", q: "What is 'masking' in the context of autism, and why does it matter for identification?", options: ["A medical treatment, irrelevant to identification", "Consciously suppressing autistic traits to appear more typical \u2014 it can make autism harder to spot and is often exhausting for the student", "Evidence that a student is not actually autistic", "A term with no accepted meaning in education"], correct: 1, explain: "Masking can hide genuine, ongoing difficulty, which is exactly why some autistic students \u2014 especially those who are socially motivated \u2014 are identified later than others." },
+  { tag: "ASD", q: "A student copes well in structured lesson time but becomes distressed specifically during unstructured transitions. What does this most likely reflect?", options: ["Deliberate avoidance of learning", "Loss of routine and predictability during transitions, which can be especially hard to self-regulate through", "Nothing related to autism, since the student copes well elsewhere", "A sign the student should be excluded from transitions permanently"], correct: 1, explain: "Struggling specifically during unstructured transitions, while coping in structured time, is a well-recognised autism-related pattern." },
+  { tag: "ASD", q: "What is the key practical difference between a meltdown and a tantrum?", options: ["There is no meaningful difference", "A tantrum is typically goal-directed and stops once the goal is met or abandoned; a meltdown is an involuntary overload response needing a calm, low-stimulation response", "A meltdown only occurs in early years students", "A tantrum should always be met with a calm, low-stimulation response instead of a consequence"], correct: 1, explain: "Confusing the two leads to the wrong response \u2014 treating overload like defiance tends to make things worse, not better." },
+  { tag: "ASD", q: "A highly verbal, academically strong student is diagnosed with autism. Is this consistent with what autism actually is?", options: ["No, this must be a misdiagnosis", "Yes \u2014 autism affects social communication style and sensory processing, not general intelligence or vocabulary", "Only if the student also has a separate learning difficulty", "Autism can never be diagnosed in verbally strong students"], correct: 1, explain: "Verbal ability and academic strength are fully compatible with autism \u2014 this myth is a common reason autistic students are missed." },
+  { tag: "6", q: "What is the most useful way for a teacher to document a possible SEN concern?", options: ["A diagnostic statement like 'this student has ADHD'", "A specific, dated, factual and comparative observation of what was seen, how often, and in what context", "A general comment that the student is 'difficult'", "No documentation is needed if the concern feels obvious"], correct: 1, explain: "Specific, factual, comparative records are what the identification process actually needs \u2014 not a diagnosis or a vague complaint." },
+  { tag: "6", q: "Does a formal external diagnosis have to exist before a school can provide support?", options: ["Yes, always", "No \u2014 schools can and often do provide school-based support, recorded on a Provision Map or IEP, before or without formal diagnosis", "Only for sensory/physical needs", "Only if the family requests it in writing"], correct: 1, explain: "Waiting for diagnosis before acting would leave many students unsupported for a long time \u2014 school-based provision can start as soon as need is evident." },
+  { tag: "6", q: "What is the primary purpose of a Provision Map or IEP?", options: ["A static record used only for inspection", "A working document, known to and used by relevant staff, that sets out a student's targets, adjustments and review date", "A confidential document only the SEN Coordinator may access", "A document that never needs to be reviewed once written"], correct: 1, explain: "An effective IEP/Provision Map is a living tool that actively informs day-to-day teaching, not a filed-away formality." },
+  { tag: "6", q: "What is the most effective way to open a conversation with a family about a possible SEN concern?", options: ["Lead with a suspected diagnosis and insist on immediate assessment", "A genuine, respectful, factual partnership focused on how the school can help the child access learning", "Avoid the conversation and hope the family raises it first", "A formal letter only, with no direct conversation"], correct: 1, explain: "A collaborative, solution-focused approach builds trust; leading with a diagnosis or avoiding the topic both tend to produce worse outcomes." }
+];
+
+const PASS_THRESHOLD = 0.8;
+
+/* =========================================================================
+   STATE
+   ========================================================================= */
+let progress = null;
+let currentView = "concepts"; // 'concepts' | 'exam' | 'results' | 'certificate'
+let examAnswers = {};
+let lastResult = null;
+let storageReady = false;
+let wrongAttempts = {}; // transient, per-question: last incorrect pick, NOT persisted -- lets a student retry until correct
+const STORAGE_KEY = "cpd-sen-parta-progress";
+
+function defaultProgress(){
+  return { checks:{}, examAttempts:0, examBest:0, examPassed:false, certName:"" };
+}
+
+async function loadProgress(){
+  try{
+    const res = await window.storage.get(STORAGE_KEY);
+    progress = (res && res.value) ? Object.assign(defaultProgress(), JSON.parse(res.value)) : defaultProgress();
+  }catch(e){
+    progress = defaultProgress();
+  }
+  storageReady = true;
+  render();
+}
+async function saveProgress(){
+  try{ await window.storage.set(STORAGE_KEY, JSON.stringify(progress)); }catch(e){}
+}
+
+/* =========================================================================
+   HELPERS
+   ========================================================================= */
+function checksTotal(){
+  let n = 0;
+  GROUPS.forEach(g => g.concepts.forEach(c => n += c.checks.length));
+  return n;
+}
+function checksAnswered(){
+  let n = 0;
+  GROUPS.forEach((g, gi) => g.concepts.forEach((c, ci) => c.checks.forEach((chk, qi) => {
+    if(progress.checks[gi+"_"+ci+"_"+qi] !== undefined) n++;
+  })));
+  return n;
+}
+function allChecksDone(){ return checksAnswered() === checksTotal(); }
+
+/* =========================================================================
+   ACTIONS
+   ========================================================================= */
+function answerCheck(gi, ci, qi, optIdx){
+  const key = gi+"_"+ci+"_"+qi;
+  if(progress.checks[key] !== undefined) return; // already answered correctly and locked in
+  const chk = GROUPS[gi].concepts[ci].checks[qi];
+  if(optIdx === chk.correct){
+    progress.checks[key] = optIdx;
+    delete wrongAttempts[key];
+    saveProgress();
+  } else {
+    wrongAttempts[key] = optIdx; // remember the wrong pick just long enough to show feedback; question stays open for retry
+  }
+  render();
+}
+function startExam(){
+  examAnswers = {};
+  currentView = "exam";
+  render();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function selectExamAnswer(qi, optIdx){
+  examAnswers[qi] = optIdx;
+  render();
+}
+function submitExam(){
+  const total = EXAM.length;
+  let correct = 0;
+  const review = [];
+  EXAM.forEach((q, qi) => {
+    const chosen = examAnswers[qi];
+    const isRight = chosen === q.correct;
+    if(isRight) correct++;
+    else review.push({tag:q.tag, q:q.q, explain:q.explain, correctText:q.options[q.correct]});
+  });
+  const pct = Math.round((correct/total)*100);
+  const passed = (correct/total) >= PASS_THRESHOLD;
+  progress.examAttempts += 1;
+  progress.examBest = Math.max(progress.examBest, pct);
+  if(passed) progress.examPassed = true;
+  saveProgress();
+  lastResult = {correct, total, pct, passed, review};
+  currentView = "results";
+  render();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function retakeExam(){ startExam(); }
+function backToConcepts(){ currentView = "concepts"; render(); window.scrollTo({top:0, behavior:"smooth"}); }
+async function resetProgress(){
+  if(!confirm("Reset your progress on this module? This cannot be undone.")) return;
+  progress = defaultProgress();
+  currentView = "concepts";
+  try{ await window.storage.delete(STORAGE_KEY); }catch(e){}
+  saveProgress();
+  render();
+}
+function scrollToConcept(gi, ci){
+  currentView = "concepts";
+  render();
+  setTimeout(() => {
+    const el = document.getElementById("concept-"+gi+"-"+ci);
+    if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+  }, 30);
+}
+function openCertificate(){
+  currentView = "certificate";
+  render();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function submitCertName(){
+  const input = document.getElementById("cert-name-input");
+  const val = input ? input.value.trim() : "";
+  if(!val) return;
+  progress.certName = val;
+  saveProgress();
+  render();
+}
+function editCertName(){
+  progress.certName = "";
+  render();
+}
+function backFromCertificate(){
+  currentView = "concepts";
+  render();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function printCertificate(){
+  window.print();
+}
+function escapeHtml(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+/* =========================================================================
+   RENDER
+   ========================================================================= */
+function render(){
+  const app = document.getElementById("app");
+  if(!storageReady){
+    app.innerHTML = '<div style="padding:80px 0; text-align:center; color:#8b8f7f; font-family:IBM Plex Mono, monospace;">Loading your progress\u2026</div>';
+    return;
+  }
+  if(currentView === "certificate"){
+    app.innerHTML = renderCertificateFlow();
+    return;
+  }
+  app.innerHTML = renderHeader() + '<div class="layout"><nav class="sidebar">'+renderSidebar()+'</nav><main class="content">'+renderMain()+'</main></div>' + renderFooter();
+}
+
+function renderHeader(){
+  return '<header class="topbar">'+
+    '<div class="eyebrow">Teaching & Learning Support CPD \u00b7 Handling SEN \u00b7 Part A</div>'+
+    '<h1 class="programme-title">'+MODULE_TITLE+'</h1>'+
+    '<p class="programme-sub">A self-paced professional development module for teachers and teaching assistants/learning support staff, covering how to understand, recognise, and correctly identify Students of Determination \u2014 with a deep focus on ADHD, Dyslexia and Autism, the three needs most present in our current student population. Part B builds on this with practical teaching and classroom support strategies.</p>'+
+    '<div class="prereq">Covers: SEN overview \u00b7 ADHD \u00b7 Dyslexia \u00b7 Autism \u00b7 Identification & referral &nbsp;|&nbsp; '+EST_DURATION+'</div>'+
+    '<div class="disclaimer">Content is aligned to the UAE Ministry of Education Inclusive Education Policy (Ministerial Resolution No. 647 of 2020) and the UAE School Inspection Framework\u2019s standards on curriculum adaptation, differentiated teaching, and the inclusion of Students of Determination. This module supports understanding and identification only \u2014 it does not replace a professional diagnostic assessment. Always follow your school\u2019s current SEN/Inclusion policy and refer any concern through the official pathway.</div>'+
+    '</header>';
+}
+
+function renderSidebar(){
+  let html = '<div class="sb-head">This Module</div>';
+  GROUPS.forEach((g, gi) => {
+    g.concepts.forEach((c, ci) => {
+      const done = c.checks.every((chk, qi) => progress.checks[gi+"_"+ci+"_"+qi] !== undefined);
+      html += '<div class="sb-item" onclick="scrollToConcept('+gi+','+ci+')">'+
+        '<div class="sb-mark'+(done?" done":"")+'">'+(done?"\u2713":(ci+1))+'</div>'+
+        '<div><div class="sb-item-title">'+c.title+'</div><div class="sb-item-meta">'+g.code+'</div></div>'+
+        '</div>';
+    });
+  });
+  const examDone = progress.examPassed;
+  html += '<div class="sb-item" onclick="'+(allChecksDone()?"startExam()":"")+'">'+
+    '<div class="sb-mark'+(examDone?" passed":"")+'">'+(examDone?"\u2713":"E")+'</div>'+
+    '<div><div class="sb-item-title">Module Exam</div><div class="sb-item-meta">'+(examDone?"Passed \u00b7 "+progress.examBest+"%":(allChecksDone()?"Ready":"Locked"))+'</div></div>'+
+    '</div>';
+  return html;
+}
+
+function renderMain(){
+  if(currentView === "exam") return renderExam();
+  if(currentView === "results") return renderResults();
+  return renderConcepts();
+}
+
+function renderModuleHead(){
+  return '<div class="module-head"><div class="code">SELF-PACED CPD \u00b7 '+EST_DURATION+'</div><h2>'+MODULE_TITLE+'</h2><p>Work through all six sections below, then pass the module exam (80%+) to complete Part A and generate your certificate. Part B builds on this with practical teaching and support strategies.</p></div>';
+}
+
+function renderConcepts(){
+  let html = renderModuleHead();
+  GROUPS.forEach((g, gi) => {
+    html += '<div class="indicator-head"><div class="code">Section '+g.code+'</div><h3>'+g.title+'</h3></div>';
+    html += '<p style="color:#4a5670; font-size:14.3px; max-width:760px; margin:0 0 16px;">'+g.intro+'</p>';
+    g.concepts.forEach((c, ci) => {
+      html += '<div class="concept" id="concept-'+gi+'-'+ci+'">';
+      html += '<div class="concept-num">'+g.code+' \u00b7 Topic '+(ci+1)+' of '+g.concepts.length+'</div>';
+      html += '<h3>'+c.title+'</h3>';
+      c.body.forEach(p => html += '<p>'+p+'</p>');
+      html += '<div class="check-block"><div class="check-label">Check your understanding</div>';
+      c.checks.forEach((chk, qi) => html += renderCheckQuestion(gi, ci, qi, chk));
+      html += '</div></div>';
+    });
+    html += '<div class="evidence-box"><h4>\ud83d\udcc1 Evidence to Prepare for Inspection \u2014 '+g.code+'</h4>'+
+      '<p class="sub">Documents and records you should be able to produce, up to date, if asked during an inspection visit.</p>'+
+      '<ul>'+g.evidence.map(e=>'<li>'+e+'</li>').join("")+'</ul></div>';
+  });
+
+  const ready = allChecksDone();
+  html += '<div class="exam-cta'+(ready?"":" locked")+'">';
+  if(progress.examPassed){
+    html += '<h4>Module exam passed \u2014 '+progress.examBest+'%</h4><p>You can retake it any time to improve your score.</p>';
+    html += '<div class="btn-row"><button class="btn ghost" onclick="startExam()">Retake exam</button><button class="btn" onclick="openCertificate()">Get Certificate</button></div>';
+  } else if(ready){
+    html += '<h4>Ready for the Module Exam</h4><p>You\u2019ve worked through all '+GROUPS.reduce((a,g)=>a+g.concepts.length,0)+' topics. Score 80% or higher to complete this module.'+(progress.examAttempts>0?' Previous best: '+progress.examBest+'%.':'')+'</p>';
+    html += '<button class="btn" onclick="startExam()">'+(progress.examAttempts>0?"Retake Exam":"Start Module Exam")+'</button>';
+  } else {
+    html += '<h4>Module Exam locked</h4><p>Answer every check-your-understanding question above ('+checksAnswered()+' of '+checksTotal()+' done) to unlock the exam.</p>';
+  }
+  html += '</div>';
+
+  if(progress.examPassed){
+    html += '<div class="final-banner"><h2>Part A complete</h2><p>You\u2019ve built a solid foundation in recognising and identifying Students of Determination, with a deep focus on ADHD, Dyslexia and Autism. Part B will take you into practical teaching and classroom support strategies.</p></div>';
+  }
+  return html;
+}
+
+function renderCheckQuestion(gi, ci, qi, chk){
+  const key = gi+"_"+ci+"_"+qi;
+  const locked = progress.checks[key];
+  const wrongPick = wrongAttempts[key];
+  let html = '<div class="question"><div class="q-text">'+chk.q+'</div>';
+  chk.options.forEach((opt, oi) => {
+    let cls = "opt";
+    let onclick;
+    if(locked !== undefined){
+      cls += " disabled";
+      if(oi === chk.correct) cls += " correct";
+      onclick = "";
+    } else {
+      onclick = "answerCheck("+gi+","+ci+","+qi+","+oi+")";
+      if(wrongPick === oi) cls += " incorrect";
+    }
+    html += '<div class="'+cls+'" onclick="'+onclick+'"><div class="opt-bullet"></div><div>'+opt+'</div></div>';
+  });
+  if(locked !== undefined){
+    html += '<div class="feedback right">Correct. '+chk.explain+'</div>';
+  } else if(wrongPick !== undefined){
+    html += '<div class="feedback wrong">Not quite. Choose another option to try again.</div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function renderExam(){
+  let html = '<div class="exam-head"><div class="eyebrow2">Module Exam</div><h2>'+MODULE_TITLE+'</h2><p>Answer all '+EXAM.length+' questions, then submit. You need '+Math.round(PASS_THRESHOLD*100)+'%+ to pass. Retake as many times as you need.</p></div>';
+  const answeredCount = Object.keys(examAnswers).length;
+  html += '<div class="exam-progress">'+answeredCount+' of '+EXAM.length+' answered</div>';
+  html += '<div class="concept">';
+  EXAM.forEach((q, qi) => {
+    html += '<div class="question"><div class="q-text">'+(qi+1)+'. '+q.q+' <span style="color:#5B4B8A;font-family:IBM Plex Mono,monospace;font-size:11px;">['+q.tag+']</span></div>';
+    q.options.forEach((opt, oi) => {
+      const sel = examAnswers[qi] === oi;
+      html += '<div class="opt'+(sel?" selected":"")+'" onclick="selectExamAnswer('+qi+','+oi+')"><div class="opt-bullet"></div><div>'+opt+'</div></div>';
+    });
+    html += '</div>';
+  });
+  html += '</div>';
+  const allAnswered = answeredCount === EXAM.length;
+  html += '<div class="submit-row"><button class="btn" '+(allAnswered?'':'disabled')+' onclick="submitExam()">Submit Exam</button></div>';
+  return html;
+}
+
+function renderResults(){
+  const r = lastResult;
+  let html = '<div class="results">';
+  html += '<div class="stamp'+(r.passed?"":" fail")+'">'+(r.passed?"COMPLETED \u2713":"NOT YET \u2014 RETRY")+'</div>';
+  html += '<div class="score-line">'+r.correct+' / '+r.total+' correct ('+r.pct+'%)</div>';
+  html += '<div class="score-sub">'+(r.passed?"You\u2019ve passed the "+MODULE_TITLE+" exam.":"You need "+Math.round(PASS_THRESHOLD*100)+"%+ to pass. Review the explanations below, then retake when ready.")+'</div>';
+  if(r.review.length){
+    html += '<div class="review-list">';
+    r.review.forEach(item => {
+      html += '<div class="review-item"><div class="review-tag">'+item.tag+'</div><div><strong>'+item.q+'</strong><br>Correct answer: '+item.correctText+'. '+item.explain+'</div></div>';
+    });
+    html += '</div>';
+  }
+  html += '<div class="btn-row">';
+  html += '<button class="btn ghost" onclick="backToConcepts()">Back to module</button>';
+  if(!r.passed){
+    html += '<button class="btn" onclick="retakeExam()">Retake Exam</button>';
+  } else {
+    html += '<button class="btn" onclick="openCertificate()">Get Certificate</button>';
+  }
+  html += '</div></div>';
+  return html;
+}
+
+function renderCertificateFlow(){
+  if(!progress.certName){
+    return '<div class="name-gate">'+
+      '<h4>One quick step</h4>'+
+      '<p>Enter the name to print on the certificate.</p>'+
+      '<input id="cert-name-input" type="text" placeholder="Full name" autofocus>'+
+      '<div class="btn-row"><button class="btn ghost" onclick="backFromCertificate()">Cancel</button><button class="btn" onclick="submitCertName()">Continue</button></div>'+
+      '</div>';
+  }
+  return renderCertificate();
+}
+
+function renderCertificate(){
+  const dateStr = new Date().toLocaleDateString(undefined, {year:"numeric", month:"long", day:"numeric"});
+  return '<div class="cert-wrap">'+
+    '<a class="cert-back" onclick="backFromCertificate()">\u2190 Back to module</a>'+
+    '<div class="certificate"><div class="certificate-inner">'+
+      '<img class="cert-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">'+
+      '<div class="cert-eyebrow">Teaching & Learning Support CPD \u00b7 Handling SEN \u00b7 Part A</div>'+
+      '<div class="cert-seal">COMPLETED<br>\u2713</div>'+
+      '<div class="cert-title">Certificate of Completion</div>'+
+      '<div class="cert-presented">This certifies that</div>'+
+      '<div class="cert-name">'+escapeHtml(progress.certName)+'</div>'+
+      '<div class="cert-body">has successfully completed <b>Handling SEN Part A: Understanding & Identifying Students of Determination</b>, covering the UAE inclusive education framework, the range of special educational needs, and the understanding and identification of ADHD, Dyslexia and Autism, in alignment with the UAE Ministry of Education-referenced school inspection framework.</div>'+
+      '<div class="cert-meta-row">'+
+        '<div>Score<strong>'+progress.examBest+'%</strong></div>'+
+        '<div>Date<strong>'+dateStr+'</strong></div>'+
+      '</div>'+
+    '</div></div>'+
+    '<div class="cert-actions"><button class="btn" onclick="printCertificate()">Print / Save as PDF</button></div>'+
+    '</div>';
+}
+
+function renderFooter(){
+  return '<footer class="foot"><span>Progress saves automatically as you go.</span><a class="reset-link" onclick="resetProgress()">Reset my progress</a></footer>';
+}
+
+loadProgress();
+</script>
+</body>
+</html>
