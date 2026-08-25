@@ -287,7 +287,7 @@ function renderSpotlightCards(items){
       <p>${escapeHtml(idea.hook)}</p>
       <div class="spot-date">${escapeHtml(idea.title)}</div>
       <button class="like-btn${idea.likedByMe ? ' liked' : ''}" id="likeBtn-${idx}" onclick="toggleLike(${idx}, event)" aria-label="Like this idea">
-        <span class="like-icon">${idea.likedByMe ? '\u2764\uFE0F' : '\u{1F90D}'}</span>
+        <span class="like-icon">${idea.likedByMe ? '\u2B50' : '\u2606'}</span>
         <span class="like-count">${idea.likes || 0}</span>
       </button>
     </div>
@@ -334,7 +334,7 @@ function toggleLike(idx, event){
 function renderLikeButton(btn, idea){
   btn.classList.toggle('liked', !!idea.likedByMe);
   btn.innerHTML = `
-    <span class="like-icon">${idea.likedByMe ? '\u2764\uFE0F' : '\u{1F90D}'}</span>
+    <span class="like-icon">${idea.likedByMe ? '\u2B50' : '\u2606'}</span>
     <span class="like-count">${idea.likes || 0}</span>
   `;
 }
