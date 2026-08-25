@@ -220,6 +220,7 @@
     <div class="who-badge" id="whoBadge">
       <div class="avatar" id="whoAvatar">?</div>
       <span id="whoName">Guest</span>
+      <a href="#" id="signOutLink" onclick="signOut(); return false;" style="margin-left:10px; font-size:12px; color:inherit; opacity:.7; text-decoration:underline;">Sign out</a>
     </div>
   </div>
 </header>
@@ -328,6 +329,40 @@
    ===================================================================== */
 const GOOGLE_CLIENT_ID = "596461951047-qsh9m58i6rmv6u0eelcsv2f2rndv59k1.apps.googleusercontent.com";
 const ALLOWED_DOMAIN = "pepsschool.ae";
+const SESSION_KEY = "peps-hub-session";
+const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days -- long enough that returning users aren't re-prompted constantly, short enough not to be a permanent bypass on a shared computer
+
+function saveSession(name, email, picture){
+  try {
+    localStorage.setItem(SESSION_KEY, JSON.stringify({ name: name, email: email, picture: picture, savedAt: Date.now() }));
+  } catch(e){ /* localStorage unavailable (e.g. private browsing) -- falls back to Google's own flow each time, no worse than before */ }
+}
+
+function loadValidSession(){
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if(!raw) return null;
+    const session = JSON.parse(raw);
+    if(!session.savedAt || (Date.now() - session.savedAt) > SESSION_DURATION_MS){
+      localStorage.removeItem(SESSION_KEY);
+      return null;
+    }
+    return session;
+  } catch(e){ return null; }
+}
+
+function clearSession(){
+  try { localStorage.removeItem(SESSION_KEY); } catch(e){}
+}
+
+function signOut(){
+  clearSession();
+  document.getElementById('siteContent').style.display = 'none';
+  document.getElementById('gateScreen').style.display = '';
+  if(window.google && google.accounts && google.accounts.id){
+    try { google.accounts.id.disableAutoSelect(); } catch(e){}
+  }
+}
 
 function decodeJwt(token){
   try {
@@ -345,6 +380,7 @@ function handleCredentialResponse(response){
     alert('This hub is only available to @' + ALLOWED_DOMAIN + ' accounts. You signed in with ' + payload.email + '.');
     return;
   }
+  saveSession(payload.name || payload.email, payload.email, payload.picture || null);
   showSite(payload.name || payload.email, payload.picture || null, false);
 }
 
@@ -367,6 +403,15 @@ function showSite(name, pictureUrl, isPreview){
 function enterPreviewMode(){
   showSite('Preview mode', null, true);
 }
+
+// Check for an existing, still-valid local session before doing anything else. This runs
+// synchronously right after gateScreen/siteContent already exist in the DOM above, so a
+// returning user within the window sees the site immediately, without waiting on Google's
+// script to load or on its own (sometimes unreliable) silent re-auth behavior.
+(function(){
+  const existing = loadValidSession();
+  if(existing){ showSite(existing.name, existing.picture, false); }
+})();
 
 let googleScriptReady = false;
 let pageLoadFired = false;
@@ -392,11 +437,12 @@ function tryInitGoogleSignIn(){
   try {
     google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleCredentialResponse, hosted_domain: ALLOWED_DOMAIN, auto_select: true });
     google.accounts.id.renderButton(document.getElementById('gsiButtonContainer'), { theme: 'outline', size: 'large', shape: 'pill', text: 'signin_with' });
-    /* Silently re-check with Google for an existing, already-consented session on this page load.
-       If found, handleCredentialResponse fires automatically — no click needed — so returning
-       users don't have to sign in again on every page. If not, this does nothing and the button
-       above still works normally. */
-    google.accounts.id.prompt();
+    /* Only fall back to Google's own silent re-auth if we don't already have a valid locally-saved
+       session -- avoids an unnecessary network round-trip and sidesteps Google's One Tap cooldown
+       behavior (which can silently stop auto-prompting for a returning user after a dismissal). */
+    if(!loadValidSession()){
+      google.accounts.id.prompt();
+    }
   } catch(e){
     console.error('Google Sign-In failed to initialize:', e);
     showSignInUnavailable();

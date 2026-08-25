@@ -125,6 +125,16 @@
     display:flex; justify-content:space-between; align-items:center; font-family:'IBM Plex Mono',monospace;
     font-size:11px; color:var(--ink-soft); padding-top:12px; border-top:1px dashed var(--line);
   }
+  .like-btn{
+    display:flex; align-items:center; gap:6px; margin-top:12px; padding:6px 12px;
+    background:var(--card); border:1.5px solid var(--line); border-radius:20px;
+    font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; color:var(--ink-soft);
+    cursor:pointer; transition:border-color .15s, background .15s, transform .1s;
+  }
+  .like-btn:hover{ border-color:var(--teal); }
+  .like-btn:active{ transform:scale(.94); }
+  .like-btn.liked{ border-color:#e0596b; background:#fdf0f1; color:#c23c50; }
+  .like-btn .like-icon{ font-size:14px; line-height:1; }
   .empty-state{
     text-align:center; padding:60px 20px; color:var(--ink-soft); font-size:15px;
     border:1.5px dashed var(--line); border-radius:14px; grid-column:1/-1;
@@ -269,6 +279,7 @@
 <script>
 const GOOGLE_CLIENT_ID = "596461951047-qsh9m58i6rmv6u0eelcsv2f2rndv59k1.apps.googleusercontent.com";
 const ALLOWED_DOMAIN = "pepsschool.ae";
+let currentUserEmail = ""; // set once sign-in succeeds; empty in preview mode, which disables liking
 
 function decodeJwt(token){
   try {
@@ -283,6 +294,7 @@ function handleCredentialResponse(response){
     alert('This hub is only available to @' + ALLOWED_DOMAIN + ' accounts. You signed in with ' + payload.email + '.');
     return;
   }
+  currentUserEmail = payload.email;
   showSite(payload.name || payload.email, payload.picture || null, false);
 }
 function showSite(name, pictureUrl, isPreview){
@@ -401,11 +413,61 @@ function renderGallery(){
         <span>${escapeHtml(idea.by)}</span>
         <span>${idea.audience === 'Student' ? escapeHtml(idea.yearGroup) : 'Staff'}</span>
       </div>
+      <button class="like-btn${idea.likedByMe ? ' liked' : ''}" id="likeBtn-${idx}" onclick="toggleLike(${idx}, event)" aria-label="Like this idea">
+        <span class="like-icon">${idea.likedByMe ? '\u2764\uFE0F' : '\u{1F90D}'}</span>
+        <span class="like-count">${idea.likes || 0}</span>
+      </button>
     </div>
   `).join('');
 }
 
 let currentFilteredIdeas = [];
+
+function toggleLike(idx, event){
+  event.stopPropagation(); // don't also open the detail modal
+  const idea = currentFilteredIdeas[idx];
+  if(!idea || !idea.id) return;
+  if(!currentUserEmail){
+    alert('Please sign in to like an idea.');
+    return;
+  }
+  const btn = document.getElementById('likeBtn-' + idx);
+  if(!btn) return;
+
+  // Optimistic update -- flips immediately for a responsive feel, reconciled (or reverted) once the real response arrives
+  const wasLiked = !!idea.likedByMe;
+  const previousCount = idea.likes || 0;
+  idea.likedByMe = !wasLiked;
+  idea.likes = wasLiked ? Math.max(0, previousCount - 1) : previousCount + 1;
+  renderLikeButton(btn, idea);
+
+  fetch(LIVE_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // plain text avoids a CORS preflight Apps Script can't handle
+    body: JSON.stringify({ id: idea.id, email: currentUserEmail })
+  })
+    .then(res => { if(!res.ok) throw new Error('Bad response'); return res.json(); })
+    .then(result => {
+      if(typeof result.liked !== 'boolean' || typeof result.likes !== 'number') throw new Error('Unexpected response shape');
+      idea.likedByMe = result.liked;
+      idea.likes = result.likes;
+      renderLikeButton(btn, idea);
+    })
+    .catch(err => {
+      console.error('Could not save like, reverting:', err);
+      idea.likedByMe = wasLiked;
+      idea.likes = previousCount;
+      renderLikeButton(btn, idea);
+    });
+}
+
+function renderLikeButton(btn, idea){
+  btn.classList.toggle('liked', !!idea.likedByMe);
+  btn.innerHTML = `
+    <span class="like-icon">${idea.likedByMe ? '\u2764\uFE0F' : '\u{1F90D}'}</span>
+    <span class="like-count">${idea.likes || 0}</span>
+  `;
+}
 
 function openIdeaModal(idx){
   const idea = currentFilteredIdeas[idx];
@@ -474,6 +536,7 @@ const LIVE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzj2TKFIDEB9a-w
 
 function normaliseLiveIdea(row){
   return {
+    id: row.id,
     title: row.title || "Untitled idea",
     audience: row.audience || "Teacher",
     yearGroup: row.yearGroup || "",
@@ -482,14 +545,17 @@ function normaliseLiveIdea(row){
     by: row.by || "PEPS staff/student",
     hook: row.hook || (row.description ? String(row.description).slice(0,140) : ""),
     description: row.description || "",
-    link: row.link || ""
+    link: row.link || "",
+    likes: row.likes || 0,
+    likedByMe: row.likedByMe || false
   };
 }
 
 function loadLiveIdeas(){
   if(LIVE_SCRIPT_URL === "YOUR_APPS_SCRIPT_URL_HERE") return; // not configured yet \u2014 keep showing samples
   const noteEl = document.querySelector('.sample-note');
-  fetch(LIVE_SCRIPT_URL)
+  const url = LIVE_SCRIPT_URL + (currentUserEmail ? '?email=' + encodeURIComponent(currentUserEmail) : '');
+  fetch(url)
     .then(res => { if(!res.ok) throw new Error('Bad response'); return res.json(); })
     .then(rows => {
       if(!Array.isArray(rows)) throw new Error('Unexpected response shape');
