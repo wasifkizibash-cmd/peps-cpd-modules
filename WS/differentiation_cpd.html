@@ -220,7 +220,7 @@
     font-family:var(--serif); font-size:34px; font-weight:700; margin:18px 0; color:#1F3355;
     border-bottom:1px solid #B8860B; display:inline-block; padding-bottom:8px; min-width:280px;
   }
-  .cert .desc{ color:#3a3a3a; font-size:14px; max-width:480px; margin:0 auto 6px auto; }
+  .cert .desc{ color:#3a3a3a; font-size:14px; max-width:480px; margin:0 auto 6px auto; text-align:justify; }
   .cert .desc strong{ color:#1F3355; }
   .cert .meta{ display:flex; flex-wrap:wrap; justify-content:center; gap:24px 32px; margin-top:26px; font-family:var(--mono); font-size:11px; color:#555555; }
   .name-input-row{ display:flex; gap:10px; justify-content:center; margin:20px 0; flex-wrap:wrap; }
@@ -747,7 +747,8 @@ function updateProgress(){
 
 function renderQuiz(m){
   if(!m.quiz) return '';
-  let html = `<div class="quiz-block"><div class="eyebrow"><span class="dot"></span>Check your understanding</div>`;
+  const isFinal = m.type === 'final';
+  let html = `<div class="quiz-block"><div class="eyebrow"><span class="dot"></span>${isFinal ? 'Answer every question, then submit' : 'Check your understanding'}</div>`;
   m.quiz.forEach((q,qi)=>{
     html += `<div class="qcard" id="${m.id}-q${qi}">
       <div class="qtext">${qi+1}. ${q.q}</div>
@@ -758,11 +759,15 @@ function renderQuiz(m){
         <span>${opt}</span>
       </label>`;
     });
-    html += `</div>
+    html += `</div>`;
+    if(!isFinal){
+      html += `
       <div class="qbtns">
         <button class="btn btn-primary btn-small" onclick="checkAnswer('${m.id}',${qi})">Check answer</button>
         <button class="btn btn-ghost btn-small" onclick="resetQuestion('${m.id}',${qi})">Try again</button>
-      </div>
+      </div>`;
+    }
+    html += `
       <div class="feedback" id="${m.id}-fb${qi}"></div>
     </div>`;
   });
@@ -789,7 +794,7 @@ function render(){
       <div class="content">${m.body}</div>`;
     if(m.video){
       html += `<div class="eyebrow" style="margin-top:26px;"><span class="dot"></span>Watch</div>
-        <div class="video-wrap"><iframe src="https://www.youtube.com/embed/${m.video}" title="video" allowfullscreen></iframe></div>
+        <div class="video-wrap"><iframe src="https://www.youtube.com/embed/${m.video}" title="video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
         <div class="video-caption">${m.videoCaption}</div>`;
     }
     html += renderQuiz(m);
@@ -858,9 +863,11 @@ function attachOptionListeners(){
     el.addEventListener('click', function(){
       if(this.classList.contains('disabled')) return;
       const mid=this.dataset.mid, qi=this.dataset.qi;
-      document.querySelectorAll(`.opt[data-mid="${mid}"][data-qi="${qi}"]`).forEach(o=>o.classList.remove('selected'));
+      document.querySelectorAll(`.opt[data-mid="${mid}"][data-qi="${qi}"]`).forEach(o=>{ o.classList.remove('selected'); o.classList.remove('incorrect'); });
       this.classList.add('selected');
       this.querySelector('input').checked = true;
+      const fb = document.getElementById(`${mid}-fb${qi}`);
+      if(fb){ fb.className = 'feedback'; fb.innerHTML = ''; }
     });
   });
 }
@@ -872,11 +879,25 @@ function checkAnswer(mid, qi){
   if(!selected){ alert('Please select an answer first.'); return; }
   const oi = parseInt(selected.value);
   const isCorrect = oi === q.correct;
-  state.quizState[mid].answered[qi] = true;
-  state.quizState[mid].correct[qi] = isCorrect;
-  lockQuestion(mid, qi, false, oi, isCorrect);
-  maybeEnableContinue(mid);
-  saveState();
+  if(isCorrect){
+    state.quizState[mid].answered[qi] = true;
+    state.quizState[mid].correct[qi] = true;
+    lockQuestion(mid, qi, false, oi, true);
+    maybeEnableContinue(mid);
+    saveState();
+  } else {
+    // wrong: mark the chosen option and give feedback, but do not lock, disable, or reveal
+    // the correct answer -- the question stays open for a genuine retry
+    document.querySelectorAll(`.opt[data-mid="${mid}"][data-qi="${qi}"]`).forEach(el=>{
+      const eoi = parseInt(el.dataset.oi);
+      el.classList.toggle('incorrect', eoi === oi);
+    });
+    const fb = document.getElementById(`${mid}-fb${qi}`);
+    if(fb){
+      fb.className = 'feedback show wrong';
+      fb.innerHTML = '<strong>Not quite.</strong> Choose another option and check again.';
+    }
+  }
 }
 
 function lockQuestion(mid, qi, silent, chosenOi, isCorrectNow){
@@ -966,12 +987,40 @@ function submitFinal(){
   resultDiv.innerHTML = `
     <div class="score-hero">
       <div class="big">${pct}%</div>
-      <div class="sub">${correctCount} of ${total} correct &middot; ${pass ? 'Passed — certificate unlocked' : 'Below 80% — review the modules and try again'}</div>
+      <div class="sub">${correctCount} of ${total} correct &middot; ${pass ? 'Passed — taking you to your certificate...' : 'Below 80% — review the modules, then retake the assessment'}</div>
     </div>
-    ${pass ? `<div class="nav-row" style="margin-top:18px;"><button class="btn btn-primary" onclick="state.currentIndex = ${modules.length-1}; render();">Continue to Certificate &rarr;</button></div>` : ''}`;
+    <div class="nav-row" style="margin-top:18px;">
+      <button class="btn btn-ghost" onclick="retakeFinal()">Retake assessment</button>
+      ${pass ? `<button class="btn btn-primary" onclick="state.currentIndex = ${modules.length-1}; render();">Continue to Certificate &rarr;</button>` : ''}
+    </div>`;
   if(pass && state.currentIndex+1 > state.maxUnlocked){ state.maxUnlocked = state.currentIndex+1; }
   renderSidebar();
   updateProgress();
+  saveState();
+  if(pass){
+    setTimeout(() => {
+      state.currentIndex = modules.length-1;
+      render();
+    }, 1500);
+  }
+}
+
+function retakeFinal(){
+  const m = modules.find(x=>x.type==='final');
+  m.quiz.forEach((q,qi)=>{
+    state.quizState[m.id].answered[qi] = false;
+    state.quizState[m.id].correct[qi] = false;
+    document.querySelectorAll(`.opt[data-mid="${m.id}"][data-qi="${qi}"]`).forEach(el=>{
+      el.classList.remove('disabled','correct','incorrect','selected');
+      el.querySelector('input').disabled = false;
+      el.querySelector('input').checked = false;
+    });
+    const fb = document.getElementById(`${m.id}-fb${qi}`);
+    if(fb){ fb.className = 'feedback'; fb.innerHTML = ''; }
+  });
+  const resultDiv = document.getElementById('finalResult');
+  if(resultDiv){ resultDiv.innerHTML = ''; }
+  state.finalScore = null;
   saveState();
 }
 

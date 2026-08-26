@@ -220,7 +220,7 @@
     font-family:var(--serif); font-size:34px; font-weight:700; margin:18px 0; color:#1F3355;
     border-bottom:1px solid #B8860B; display:inline-block; padding-bottom:8px; min-width:280px;
   }
-  .cert .desc{ color:#3a3a3a; font-size:14px; max-width:480px; margin:0 auto 6px auto; }
+  .cert .desc{ color:#3a3a3a; font-size:14px; max-width:480px; margin:0 auto 6px auto; text-align:justify; }
   .cert .desc strong{ color:#1F3355; }
   .cert .meta{ display:flex; flex-wrap:wrap; justify-content:center; gap:24px 32px; margin-top:26px; font-family:var(--mono); font-size:11px; color:#555555; }
   .name-input-row{ display:flex; gap:10px; justify-content:center; margin:20px 0; flex-wrap:wrap; }
@@ -857,9 +857,11 @@ function attachOptionListeners(){
     el.addEventListener('click', function(){
       if(this.classList.contains('disabled')) return;
       const mid=this.dataset.mid, qi=this.dataset.qi;
-      document.querySelectorAll(`.opt[data-mid="${mid}"][data-qi="${qi}"]`).forEach(o=>o.classList.remove('selected'));
+      document.querySelectorAll(`.opt[data-mid="${mid}"][data-qi="${qi}"]`).forEach(o=>{ o.classList.remove('selected'); o.classList.remove('incorrect'); });
       this.classList.add('selected');
       this.querySelector('input').checked = true;
+      const fb = document.getElementById(`${mid}-fb${qi}`);
+      if(fb){ fb.className = 'feedback'; fb.innerHTML = ''; }
     });
   });
 }
@@ -871,11 +873,25 @@ function checkAnswer(mid, qi){
   if(!selected){ alert('Please select an answer first.'); return; }
   const oi = parseInt(selected.value);
   const isCorrect = oi === q.correct;
-  state.quizState[mid].answered[qi] = true;
-  state.quizState[mid].correct[qi] = isCorrect;
-  lockQuestion(mid, qi, false, oi, isCorrect);
-  maybeEnableContinue(mid);
-  saveState();
+  if(isCorrect){
+    state.quizState[mid].answered[qi] = true;
+    state.quizState[mid].correct[qi] = true;
+    lockQuestion(mid, qi, false, oi, true);
+    maybeEnableContinue(mid);
+    saveState();
+  } else {
+    // wrong: mark the chosen option and give feedback, but do not lock, disable, or reveal
+    // the correct answer -- the question stays open for a genuine retry
+    document.querySelectorAll(`.opt[data-mid="${mid}"][data-qi="${qi}"]`).forEach(el=>{
+      const eoi = parseInt(el.dataset.oi);
+      el.classList.toggle('incorrect', eoi === oi);
+    });
+    const fb = document.getElementById(`${mid}-fb${qi}`);
+    if(fb){
+      fb.className = 'feedback show wrong';
+      fb.innerHTML = '<strong>Not quite.</strong> Choose another option and check again.';
+    }
+  }
 }
 
 function lockQuestion(mid, qi, silent, chosenOi, isCorrectNow){
