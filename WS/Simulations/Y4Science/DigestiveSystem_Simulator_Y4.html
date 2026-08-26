@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEPS Digestive System Journey Simulator - Year 4</title>
+<style>
+    :root { --primary: #007A87; --primary-dark: #005A64; --accent: #FF9E1B; --bg: #F4F7F6; --card-bg: #FFFFFF; --text: #333333; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+    .container { max-width: 780px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 26px; }
+    .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .header h1 { color: var(--primary); margin: 0 0 8px 0; font-size: 26px; }
+    .header p { margin: 0; color: #666; font-style: italic; font-size: 14px; }
+
+    .track-wrap { background: #F3F8F7; border-radius: 12px; padding: 24px; }
+    .stage-track { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .stage-dot { width: 34px; height: 34px; border-radius: 50%; background: #D0DEDC; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; color: #667; transition: background .3s, color .3s; position: relative; flex-shrink: 0; }
+    .stage-dot.active { background: var(--primary); color: #fff; transform: scale(1.15); }
+    .stage-dot.done { background: #9FD8C9; color: #005A44; }
+    .stage-line { flex: 1; height: 4px; background: #D0DEDC; margin: 0 4px; }
+
+    .journey-stage { background: #fff; border: 2px solid #D0DEDC; border-radius: 10px; padding: 22px; text-align: center; min-height: 170px; }
+    .journey-stage .food-marker { font-size: 44px; margin-bottom: 6px; }
+    .journey-stage .stage-name { font-size: 19px; font-weight: 800; color: var(--primary-dark); margin-bottom: 8px; }
+    .journey-stage .stage-desc { font-size: 14px; line-height: 1.6; color: #445; }
+
+    .nav-row { display: flex; justify-content: space-between; margin-top: 20px; gap: 12px; }
+    button { padding: 11px 20px; font-size: 14px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; transition: background .2s, opacity .2s; font-family: inherit; }
+    .btn-nav { background-color: var(--primary); color: #fff; }
+    .btn-nav:hover { background-color: var(--primary-dark); }
+    .btn-nav:disabled { background-color: #B7C4C0; cursor: not-allowed; }
+    .btn-restart { background-color: #fff; color: var(--primary); border: 2px solid var(--primary); }
+    .btn-restart:hover { background-color: #F3F8F7; }
+
+    .progress-label { text-align: center; font-size: 12px; color: #667; margin-top: 10px; }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>Digestive System Journey Simulator</h1>
+        <p>Year 4 Science &mdash; Follow a Date Through the Body</p>
+    </div>
+
+    <div class="track-wrap">
+        <div class="stage-track" id="stageTrack"></div>
+        <div class="journey-stage" id="journeyStage"></div>
+        <div class="nav-row">
+            <button class="btn-nav" id="prevBtn" onclick="goStage(-1)">&larr; Previous</button>
+            <button class="btn-restart" onclick="restart()">Restart</button>
+            <button class="btn-nav" id="nextBtn" onclick="goStage(1)">Next &rarr;</button>
+        </div>
+        <div class="progress-label" id="progressLabel"></div>
+    </div>
+</div>
+
+<script>
+const STAGES = [
+    { name: "Mouth", icon: "&#127820;", desc: "The date is chewed and mixed with saliva. Saliva starts breaking the food down and makes it easier to swallow." },
+    { name: "Oesophagus", icon: "&#8595;", desc: "Muscles squeeze and push the chewed food down a tube towards the stomach. This happens automatically, even upside down!" },
+    { name: "Stomach", icon: "&#127775;", desc: "Powerful muscles churn the food while acid and juices break it down further into a soupy mixture." },
+    { name: "Small Intestine", icon: "&#127807;", desc: "This is where most of the useful nutrients from the food are absorbed into the blood, to be used by the body." },
+    { name: "Large Intestine", icon: "&#128465;&#65039;", desc: "Water is absorbed from what's left, and the remaining waste is prepared to leave the body." }
+];
+
+let current = 0;
+
+function renderTrack(){
+    const track = document.getElementById('stageTrack');
+    let html = '';
+    STAGES.forEach((s, i) => {
+        const cls = i === current ? 'active' : (i < current ? 'done' : '');
+        html += `<div class="stage-dot ${cls}">${i + 1}</div>`;
+        if(i < STAGES.length - 1) html += `<div class="stage-line"></div>`;
+    });
+    track.innerHTML = html;
+}
+
+function renderStage(){
+    const s = STAGES[current];
+    document.getElementById('journeyStage').innerHTML = `
+        <div class="food-marker">${s.icon}</div>
+        <div class="stage-name">${current + 1}. ${s.name}</div>
+        <div class="stage-desc">${s.desc}</div>
+    `;
+    document.getElementById('prevBtn').disabled = current === 0;
+    document.getElementById('nextBtn').disabled = current === STAGES.length - 1;
+    document.getElementById('progressLabel').textContent = 'Stage ' + (current + 1) + ' of ' + STAGES.length;
+    renderTrack();
+}
+
+function goStage(delta){
+    const next = current + delta;
+    if(next < 0 || next >= STAGES.length) return;
+    current = next;
+    renderStage();
+}
+
+function restart(){
+    current = 0;
+    renderStage();
+}
+
+renderStage();
+</script>
+</body>
+</html>

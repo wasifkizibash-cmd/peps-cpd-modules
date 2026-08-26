@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEPS Teeth &amp; Food Matching Simulator - Year 4</title>
+<style>
+    :root { --primary: #007A87; --primary-dark: #005A64; --accent: #FF9E1B; --bg: #F4F7F6; --card-bg: #FFFFFF; --text: #333333; --on: #2E8B57; --off: #D64545; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+    .container { max-width: 800px; width: 100%; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    .header { text-align: center; border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 26px; }
+    .header-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .header h1 { color: var(--primary); margin: 0 0 8px 0; font-size: 26px; }
+    .header p { margin: 0; color: #666; font-style: italic; font-size: 14px; }
+
+    .intro-note { text-align: center; font-size: 14px; color: #556; margin-bottom: 22px; }
+
+    .food-bank { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; padding: 16px; background: #FAFBFB; border: 2px dashed #D0DEDC; border-radius: 10px; margin-bottom: 26px; min-height: 96px; }
+    .food-card { width: 82px; background: #fff; border: 2px solid var(--primary); border-radius: 10px; padding: 10px 4px; text-align: center; cursor: pointer; transition: transform .15s; }
+    .food-card:hover { transform: translateY(-3px); }
+    .food-card.selected { background: var(--primary); color: #fff; transform: scale(1.06); }
+    .food-card .icon { font-size: 28px; display: block; }
+    .food-card .name { font-size: 10.5px; font-weight: 700; margin-top: 3px; }
+    .food-card.matched { opacity: 0.35; cursor: default; }
+
+    .tooth-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .tooth-zone { width: 200px; background: #FCFDFD; border: 2.5px dashed #C6D2CE; border-radius: 10px; padding: 14px; text-align: center; cursor: pointer; transition: border-color .2s, background .2s; }
+    .tooth-zone:hover { border-color: var(--primary); }
+    .tooth-zone .t-icon { font-size: 30px; }
+    .tooth-zone .t-name { font-size: 13.5px; font-weight: 700; margin: 4px 0 2px; }
+    .tooth-zone .t-job { font-size: 11px; color: #667; }
+    .tooth-zone .matches { margin-top: 8px; display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; min-height: 22px; }
+    .tooth-zone .matches span { font-size: 18px; }
+    .tooth-zone.flash-correct { background: #EAF7EF; border-color: var(--on); }
+    .tooth-zone.flash-incorrect { background: #FBEAEA; border-color: var(--off); }
+
+    .feedback-msg { text-align: center; font-size: 14px; font-weight: 600; min-height: 22px; margin-top: 18px; }
+    .feedback-msg.correct { color: var(--on); }
+    .feedback-msg.incorrect { color: var(--off); }
+
+    .progress-note { text-align: center; font-size: 12.5px; color: #667; margin-top: 8px; }
+
+    .btn-reset { display: block; margin: 18px auto 0; padding: 10px 20px; font-size: 13.5px; font-weight: 700; background: #fff; color: var(--primary); border: 2px solid var(--primary); border-radius: 8px; cursor: pointer; }
+    .btn-reset:hover { background: #F3F8F7; }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img class="header-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">
+        <h1>Teeth &amp; Food Matching Simulator</h1>
+        <p>Year 4 Science &mdash; Which Teeth Do the Job?</p>
+    </div>
+
+    <p class="intro-note">Click a food, then click the tooth type that would do the main job of eating it.</p>
+
+    <div class="food-bank" id="foodBank"></div>
+
+    <div class="tooth-row">
+        <div class="tooth-zone" data-tooth="incisors" onclick="onToothClick('incisors')">
+            <div class="t-icon">&#129698;</div>
+            <div class="t-name">Incisors</div>
+            <div class="t-job">Cutting and biting</div>
+            <div class="matches" id="matches-incisors"></div>
+        </div>
+        <div class="tooth-zone" data-tooth="canines" onclick="onToothClick('canines')">
+            <div class="t-icon">&#129698;</div>
+            <div class="t-name">Canines</div>
+            <div class="t-job">Tearing</div>
+            <div class="matches" id="matches-canines"></div>
+        </div>
+        <div class="tooth-zone" data-tooth="molars" onclick="onToothClick('molars')">
+            <div class="t-icon">&#129698;</div>
+            <div class="t-name">Molars</div>
+            <div class="t-job">Grinding and chewing</div>
+            <div class="matches" id="matches-molars"></div>
+        </div>
+    </div>
+
+    <div class="feedback-msg" id="feedbackMsg"></div>
+    <div class="progress-note" id="progressNote"></div>
+    <button class="btn-reset" onclick="resetSim()">Start Over</button>
+</div>
+
+<script>
+const FOODS = {
+    apple:  { name: "Apple",   icon: "&#127822;", correctTooth: "incisors" },
+    chicken:{ name: "Chicken", icon: "&#127831;", correctTooth: "canines" },
+    nuts:   { name: "Mixed Nuts", icon: "&#127824;", correctTooth: "molars" },
+    carrot: { name: "Carrot",  icon: "&#129365;", correctTooth: "incisors" },
+    dates:  { name: "Dates",   icon: "&#127820;", correctTooth: "molars" },
+    kebab:  { name: "Lamb Kebab", icon: "&#129362;", correctTooth: "canines" }
+};
+
+let matchedCount = {}; // key -> tooth zone it was matched to (only tracks correct matches, since incorrect ones stay in the bank)
+let selectedFood = null;
+
+function renderBank(){
+    const bank = document.getElementById('foodBank');
+    bank.innerHTML = Object.keys(FOODS).map(key => {
+        const f = FOODS[key];
+        const isMatched = !!matchedCount[key];
+        const isSelected = selectedFood === key;
+        return `<div class="food-card${isSelected ? ' selected' : ''}${isMatched ? ' matched' : ''}" onclick="${isMatched ? '' : `onFoodClick('${key}')`}">
+            <span class="icon">${f.icon}</span>
+            <span class="name">${f.name}</span>
+        </div>`;
+    }).join('');
+    updateProgress();
+}
+
+function onFoodClick(key){
+    if(matchedCount[key]) return;
+    selectedFood = (selectedFood === key) ? null : key;
+    renderBank();
+}
+
+function onToothClick(toothKey){
+    const msg = document.getElementById('feedbackMsg');
+    const zone = document.querySelector('.tooth-zone[data-tooth="' + toothKey + '"]');
+    zone.classList.remove('flash-correct', 'flash-incorrect');
+
+    if(!selectedFood){
+        msg.textContent = "Pick a food from the bank first.";
+        msg.className = 'feedback-msg';
+        return;
+    }
+
+    const food = FOODS[selectedFood];
+    if(food.correctTooth === toothKey){
+        matchedCount[selectedFood] = toothKey;
+        const matchesEl = document.getElementById('matches-' + toothKey);
+        matchesEl.innerHTML += '<span>' + food.icon + '</span>';
+        msg.textContent = food.name + ' correctly matched to ' + capitalise(toothKey) + '!';
+        msg.className = 'feedback-msg correct';
+        zone.classList.add('flash-correct');
+    } else {
+        msg.textContent = "Not quite \u2014 " + food.name + " isn't mainly handled by " + capitalise(toothKey) + ". Try another tooth type.";
+        msg.className = 'feedback-msg incorrect';
+        zone.classList.add('flash-incorrect');
+    }
+    selectedFood = null;
+    renderBank();
+}
+
+function capitalise(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+function updateProgress(){
+    const total = Object.keys(FOODS).length;
+    const done = Object.keys(matchedCount).length;
+    const note = document.getElementById('progressNote');
+    note.textContent = done + ' of ' + total + ' foods correctly matched';
+    if(done === total){
+        note.textContent += ' \u2014 all done! Every tooth type has a job.';
+    }
+}
+
+function resetSim(){
+    matchedCount = {};
+    selectedFood = null;
+    document.getElementById('feedbackMsg').textContent = '';
+    document.getElementById('feedbackMsg').className = 'feedback-msg';
+    ['incisors','canines','molars'].forEach(t => {
+        document.getElementById('matches-' + t).innerHTML = '';
+        document.querySelector('.tooth-zone[data-tooth="' + t + '"]').classList.remove('flash-correct', 'flash-incorrect');
+    });
+    renderBank();
+}
+
+renderBank();
+</script>
+</body>
+</html>
