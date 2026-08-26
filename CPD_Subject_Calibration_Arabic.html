@@ -72,11 +72,12 @@
   .q-text{font-weight:600; font-size:14.5px; margin-bottom:9px; color:var(--ink);}
   .opt{display:flex; align-items:flex-start; gap:9px; padding:9px 11px; border:1px solid var(--line); border-radius:7px; margin-bottom:7px; cursor:pointer; font-size:14px; color:#33405c;}
   .opt:hover{border-color:#b8b6a4;}
-  .opt.selected{border-color:var(--ink); background:#F7F7F2;}
+  .opt.selected{border-color:var(--ink); background:#F7F7F2; box-shadow:inset 0 0 0 1px var(--ink);}
   .opt.correct{border-color:var(--teal); background:var(--teal-soft); color:var(--teal); font-weight:600;}
   .opt.incorrect{border-color:var(--red); background:var(--red-soft); color:var(--red); font-weight:600;}
   .opt.disabled{cursor:default;}
   .opt-bullet{width:16px;height:16px;border-radius:50%;border:1.5px solid #b8b6a4;flex:none;margin-top:1px;}
+  .opt.selected .opt-bullet{border-color:var(--ink); background:var(--ink); box-shadow:inset 0 0 0 3px #fff;}
   .opt.correct .opt-bullet{border-color:var(--teal); background:var(--teal);}
   .opt.incorrect .opt-bullet{border-color:var(--red); background:var(--red);}
   .feedback{margin-top:6px; padding:9px 12px; border-radius:7px; font-size:13.3px; background:#F7F7F2; color:#4a5670; border-left:3px solid var(--ink-soft);}
@@ -150,10 +151,11 @@
   .certificate{ background:#fff; border:2px solid var(--esl); border-radius:6px; padding:6px; }
   .certificate-inner{ border:1px solid var(--esl); padding:48px 50px; text-align:center; position:relative; }
   .cert-eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--esl); margin-bottom:18px; }
+  .cert-logo{ width:64px; height:64px; border-radius:50%; object-fit:cover; margin:0 auto 16px; display:block; box-shadow:0 2px 6px rgba(0,0,0,0.15); }
   .cert-title{ font-family:'Source Serif 4',serif; font-weight:700; font-size:28px; color:var(--ink); margin:0 0 26px; }
   .cert-presented{ font-size:13px; color:var(--ink-soft); margin-bottom:6px; letter-spacing:.04em; }
   .cert-name{ font-family:'Source Serif 4',serif; font-style:italic; font-size:32px; color:var(--esl); margin:6px 0 22px; border-bottom:1px solid var(--line); display:inline-block; padding:0 20px 10px; }
-  .cert-body{ font-size:14.5px; color:#33405c; max-width:560px; margin:0 auto 26px; line-height:1.6; }
+  .cert-body{ font-size:14.5px; color:#33405c; max-width:560px; margin:0 auto 26px; line-height:1.6; text-align:justify; }
   .cert-body b{ color:var(--ink); }
   .cert-meta-row{ display:flex; justify-content:center; gap:40px; margin:26px 0 30px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); }
   .cert-meta-row div strong{ display:block; color:var(--ink); font-size:13px; font-family:'Inter',sans-serif; margin-top:3px; }
@@ -697,6 +699,7 @@ let currentView = "concepts"; // 'concepts' | 'exam' | 'results'
 let examAnswers = {};
 let lastResult = null;
 let storageReady = false;
+let wrongAttempts = {}; // transient, per-question: last incorrect pick, NOT persisted -- lets a student retry until correct
 const STORAGE_KEY = "cpd-subject-arabic-progress";
 
 function defaultProgress(){
@@ -733,9 +736,15 @@ function allChecksDone(){ return checksAnswered()===checksTotal(); }
    ========================================================================= */
 function answerCheck(ci, qi, optIdx){
   const key = ci+"_"+qi;
-  if(progress.checks[key]!==undefined) return;
-  progress.checks[key] = optIdx;
-  saveProgress();
+  if(progress.checks[key]!==undefined) return; // already answered correctly and locked in
+  const chk = MODULE.concepts[ci].checks[qi];
+  if(optIdx === chk.correct){
+    progress.checks[key] = optIdx;
+    delete wrongAttempts[key];
+    saveProgress();
+  } else {
+    wrongAttempts[key] = optIdx; // remember the wrong pick just long enough to show feedback; question stays open for retry
+  }
   render();
 }
 function startExam(){
@@ -912,21 +921,26 @@ function renderConcepts(){
 
 function renderCheckQuestion(ci, qi, chk){
   const key = ci+"_"+qi;
-  const answered = progress.checks[key];
+  const locked = progress.checks[key];
+  const wrongPick = wrongAttempts[key];
   let html = '<div class="question"><div class="q-text">'+chk.q+'</div>';
   chk.options.forEach((opt, oi)=>{
     let cls = "opt";
-    if(answered!==undefined){
+    let onclick;
+    if(locked!==undefined){
       cls += " disabled";
       if(oi===chk.correct) cls += " correct";
-      else if(oi===answered) cls += " incorrect";
+      onclick = "";
+    } else {
+      onclick = "answerCheck("+ci+","+qi+","+oi+")";
+      if(wrongPick===oi) cls += " incorrect";
     }
-    const onclick = answered===undefined ? "answerCheck("+ci+","+qi+","+oi+")" : "";
     html += '<div class="'+cls+'" onclick="'+onclick+'"><div class="opt-bullet"></div><div>'+opt+'</div></div>';
   });
-  if(answered!==undefined){
-    const right = answered===chk.correct;
-    html += '<div class="feedback '+(right?"right":"wrong")+'">'+(right?"إجابة صحيحة. ":"ليست صحيحة تماماً. ")+chk.explain+'</div>';
+  if(locked!==undefined){
+    html += '<div class="feedback right">إجابة صحيحة. '+chk.explain+'</div>';
+  } else if(wrongPick!==undefined){
+    html += '<div class="feedback wrong">ليست صحيحة تماماً. اختر إجابة أخرى للمحاولة مرة أخرى.</div>';
   }
   html += '</div>';
   return html;
@@ -992,6 +1006,7 @@ function renderCertificate(){
   return '<div class="cert-wrap">'+
     '<a class="cert-back" onclick="backFromCertificate()">\u2192 العودة إلى الوحدة</a>'+
     '<div class="certificate"><div class="certificate-inner">'+
+      '<img class="cert-logo" src="https://wasifkizibash-cmd.github.io/peps-cpd-modules/EX/RoundLogo.png" alt="Providence English School logo">'+
       '<div class="cert-eyebrow">'+MODULE.code+'</div>'+
       '<div class="cert-seal">مُعايَر<br>\u2713</div>'+
       '<div class="cert-title">شهادة إتمام</div>'+
