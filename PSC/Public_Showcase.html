@@ -68,6 +68,8 @@
   .idea-card p{ font-size:13.5px; color:var(--ink-soft); margin:0 0 14px; line-height:1.55; }
   .idea-card .see-more{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--teal); font-weight:700; margin-top:2px; }
   .idea-meta{ display:flex; justify-content:space-between; align-items:center; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); padding-top:12px; border-top:1px dashed var(--line); }
+  .like-count-badge{ display:inline-flex; align-items:center; gap:4px; color:var(--ink-soft); font-weight:700; cursor:default; }
+  .like-count-badge .like-icon{ font-size:12px; }
   .empty-state{ text-align:center; padding:60px 20px; color:var(--ink-soft); font-size:15px; border:1.5px dashed var(--line); border-radius:14px; grid-column:1/-1; }
   .loading-state{ text-align:center; padding:60px 20px; color:var(--ink-soft); font-size:14px; grid-column:1/-1; font-family:'IBM Plex Mono',monospace; }
 
@@ -170,7 +172,8 @@ function normaliseLiveIdea(row){
     by: row.by || "PEPS",
     hook: row.hook || (row.description ? String(row.description).slice(0,140) : ""),
     description: row.description || "",
-    link: row.link || ""
+    link: row.link || "",
+    likes: row.likes || 0
   };
 }
 
@@ -216,6 +219,9 @@ function renderGallery(){
       <div class="see-more">See full details &rarr;</div>
       <div class="idea-meta">
         <span>${escapeHtml(idea.by)}</span>
+        <span class="like-count-badge" title="Liked ${idea.likes} time${idea.likes === 1 ? '' : 's'} by the PEPS community">
+          <span class="like-icon">\u2B50</span>${idea.likes}
+        </span>
       </div>
     </div>
   `).join('');
