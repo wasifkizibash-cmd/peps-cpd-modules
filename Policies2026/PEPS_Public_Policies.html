@@ -154,6 +154,33 @@
     font-size:14.5px;
     max-width:62ch;
   }
+  .policy-row.is-pending{
+    cursor:default;
+  }
+  .policy-row.is-pending:hover{
+    background:transparent;
+  }
+  .policy-row.is-pending .policy-title{
+    color:var(--ink-soft);
+  }
+  .policy-row.is-pending:hover .policy-title{
+    color:var(--ink-soft);
+  }
+  .policy-row.is-pending .policy-title::after{
+    display:none;
+  }
+  .pending-tag{
+    display:inline-block;
+    margin-left:10px;
+    font-size:11px;
+    letter-spacing:.03em;
+    color:var(--purple);
+    background:var(--gold-pale);
+    border:1px solid #d8c48c;
+    padding:2px 9px;
+    border-radius:20px;
+    vertical-align:2px;
+  }
 
   /* ---------- Footer ---------- */
   footer{
@@ -232,6 +259,26 @@
       <a class="policy-row" href="https://wasifkizibash-cmd.github.io/peps-cpd-modules/Policies2026/PEPS_Inclusion_Policy_2026_2027V2.html">
         <div class="policy-title">Inclusion Policy</div>
         <div class="policy-desc">How PEPS identifies and supports Students of Determination, English Language Learners, and More Able, Gifted and Talented students.</div>
+      </a>
+      <div class="policy-row is-pending">
+        <div class="policy-title">Child Protection &amp; Safeguarding Policy<span class="pending-tag">Link coming soon</span></div>
+        <div class="policy-desc">How PEPS safeguards and promotes the welfare of every student, in line with UAE and Sharjah child protection requirements.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="category">
+    <div class="category-heading">
+      <h2>Curriculum &amp; Assessment</h2>
+    </div>
+    <div class="policy-list">
+      <a class="policy-row" href="https://wasifkizibash-cmd.github.io/peps-cpd-modules/Policies2026/PEPS_Curriculum_Policy_2026_2027V2.html">
+        <div class="policy-title">Curriculum Policy</div>
+        <div class="policy-desc">Our whole-school curriculum framework from FS2 to Year 13, built on the Cambridge International Curriculum and UAE Ministry of Education requirements.</div>
+      </a>
+      <a class="policy-row" href="https://wasifkizibash-cmd.github.io/peps-cpd-modules/Policies2026/PEPS_Assessment_Policy_2026_2027V2.html">
+        <div class="policy-title">Assessment Policy</div>
+        <div class="policy-desc">How learning is assessed, recorded and reported at every stage, from classroom quizzes through to Cambridge and external examinations.</div>
       </a>
     </div>
   </section>
