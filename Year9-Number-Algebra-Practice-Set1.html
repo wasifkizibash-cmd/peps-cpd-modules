@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Year 9 Number &amp; Algebra Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,700&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: exam paper column with a sticky timer bar; sections A–E stacked as question cards; results panel appears above the paper on submit */
+:root{
+  --bg:#eef2f5; --surface:#ffffff; --ink:#15212c; --muted:#5a6976; --line:#d6dee5;
+  --accent:#125d7c; --accent-soft:#e1eff5;
+  --good:#1d7a4c; --good-soft:#e2f3ea; --bad:#b0362c; --bad-soft:#fae6e3; --warn:#9a6200; --warn-soft:#fbf0d9;
+  --display:"Literata", Georgia, "Times New Roman", serif;
+  --body:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e141a; --surface:#16202a; --ink:#e4ebf1; --muted:#97a6b3; --line:#2a3744;
+  --accent:#6bb8d6; --accent-soft:#17323f;
+  --good:#53c48d; --good-soft:#15301f; --bad:#f08075; --bad-soft:#3a1c1a; --warn:#e5b45a; --warn-soft:#352a12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e141a; --surface:#16202a; --ink:#e4ebf1; --muted:#97a6b3; --line:#2a3744;
+  --accent:#6bb8d6; --accent-soft:#17323f;
+  --good:#53c48d; --good-soft:#15301f; --bad:#f08075; --bad-soft:#3a1c1a; --warn:#e5b45a; --warn-soft:#352a12; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:24px 80px;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.2}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* masthead */
+.mast{display:flex;flex-direction:column;gap:6px;padding-block:8px 4px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.mast h1{font-size:clamp(28px,5vw,40px);font-weight:700}
+.mast p{margin:0;color:var(--muted);max-width:62ch}
+
+/* start card */
+.start{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;grid-template-columns:1.2fr 1fr;gap:24px}
+.start h2{font-size:20px;margin-bottom:8px}
+.start ul{margin:0;padding-left:20px;color:var(--ink);display:flex;flex-direction:column;gap:4px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.fact{border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.fact b{display:block;font-family:var(--mono);font-size:22px;font-variant-numeric:tabular-nums}
+.fact span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.form{display:flex;flex-direction:column;gap:12px}
+.form label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600;color:var(--muted)}
+.form input,.form select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:9px 10px}
+.btn{border:0;border-radius:7px;padding:11px 18px;font-weight:700;background:var(--accent);color:var(--surface)}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+@media (max-width:640px){.start{grid-template-columns:1fr}}
+
+/* sticky bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;box-shadow:0 4px 14px -10px rgba(0,0,0,.35)}
+.timer{font-family:var(--mono);font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;min-width:5ch}
+.timer.warn{color:var(--warn)} .timer.low{color:var(--bad)}
+.prog{font-size:13px;color:var(--muted)}
+.prog b{color:var(--ink);font-variant-numeric:tabular-nums}
+.jump{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.jump a{font-size:13px;font-weight:700;text-decoration:none;color:var(--accent);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.jump a:hover{background:var(--accent-soft)}
+.bar .btn{padding:8px 14px}
+.confirm{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding-top:8px;border-top:1px solid var(--line);font-size:14px}
+
+/* sections & questions */
+.sec{display:flex;flex-direction:column;gap:12px;scroll-margin-top:90px}
+.sec-head{display:flex;align-items:baseline;gap:12px;padding-top:12px;border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sec-letter{font-family:var(--display);font-size:28px;font-weight:700;color:var(--accent)}
+.sec-head h2{font-size:22px}
+.sec-head .m{margin-left:auto;font-size:13px;color:var(--muted);white-space:nowrap}
+.sec-note{font-size:14px;color:var(--muted);margin:0}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:grid;grid-template-columns:44px 1fr auto;gap:4px 12px}
+.qn{font-family:var(--mono);font-weight:700;color:var(--muted)}
+.qbody{min-width:0;display:flex;flex-direction:column;gap:10px}
+.qtext{margin:0}
+.qm{font-size:12px;color:var(--muted);white-space:nowrap}
+.q.ok{border-color:var(--good)} .q.no{border-color:var(--bad)} .q.part{border-color:var(--warn)}
+.resp{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:17px}
+.resp input[type=text]{font-family:var(--mono);font-size:16px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px;width:9ch}
+.resp input.wide{width:min(22ch,100%)}
+.resp input.sm{width:5ch;padding:3px 5px;font-size:14px}
+.resp sup{display:inline-flex}
+.hint{font-size:12px;color:var(--muted);flex-basis:100%}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px}
+.opt{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:6px;padding:7px 10px;cursor:pointer;font-size:16px}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt input{accent-color:var(--accent);margin:0}
+.fb{border-radius:6px;padding:10px 12px;font-size:14px;display:flex;flex-direction:column;gap:4px}
+.fb.ok{background:var(--good-soft)} .fb.no{background:var(--bad-soft)} .fb.part{background:var(--warn-soft)}
+.fb .tag{font-weight:700}
+.fb.ok .tag{color:var(--good)} .fb.no .tag{color:var(--bad)} .fb.part .tag{color:var(--warn)}
+.fb .sol{color:var(--ink)}
+@media (max-width:520px){.q{grid-template-columns:1fr auto}.qn{grid-column:1}.qm{grid-column:2;grid-row:1}.qbody{grid-column:1/-1}}
+
+/* maths */
+.rt{white-space:nowrap}.rad{border-top:1.5px solid currentColor;padding:0 2px;margin-left:1px}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.9em;line-height:1.15;margin:0 2px}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px}
+.var{font-style:italic;font-family:var(--display)}
+
+/* results */
+.results{background:var(--surface);border:2px solid var(--accent);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px}
+.score{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px}
+.score .big{font-family:var(--display);font-size:52px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.score .pct{font-family:var(--mono);font-size:22px;color:var(--accent)}
+.score .who{color:var(--muted);flex-basis:100%;font-size:14px}
+.breakdown{display:flex;flex-direction:column;gap:8px}
+.brow{display:grid;grid-template-columns:minmax(0,190px) 1fr 64px;gap:10px;align-items:center;font-size:14px}
+.track{height:10px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+.fill{height:100%;background:var(--accent)}
+.brow .n{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.advice{margin:0;font-size:14px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.fill{transition:width .8s ease}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="mast">
+    <div class="eyebrow">Providence English Private School · Year 9 Mathematics</div>
+    <h1>Number &amp; Algebra Practice Set</h1>
+    <p>Irrational numbers, standard form, indices, substitution and constructing expressions. One hour, marked automatically, with a worked solution for every question.</p>
+  </header>
+
+  <section class="start" id="startCard">
+    <div>
+      <div class="facts">
+        <div class="fact"><b>60</b><span>minutes</span></div>
+        <div class="fact"><b id="factQ">40</b><span>questions</span></div>
+        <div class="fact"><b id="factM">52</b><span>marks</span></div>
+      </div>
+      <h2>Instructions</h2>
+      <ul>
+        <li>Answer every question. A calculator may be used.</li>
+        <li>Fractions such as <b>1/8</b> are accepted wherever a number is asked for.</li>
+        <li>For algebra, type answers like <b>4n - 7</b> or <b>2x^2 + 3x</b> (use ^ for powers).</li>
+        <li>The paper submits itself when the timer reaches 00:00.</li>
+      </ul>
+    </div>
+    <div class="form">
+      <label for="stName">Your name<input id="stName" type="text" autocomplete="name" placeholder="e.g. Aisha Khan"></label>
+      <label for="stSec">Class
+        <select id="stSec"><option value="">Choose…</option><option>9A</option><option>9B</option><option>9C</option><option>9D</option></select>
+      </label>
+      <button class="btn" id="startBtn">Start the 60-minute timer</button>
+    </div>
+  </section>
+
+  <section class="results" id="results" hidden></section>
+
+  <div class="bar" id="bar" hidden>
+    <span class="timer" id="timer">60:00</span>
+    <span class="prog"><b id="answered">0</b> of <b id="total">40</b> answered</span>
+    <nav class="jump" id="jump"></nav>
+    <button class="btn" id="submitBtn">Submit</button>
+    <div class="confirm" id="confirm" hidden>
+      <span id="confirmMsg"></span>
+      <button class="btn" id="confirmYes">Submit and mark</button>
+      <button class="btn ghost" id="confirmNo">Keep working</button>
+    </div>
+  </div>
+
+  <main id="paper"></main>
+</div>
+
+<script>
+const R = x => `<span class="rt">√<span class="rad">${x}</span></span>`;
+const F = (a,b) => `<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const V = x => `<span class="var">${x}</span>`;
+const X10 = (a,n) => `${a} × 10<sup>${n}</sup>`;
+
+const SECTIONS = [
+  {id:'A', name:'Irrational numbers'},
+  {id:'B', name:'Standard form', note:'Give standard form answers as <i>a</i> × 10<sup><i>n</i></sup> with 1 ≤ <i>a</i> &lt; 10.'},
+  {id:'C', name:'Indices'},
+  {id:'D', name:'Substituting into expressions', note:`For questions 26–30, use ${V('a')} = 3, ${V('b')} = −2 and ${V('c')} = 5.`},
+  {id:'E', name:'Constructing expressions', note:'Write each expression in its simplest form. Type <b>^</b> for a power, e.g. 2x^2.'}
+];
+
+const Q = [
+ // A — Irrational numbers (8)
+ {s:'A',m:1,t:'mcq',q:'Which of these numbers is irrational?',opts:[R(49),'0.375',R(20),F(22,7)],ans:2,
+  sol:`${R(20)} = 4.4721… never ends or repeats, so it is irrational. ${R(49)} = 7, 0.375 = ${F(3,8)} and ${F(22,7)} are all fractions of integers.`},
+ {s:'A',m:2,t:'multi',q:'Select <b>all</b> the irrational numbers.',opts:[R(2),'π','0.3̇ (recurring)',R(`${F(16,25)}`),`${R(3)} + 1`,`∛27`],ans:[0,1,4],
+  sol:`Irrational: ${R(2)}, π and ${R(3)} + 1. Rational: 0.3̇ = ${F(1,3)}, ${R(F(16,25))} = ${F(4,5)}, ∛27 = 3. (2 marks; 1 mark with one error.)`},
+ {s:'A',m:1,t:'mcq',q:`Between which two consecutive whole numbers does ${R(60)} lie?`,opts:['6 and 7','7 and 8','8 and 9','59 and 61'],ans:1,
+  sol:`7² = 49 and 8² = 64. Since 49 &lt; 60 &lt; 64, ${R(60)} lies between 7 and 8.`},
+ {s:'A',m:1,t:'num',q:`Find ${R(40)} correct to 2 decimal places.`,ans:6.32,tol:0.0051,show:'6.32',
+  sol:`${R(40)} = 6.3245… which rounds to 6.32.`},
+ {s:'A',m:1,t:'num',q:`Write ${R(50)} in the form <i>k</i>${R(2)}. Find <i>k</i>.`,pre:`${R(50)} =`,post:R(2),ans:5,show:'5',
+  sol:`${R(50)} = ${R('25 × 2')} = ${R(25)} × ${R(2)} = 5${R(2)}.`},
+ {s:'A',m:1,t:'num',q:`Work out ${R(2)} × ${R(8)}. (This shows that two irrational numbers can multiply to give a rational number.)`,ans:4,show:'4',
+  sol:`${R(2)} × ${R(8)} = ${R(16)} = 4, which is rational.`},
+ {s:'A',m:1,t:'num',q:'A square has an area of 30 cm². Find its side length, correct to 2 decimal places.',post:'cm',ans:5.48,tol:0.0051,show:'5.48 cm',
+  sol:`Side = ${R(30)} = 5.4772… ≈ 5.48 cm. The exact length ${R(30)} is irrational.`},
+
+ // B — Standard form (12)
+ {s:'B',m:1,t:'sf',q:'Write 45 000 000 in standard form.',ans:{a:4.5,n:7},
+  sol:`Move the decimal point 7 places: 45 000 000 = ${X10('4.5',7)}.`},
+ {s:'B',m:1,t:'sf',q:'Write 0.000 030 6 in standard form.',ans:{a:3.06,n:-5},
+  sol:`The first significant digit (3) is in the 5th decimal place, so 0.0000306 = ${X10('3.06','−5')}.`},
+ {s:'B',m:1,t:'num',q:`Write ${X10('7.2','−3')} as an ordinary number.`,ans:0.0072,tol:1e-10,show:'0.0072',
+  sol:`Move the decimal point 3 places left: 7.2 → 0.0072.`},
+ {s:'B',m:2,t:'sf',q:`Work out (${X10(3,4)}) × (${X10(2,5)}). Give your answer in standard form.`,ans:{a:6,n:9},
+  sol:`Multiply the numbers: 3 × 2 = 6. Add the powers: 10<sup>4+5</sup> = 10<sup>9</sup>. Answer ${X10(6,9)}.`},
+ {s:'B',m:2,t:'sf',q:`Work out (${X10(8,9)}) ÷ (${X10(4,'−2')}). Give your answer in standard form.`,ans:{a:2,n:11},
+  sol:`8 ÷ 4 = 2. Subtract the powers: 10<sup>9 − (−2)</sup> = 10<sup>11</sup>. Answer ${X10(2,11)}.`},
+ {s:'B',m:2,t:'sf',q:`Work out (${X10(5,6)}) × (${X10(4,3)}). Give your answer in standard form.`,ans:{a:2,n:10},
+  sol:`5 × 4 = 20 and 10<sup>6+3</sup> = 10<sup>9</sup>, giving 20 × 10<sup>9</sup>. 20 is not between 1 and 10, so write 20 = 2 × 10<sup>1</sup>: answer ${X10(2,10)}.`},
+ {s:'B',m:2,t:'num',q:`The Sun is ${X10('1.5',8)} km from Earth. Light travels at ${X10(3,5)} km per second. How many seconds does light from the Sun take to reach Earth?`,post:'seconds',ans:500,tol:1e-6,show:'500 seconds',
+  sol:`Time = distance ÷ speed = (${X10('1.5',8)}) ÷ (${X10(3,5)}) = 0.5 × 10<sup>3</sup> = 500 seconds (about 8⅓ minutes).`},
+ {s:'B',m:1,t:'mcq',q:'Which number is written correctly in standard form?',opts:[X10(12,3),X10('0.5',4),X10('3.7','−2'),X10(1,'0.5')],ans:2,
+  sol:`In standard form the first number must be at least 1 and less than 10, and the power must be an integer. Only ${X10('3.7','−2')} fits.`},
+
+ // C — Indices (12)
+ {s:'C',m:1,t:'num',q:'Write 5<sup>3</sup> × 5<sup>4</sup> as a single power of 5.',pre:'5^',ans:7,show:'5<sup>7</sup>',supPre:true,
+  sol:`Multiplying: add the indices. 3 + 4 = 7, so 5<sup>7</sup>.`},
+ {s:'C',m:1,t:'num',q:'Write 7<sup>10</sup> ÷ 7<sup>2</sup> as a single power of 7.',pre:'7^',ans:8,show:'7<sup>8</sup>',supPre:true,
+  sol:`Dividing: subtract the indices. 10 − 2 = 8, so 7<sup>8</sup>.`},
+ {s:'C',m:1,t:'num',q:'Write (2<sup>3</sup>)<sup>5</sup> as a single power of 2.',pre:'2^',ans:15,show:'2<sup>15</sup>',supPre:true,
+  sol:`Power of a power: multiply the indices. 3 × 5 = 15, so 2<sup>15</sup>.`},
+ {s:'C',m:1,t:'num',q:'Write down the value of 4<sup>0</sup>.',ans:1,show:'1',
+  sol:`Any non-zero number to the power 0 equals 1.`},
+ {s:'C',m:1,t:'num',q:'Work out the value of 2<sup>−3</sup>. Give your answer as a fraction or a decimal.',ans:0.125,tol:1e-9,show:'1/8 or 0.125',
+  sol:`2<sup>−3</sup> = ${F(1,'2<sup>3</sup>')} = ${F(1,8)} = 0.125.`},
+ {s:'C',m:1,t:'num',q:`Simplify ${V('x')}<sup>5</sup> × ${V('x')}<sup>−2</sup> = ${V('x')}<sup><i>n</i></sup>. Find <i>n</i>.`,pre:'<i>n</i> =',ans:3,show:'3',
+  sol:`Add the indices: 5 + (−2) = 3, so ${V('x')}<sup>3</sup>.`},
+ {s:'C',m:2,t:'expr',q:`Simplify ${F(`6${V('a')}<sup>5</sup>${V('b')}<sup>2</sup>`,`2${V('a')}<sup>2</sup>${V('b')}`)}.`,ans:'3a^3b',vars:['a','b'],show:`3${V('a')}<sup>3</sup>${V('b')}`,
+  sol:`Numbers: 6 ÷ 2 = 3. ${V('a')}: 5 − 2 = 3. ${V('b')}: 2 − 1 = 1. Answer 3${V('a')}<sup>3</sup>${V('b')}.`},
+ {s:'C',m:2,t:'num',q:`Find the value of <i>n</i> when 3<sup><i>n</i></sup> = ${F(1,81)}.`,pre:'<i>n</i> =',ans:-4,show:'−4',
+  sol:`81 = 3<sup>4</sup>, so ${F(1,81)} = ${F(1,'3<sup>4</sup>')} = 3<sup>−4</sup>. So <i>n</i> = −4.`},
+ {s:'C',m:1,t:'num',q:`Work out the value of ${F('2<sup>5</sup> × 2<sup>3</sup>','2<sup>6</sup>')}.`,ans:4,show:'4',
+  sol:`2<sup>5+3−6</sup> = 2<sup>2</sup> = 4.`},
+ {s:'C',m:1,t:'mcq',q:`Which of these is equal to ${F(1,25)}?`,opts:['5<sup>−2</sup>','−5<sup>2</sup>','25<sup>−2</sup>','5<sup>½</sup>'],ans:0,
+  sol:`5<sup>−2</sup> = ${F(1,'5<sup>2</sup>')} = ${F(1,25)}. Note −5<sup>2</sup> = −25 and 25<sup>−2</sup> = ${F(1,625)}.`},
+
+ // D — Substitution (10)
+ {s:'D',m:1,t:'num',q:`Work out 4${V('a')} + 3${V('b')}.`,ans:6,show:'6',
+  sol:`4 × 3 + 3 × (−2) = 12 − 6 = 6.`},
+ {s:'D',m:1,t:'num',q:`Work out ${V('a')}<sup>2</sup> − ${V('b')}<sup>2</sup>.`,ans:5,show:'5',
+  sol:`3<sup>2</sup> − (−2)<sup>2</sup> = 9 − 4 = 5. Remember (−2)<sup>2</sup> = +4.`},
+ {s:'D',m:1,t:'num',q:`Work out 2${V('b')}<sup>3</sup>.`,ans:-16,show:'−16',
+  sol:`${V('b')}<sup>3</sup> = (−2)<sup>3</sup> = −8, then 2 × (−8) = −16. Cube first, then multiply.`},
+ {s:'D',m:1,t:'num',q:`Work out ${F(`${V('a')} + ${V('c')}`,V('b'))}.`,ans:-4,show:'−4',
+  sol:`(3 + 5) ÷ (−2) = 8 ÷ (−2) = −4.`},
+ {s:'D',m:2,t:'num',q:`Work out 3${V('a')}<sup>2</sup>${V('b')}.`,ans:-54,show:'−54',
+  sol:`${V('a')}<sup>2</sup> = 9, so 3 × 9 × (−2) = −54.`},
+ {s:'D',m:1,t:'num',q:`Use the formula ${V('v')} = ${V('u')} + ${V('a')}${V('t')} to find ${V('v')} when ${V('u')} = 12, ${V('a')} = −3 and ${V('t')} = 5.`,pre:`${V('v')} =`,ans:-3,show:'−3',
+  sol:`${V('v')} = 12 + (−3)(5) = 12 − 15 = −3.`},
+ {s:'D',m:2,t:'num',q:`Use the formula ${V('s')} = ${V('u')}${V('t')} + ½${V('a')}${V('t')}<sup>2</sup> to find ${V('s')} when ${V('u')} = 4, ${V('t')} = 3 and ${V('a')} = 10.`,pre:`${V('s')} =`,ans:57,show:'57',
+  sol:`${V('u')}${V('t')} = 4 × 3 = 12. ½${V('a')}${V('t')}<sup>2</sup> = ½ × 10 × 9 = 45. ${V('s')} = 12 + 45 = 57.`},
+ {s:'D',m:1,t:'num',q:`The formula ${V('F')} = ${F(9,5)}${V('C')} + 32 converts °C to °F. Find ${V('F')} when ${V('C')} = −40.`,pre:`${V('F')} =`,post:'°F',ans:-40,show:'−40 °F',
+  sol:`${F(9,5)} × (−40) = −72, then −72 + 32 = −40. At −40 the two scales agree.`},
+
+ // E — Constructing expressions (10)
+ {s:'E',m:1,t:'expr',q:`Omar thinks of a number ${V('n')}. He multiplies it by 4 and then subtracts 7. Write an expression for his answer.`,ans:'4n-7',vars:['n'],show:`4${V('n')} − 7`,
+  sol:`Multiply by 4: 4${V('n')}. Subtract 7: 4${V('n')} − 7.`},
+ {s:'E',m:1,t:'expr',q:`Sara is ${V('x')} years old. Her brother is 5 years older than her. Write an expression for the sum of their ages.`,ans:'2x+5',vars:['x'],show:`2${V('x')} + 5`,
+  sol:`Brother: ${V('x')} + 5. Sum: ${V('x')} + ${V('x')} + 5 = 2${V('x')} + 5.`},
+ {s:'E',m:1,t:'expr',q:`A pen costs ${V('p')} dirhams and a ruler costs ${V('r')} dirhams. Write an expression for the total cost of 3 pens and 2 rulers.`,ans:'3p+2r',vars:['p','r'],show:`3${V('p')} + 2${V('r')}`,
+  sol:`3 pens cost 3${V('p')}, 2 rulers cost 2${V('r')}. Total 3${V('p')} + 2${V('r')} dirhams.`},
+ {s:'E',m:2,t:'expr',q:`A rectangle has length (2${V('x')} + 3) cm and width ${V('x')} cm. Write an expression for its perimeter.`,post:'cm',ans:'6x+6',vars:['x'],show:`6${V('x')} + 6 cm`,
+  sol:`Perimeter = 2(length + width) = 2(2${V('x')} + 3 + ${V('x')}) = 2(3${V('x')} + 3) = 6${V('x')} + 6.`},
+ {s:'E',m:2,t:'expr',q:`Write an expression for the area of the same rectangle. Expand any brackets.`,post:'cm²',ans:'2x^2+3x',vars:['x'],show:`2${V('x')}<sup>2</sup> + 3${V('x')} cm²`,
+  sol:`Area = length × width = ${V('x')}(2${V('x')} + 3) = 2${V('x')}<sup>2</sup> + 3${V('x')}.`},
+ {s:'E',m:1,t:'mcq',q:`“Square ${V('n')}, add 3, then multiply the result by 2.” Which expression matches?`,opts:[`2${V('n')}<sup>2</sup> + 3`,`2(${V('n')}<sup>2</sup> + 3)`,`(2${V('n')})<sup>2</sup> + 3`,`2(${V('n')} + 3)<sup>2</sup>`],ans:1,
+  sol:`Square: ${V('n')}<sup>2</sup>. Add 3: ${V('n')}<sup>2</sup> + 3. Multiply the <i>whole result</i> by 2, so brackets are needed: 2(${V('n')}<sup>2</sup> + 3).`},
+ {s:'E',m:2,t:'expr',q:`Ali has ${V('m')} marbles. He gives away one third of them, then buys 10 more. Write an expression for the number of marbles he has now.`,ans:'2m/3+10',vars:['m'],show:`${F(`2${V('m')}`,3)} + 10`,
+  sol:`Giving away ${F(V('m'),3)} leaves ${V('m')} − ${F(V('m'),3)} = ${F(`2${V('m')}`,3)}. Then add 10: ${F(`2${V('m')}`,3)} + 10.`}
+];
+Q.forEach((q,i)=>{q.id=i+1});
+const TOTAL = Q.reduce((s,q)=>s+q.m,0);
+const DURATION = 60*60*1000;
+
+/* ---------- small expression evaluator (numbers, single-letter variables, + - * / ^, brackets, implicit ×) ---------- */
+function tokenize(str){
+  const s = String(str).replace(/[×·]/g,'*').replace(/÷/g,'/').replace(/[−–]/g,'-').replace(/²/g,'^2').replace(/³/g,'^3').replace(/\s+/g,'');
+  if(!s) throw new Error('empty');
+  const t=[]; let i=0;
+  while(i<s.length){
+    const c=s[i];
+    if(/[0-9.]/.test(c)){let j=i;while(j<s.length&&/[0-9.]/.test(s[j]))j++;const v=s.slice(i,j);if((v.match(/\./g)||[]).length>1||v==='.')throw 0;t.push({k:'n',v:parseFloat(v)});i=j;}
+    else if(/[a-zA-Z]/.test(c)){t.push({k:'v',v:c.toLowerCase()});i++;}
+    else if('+-*/^'.includes(c)){t.push({k:'o',v:c});i++;}
+    else if(c==='('||c===')'){t.push({k:c});i++;}
+    else throw 0;
+  }
+  const out=[];
+  for(const b of t){const a=out[out.length-1];
+    if(a&&(a.k==='n'||a.k==='v'||a.k===')')&&(b.k==='n'||b.k==='v'||b.k==='('))out.push({k:'o',v:'*'});
+    out.push(b);}
+  return out;
+}
+function evaluate(str, env){
+  const t=tokenize(str); let p=0;
+  const peek=()=>t[p], next=()=>t[p++];
+  const isOp=(x,o)=>x&&x.k==='o'&&o.includes(x.v);
+  function expr(){let v=term();while(isOp(peek(),'+-')){const o=next().v,r=term();v=o==='+'?v+r:v-r;}return v;}
+  function term(){let v=unary();while(isOp(peek(),'*/')){const o=next().v,r=unary();v=o==='*'?v*r:v/r;}return v;}
+  function unary(){if(isOp(peek(),'-')){next();return -unary();}if(isOp(peek(),'+')){next();return unary();}return power();}
+  function power(){const b=primary();if(isOp(peek(),'^')){next();return Math.pow(b,unary());}return b;}
+  function primary(){const x=next();if(!x)throw 0;
+    if(x.k==='n')return x.v;
+    if(x.k==='v'){if(!(x.v in env))throw 0;return env[x.v];}
+    if(x.k==='('){const v=expr();const c=next();if(!c||c.k!==')')throw 0;return v;}
+    throw 0;}
+  const v=expr(); if(p<t.length) throw 0; return v;
+}
+const num = s => { try{ const v=evaluate(s,{}); return Number.isFinite(v)?v:NaN; }catch(e){ return NaN; } };
+function sameExpr(user, ans, vars){
+  try{
+    for(let k=0;k<6;k++){
+      const env={}; vars.forEach(v=>env[v]=1.37+Math.random()*3.1);
+      const a=evaluate(ans,env), u=evaluate(user,env);
+      if(!Number.isFinite(u)||Math.abs(u-a)>1e-7*Math.max(1,Math.abs(a))) return false;
+    }
+    return true;
+  }catch(e){return false;}
+}
+
+/* ---------- render ---------- */
+const paper=document.getElementById('paper');
+const val=id=>{const el=document.getElementById(id);return el?el.value.trim():'';};
+function respHTML(q){
+  const id='q'+q.id;
+  if(q.t==='mcq'||q.t==='multi'){
+    const type=q.t==='mcq'?'radio':'checkbox';
+    return `<div class="opts">${q.opts.map((o,i)=>`<label class="opt"><input type="${type}" name="${id}" id="${id}-${i}" value="${i}" disabled> <span>${o}</span></label>`).join('')}</div>`;
+  }
+  if(q.t==='sf') return `<div class="resp"><input type="text" id="${id}-a" inputmode="decimal" aria-label="Number part" disabled> × 10<sup><input type="text" class="sm" id="${id}-n" inputmode="numeric" aria-label="Power of ten" disabled></sup></div>`;
+  if(q.t==='expr') return `<div class="resp">${q.pre?`<span>${q.pre}</span>`:''}<input type="text" class="wide" id="${id}-a" autocomplete="off" spellcheck="false" aria-label="Your expression" disabled>${q.post?`<span>${q.post}</span>`:''}</div>`;
+  // num
+  if(q.supPre){const base=q.pre.replace('^','');return `<div class="resp"><span>${base}</span><sup><input type="text" class="sm" id="${id}-a" inputmode="numeric" aria-label="Power" disabled></sup></div>`;}
+  return `<div class="resp">${q.pre?`<span>${q.pre}</span>`:''}<input type="text" id="${id}-a" inputmode="decimal" autocomplete="off" aria-label="Your answer" disabled>${q.post?`<span>${q.post}</span>`:''}</div>`;
+}
+function render(){
+  let html=''; const jump=[];
+  SECTIONS.forEach(sec=>{
+    const qs=Q.filter(q=>q.s===sec.id); const m=qs.reduce((s,q)=>s+q.m,0);
+    jump.push(`<a href="#sec${sec.id}" title="${sec.name}">${sec.id}</a>`);
+    html+=`<section class="sec" id="sec${sec.id}"><div class="sec-head"><span class="sec-letter">${sec.id}</span><h2>${sec.name}</h2><span class="m">${m} marks</span></div>${sec.note?`<p class="sec-note">${sec.note}</p>`:''}`;
+    qs.forEach(q=>{
+      html+=`<article class="q" id="card${q.id}"><span class="qn">${q.id}</span><div class="qbody"><p class="qtext">${q.q}</p>${respHTML(q)}<div class="fb" id="fb${q.id}" hidden></div></div><span class="qm">[${q.m}]</span></article>`;
+    });
+    html+='</section>';
+  });
+  paper.innerHTML=html;
+  document.getElementById('jump').innerHTML=jump.join('');
+  document.getElementById('factQ').textContent=Q.length;
+  document.getElementById('factM').textContent=TOTAL;
+  document.getElementById('total').textContent=Q.length;
+}
+
+/* ---------- state ---------- */
+const KEY='y9-numalg-practice-v1';
+let state={started:false,endAt:0,submitted:false,name:'',cls:'',inputs:{}};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}};
+const load=()=>{try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)state=s;}catch(e){}};
+function captureInputs(){
+  const o={}; paper.querySelectorAll('input').forEach(el=>{o[el.id]=(el.type==='radio'||el.type==='checkbox')?el.checked:el.value;});
+  state.inputs=o;
+}
+function restoreInputs(){
+  Object.entries(state.inputs||{}).forEach(([id,v])=>{const el=document.getElementById(id);if(!el)return;if(el.type==='radio'||el.type==='checkbox')el.checked=!!v;else el.value=v;});
+}
+function setEnabled(on){paper.querySelectorAll('input').forEach(el=>el.disabled=!on);}
+
+function isAnswered(q){
+  const id='q'+q.id;
+  if(q.t==='mcq'||q.t==='multi') return !!paper.querySelector(`input[name="${id}"]:checked`);
+  if(q.t==='sf') return val(id+'-a')!==''&&val(id+'-n')!=='';
+  return val(id+'-a')!=='';
+}
+function updateCount(){document.getElementById('answered').textContent=Q.filter(isAnswered).length;}
+
+/* ---------- marking ---------- */
+function markQ(q){
+  const id='q'+q.id;
+  if(q.t==='mcq'){
+    const el=paper.querySelector(`input[name="${id}"]:checked`);
+    const pick=el?+el.value:null;
+    return {score:pick===q.ans?q.m:0,given:pick===null?null:q.opts[pick],show:q.opts[q.ans]};
+  }
+  if(q.t==='multi'){
+    const picks=[...paper.querySelectorAll(`input[name="${id}"]:checked`)].map(e=>+e.value);
+    const want=new Set(q.ans); let errors=0;
+    q.opts.forEach((_,i)=>{if(want.has(i)!==picks.includes(i))errors++;});
+    const score=picks.length===0?0:errors===0?q.m:errors===1?q.m-1:0;
+    return {score,given:picks.length?picks.map(i=>q.opts[i]).join(', '):null,show:q.ans.map(i=>q.opts[i]).join(', ')};
+  }
+  if(q.t==='sf'){
+    const ra=val(id+'-a'),rn=val(id+'-n');
+    const show=X10(q.ans.a,String(q.ans.n).replace('-','−'));
+    if(!ra||!rn) return {score:0,given:null,show};
+    const a=num(ra),n=num(rn);
+    const given=X10(ra,rn);
+    if(!Number.isFinite(a)||!Number.isInteger(n)) return {score:0,given,show};
+    const target=q.ans.a*Math.pow(10,q.ans.n), got=a*Math.pow(10,n);
+    if(Math.abs(got-target)<=1e-9*Math.abs(target)){
+      if(a>=1&&a<10) return {score:q.m,given,show};
+      return {score:Math.max(0,q.m-1),given,show,note:'The value is right, but it is not in standard form: the first number must be between 1 and 10.'};
+    }
+    return {score:0,given,show};
+  }
+  if(q.t==='expr'){
+    const u=val(id+'-a');
+    if(!u) return {score:0,given:null,show:q.show};
+    return {score:sameExpr(u,q.ans,q.vars)?q.m:0,given:u,show:q.show};
+  }
+  const u=val(id+'-a');
+  if(!u) return {score:0,given:null,show:q.show};
+  const v=num(u); const tol=q.tol??1e-9;
+  return {score:Number.isFinite(v)&&Math.abs(v-q.ans)<=tol?q.m:0,given:u,show:q.show};
+}
+
+function submit(auto){
+  if(state.submitted) return;
+  captureInputs();
+  state.submitted=true; state.started=false; save();
+  clearInterval(tick);
+  document.getElementById('confirm').hidden=true;
+  setEnabled(false);
+  const bySec={}; SECTIONS.forEach(s=>bySec[s.id]={got:0,of:0});
+  let got=0;
+  Q.forEach(q=>{
+    const r=markQ(q); got+=r.score; bySec[q.s].got+=r.score; bySec[q.s].of+=q.m;
+    const cls=r.score===q.m?'ok':r.score>0?'part':'no';
+    const card=document.getElementById('card'+q.id); card.classList.remove('ok','no','part'); card.classList.add(cls);
+    const tag=cls==='ok'?`Correct · ${r.score}/${q.m}`:cls==='part'?`Partly correct · ${r.score}/${q.m}`:`Not correct · 0/${q.m}`;
+    const fb=document.getElementById('fb'+q.id);
+    fb.className='fb '+cls;
+    fb.innerHTML=`<span class="tag">${tag}</span>`+
+      (cls!=='ok'?`<span>Your answer: ${r.given===null?'<i>no answer</i>':escapeIfPlain(q,r.given)}</span><span>Correct answer: <b>${r.show}</b></span>`:'')+
+      (r.note?`<span>${r.note}</span>`:'')+
+      `<span class="sol"><b>Working:</b> ${q.sol}</span>`;
+    fb.hidden=false;
+  });
+  showResults(got,bySec,auto);
+  document.getElementById('submitBtn').hidden=true;
+  document.getElementById('timer').textContent=auto?'Time up':'Done';
+}
+function escapeIfPlain(q,s){
+  if(q.t==='mcq'||q.t==='multi'||q.t==='sf') return s;
+  return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+function showResults(got,bySec,auto){
+  const pct=Math.round(got/TOTAL*100);
+  const weakest=SECTIONS.map(s=>({...s,p:bySec[s.id].got/bySec[s.id].of})).sort((a,b)=>a.p-b.p);
+  const advice=weakest[0].p===1?'Full marks in every topic. Excellent work.':
+    `Focus your revision on <b>${weakest[0].name}</b>${weakest[1].p<0.75?` and <b>${weakest[1].name}</b>`:''}. Scroll down to read the working for each question you missed.`;
+  const who=[state.name,state.cls].filter(Boolean).join(' · ');
+  const el=document.getElementById('results');
+  el.innerHTML=`<div class="score"><span class="big">${got} / ${TOTAL}</span><span class="pct">${pct}%</span>
+    <span class="who">${who?who+' · ':''}${auto?'Submitted automatically when time ran out':'Submitted'} · ${new Date().toLocaleString([], {dateStyle:'medium',timeStyle:'short'})}</span></div>
+    <div class="breakdown">${SECTIONS.map(s=>{const b=bySec[s.id];return `<div class="brow"><span>${s.id} · ${s.name}</span><div class="track"><div class="fill" style="width:0%" data-w="${b.got/b.of*100}"></div></div><span class="n">${b.got}/${b.of}</span></div>`;}).join('')}</div>
+    <p class="advice">${advice}</p>
+    <div><button class="btn ghost" id="againBtn">Start again with a clear paper</button></div>`;
+  el.hidden=false;
+  requestAnimationFrame(()=>el.querySelectorAll('.fill').forEach(f=>f.style.width=f.dataset.w+'%'));
+  document.getElementById('againBtn').onclick=reset;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function reset(){
+  state={started:false,endAt:0,submitted:false,name:state.name,cls:state.cls,inputs:{}}; save();
+  render();
+  document.getElementById('results').hidden=true;
+  document.getElementById('bar').hidden=true;
+  document.getElementById('submitBtn').hidden=false;
+  document.getElementById('startCard').hidden=false;
+  document.getElementById('timer').textContent='60:00';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------- timer ---------- */
+let tick=null;
+function fmt(ms){const s=Math.max(0,Math.ceil(ms/1000));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function runTimer(){
+  const t=document.getElementById('timer');
+  const step=()=>{const left=state.endAt-Date.now();t.textContent=fmt(left);
+    t.classList.toggle('warn',left<=10*60*1000&&left>2*60*1000);t.classList.toggle('low',left<=2*60*1000);
+    if(left<=0) submit(true);};
+  step(); clearInterval(tick); tick=setInterval(step,500);
+}
+function begin(){
+  document.getElementById('startCard').hidden=true;
+  document.getElementById('bar').hidden=false;
+  setEnabled(true); updateCount(); runTimer();
+}
+
+function attachInputs(){
+  paper.addEventListener('input',()=>{captureInputs();save();updateCount();});
+  paper.addEventListener('change',()=>{captureInputs();save();updateCount();});
+}
+
+document.getElementById('startBtn').onclick=()=>{
+  state.name=document.getElementById('stName').value.trim();
+  state.cls=document.getElementById('stSec').value;
+  state.started=true; state.submitted=false; state.endAt=Date.now()+DURATION; save();
+  begin(); document.getElementById('secA').scrollIntoView({behavior:'smooth',block:'start'});
+};
+document.getElementById('submitBtn').onclick=()=>{
+  const n=Q.filter(isAnswered).length;
+  document.getElementById('confirmMsg').textContent=n<Q.length?`You have answered ${n} of ${Q.length} questions. Unanswered questions score 0.`:`All ${Q.length} questions answered.`;
+  document.getElementById('confirm').hidden=false;
+};
+document.getElementById('confirmNo').onclick=()=>document.getElementById('confirm').hidden=true;
+document.getElementById('confirmYes').onclick=()=>submit(false);
+
+/* ---------- boot ---------- */
+render(); attachInputs(); load();
+document.getElementById('stName').value=state.name||'';
+document.getElementById('stSec').value=state.cls||'';
+if(state.started&&!state.submitted){restoreInputs(); if(state.endAt-Date.now()<=0){document.getElementById('startCard').hidden=true;document.getElementById('bar').hidden=false;submit(true);} else begin();}
+else if(state.submitted){restoreInputs();state.submitted=false;document.getElementById('startCard').hidden=true;document.getElementById('bar').hidden=false;submit(false);}
+</script>
+
+</body>
+</html>
