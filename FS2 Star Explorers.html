@@ -1,0 +1,216 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>FS2 Star Explorers</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Andika:wght@400;700&display=swap">
+<style>
+/* Layout: one playground screen — big game tiles on a sky-and-grass ground; each game takes over the same card. Single bright look by choice. */
+:root{
+  --sky:#DDF1FF; --grass:#7FD36B; --ink:#23305A; --card:#FFFFFF;
+  --sun:#FFC83D; --berry:#FF5D8F; --sea:#2FA7F5; --leaf:#3DBB6B; --grape:#8B5CF6; --tang:#FF8A3D;
+  --soft:#EEF6FF; --line:#C9DDF2;
+  --display:"Baloo 2","Comic Sans MS","Trebuchet MS",sans-serif;
+  --read:"Andika","Verdana",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:linear-gradient(var(--sky) 0 78%, var(--grass) 78% 100%) fixed;color:var(--ink);font-family:var(--read);font-size:17px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,6vw,46px);line-height:1;margin:0;text-wrap:balance}
+h1 span{color:var(--berry)}
+.sub{margin:4px 0 0;font-size:16px;opacity:.8}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{font-family:var(--display);font-weight:800;background:var(--card);border:3px solid var(--ink);border-radius:999px;padding:6px 14px;font-size:18px;display:inline-flex;gap:6px;align-items:center}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:4px solid var(--sea);outline-offset:3px}
+.soundbtn{background:var(--card);border:3px solid var(--ink);border-radius:999px;padding:6px 14px;font-family:var(--display);font-weight:800;font-size:18px}
+.name{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--card);border-radius:20px;padding:12px 16px;border:3px solid var(--ink)}
+.name label{font-family:var(--display);font-weight:800;font-size:20px}
+.name input{font:inherit;font-size:20px;border:3px solid var(--line);border-radius:12px;padding:6px 12px;min-width:0;flex:1 1 160px;color:var(--ink);background:var(--soft)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px}
+.tile{border:4px solid var(--ink);border-radius:26px;padding:16px 12px 14px;background:var(--c);color:#fff;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;box-shadow:0 6px 0 var(--ink);transition:transform .12s}
+.tile:hover{transform:translateY(-3px) rotate(-1deg)}
+.tile:active{transform:translateY(4px);box-shadow:0 2px 0 var(--ink)}
+.tile .pic{font-size:52px;line-height:1.1}
+.tile .t{font-family:var(--display);font-weight:800;font-size:22px;line-height:1.05;text-shadow:0 2px 0 rgba(0,0,0,.18)}
+.tile .s{font-size:13px;background:rgba(255,255,255,.9);color:var(--ink);border-radius:999px;padding:2px 10px}
+.tile .got{font-size:18px;min-height:22px;letter-spacing:2px}
+.note{background:var(--card);border-radius:20px;padding:14px 18px;border:3px dashed var(--ink);font-size:15px;line-height:1.5}
+.note h2{font-family:var(--display);font-size:20px;margin:0 0 4px}
+.note ul{margin:4px 0 0;padding-left:20px}
+/* game */
+.game{background:var(--card);border:4px solid var(--ink);border-radius:30px;padding:18px;display:flex;flex-direction:column;gap:16px;box-shadow:0 8px 0 var(--ink);position:relative}
+.gtop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.back{background:var(--soft);border:3px solid var(--ink);border-radius:999px;padding:4px 14px;font-family:var(--display);font-weight:800;font-size:18px}
+.dots{display:flex;gap:8px}
+.dot{width:22px;height:22px;border-radius:50%;border:3px solid var(--ink);background:var(--soft)}
+.dot.on{background:var(--sun)}.dot.miss{background:var(--line)}.dot.now{transform:scale(1.25)}
+.ask{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;text-align:center}
+.ask p{font-family:var(--display);font-weight:800;font-size:clamp(24px,5vw,34px);margin:0;line-height:1.1;text-wrap:balance}
+.listen{background:var(--sun);border:3px solid var(--ink);border-radius:999px;width:56px;height:56px;font-size:28px;flex:none;box-shadow:0 4px 0 var(--ink)}
+.listen:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.visual{min-height:90px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;background:var(--soft);border-radius:22px;padding:14px}
+.visual:empty{display:none}
+.obj{font-size:clamp(34px,8vw,46px);line-height:1;animation:pop .35s both}
+.bigletter{font-family:var(--read);font-weight:700;font-size:110px;line-height:1;color:var(--berry);display:flex;gap:16px;align-items:baseline}
+.bigletter small{font-size:70px;color:var(--sea)}
+.bigpic{font-size:96px;line-height:1}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px}
+.opt{background:var(--card);border:4px solid var(--ink);border-radius:22px;min-height:120px;padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 5px 0 var(--ink);transition:transform .1s}
+.opt:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.opt .em{font-size:54px;line-height:1}
+.opt .num{font-family:var(--display);font-weight:800;font-size:60px;line-height:1}
+.opt .lb{font-size:17px;font-weight:700}
+.opt .grp{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;font-size:30px;max-width:180px}
+.opt svg{width:84px;height:84px}
+.opt.right{background:#D7F7DF;border-color:var(--leaf);animation:bounce .5s}
+.opt.wrong{background:#FFE1E8;animation:shake .4s}
+.opt:disabled{cursor:default}
+.cheer{text-align:center;font-family:var(--display);font-weight:800;font-size:26px;min-height:36px;color:var(--leaf)}
+.done{text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
+.done .stars{font-size:52px;letter-spacing:4px}
+.done h2{font-family:var(--display);font-size:36px;margin:0;line-height:1.1}
+.btnrow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.big{font-family:var(--display);font-weight:800;font-size:22px;border:4px solid var(--ink);border-radius:999px;padding:8px 24px;box-shadow:0 5px 0 var(--ink);background:var(--sun)}
+.big.alt{background:var(--soft)}
+canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:50;width:100%;height:100%}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes bounce{0%,100%{transform:scale(1)}40%{transform:scale(1.12)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<canvas id="fx"></canvas>
+<div class="wrap" id="app"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const ROUNDS=5;
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let soundOn=store.get('fs2-sound',true);
+
+/* ---------- sound & voice ---------- */
+let actx=null;
+function tone(f,d,t0=0,type='sine',vol=.18){if(!soundOn)return;try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const o=actx.createOscillator(),g=actx.createGain(),t=actx.currentTime+t0;o.type=type;o.frequency.value=f;g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g).connect(actx.destination);o.start(t);o.stop(t+d)}catch(e){}}
+const yay=()=>{[523,659,784,1047].forEach((f,i)=>tone(f,.25,i*.09,'triangle'))};
+const oops=()=>{tone(260,.18,0,'square',.08);tone(200,.25,.15,'square',.08)};
+function say(text){if(!soundOn)return;try{const s=window.speechSynthesis;if(!s)return;s.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=.85;u.pitch=1.15;const v=s.getVoices().find(v=>/en-GB/i.test(v.lang))||s.getVoices().find(v=>/^en/i.test(v.lang));if(v)u.voice=v;u.lang=v?v.lang:'en-GB';s.speak(u)}catch(e){}}
+
+/* ---------- confetti ---------- */
+const cv=$('#fx'),cx=cv.getContext('2d');let bits=[];
+function fit(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio}fit();addEventListener('resize',fit);
+function burst(n=70){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const cols=['#FFC83D','#FF5D8F','#2FA7F5','#3DBB6B','#8B5CF6','#FF8A3D'];for(let i=0;i<n;i++)bits.push({x:cv.width/2,y:cv.height*.45,vx:(Math.random()-.5)*22*devicePixelRatio,vy:(-Math.random()*18-6)*devicePixelRatio,r:(4+Math.random()*6)*devicePixelRatio,c:pick(cols),a:Math.random()*6,life:90});if(bits.length===n)requestAnimationFrame(loop)}
+function loop(){cx.clearRect(0,0,cv.width,cv.height);bits.forEach(b=>{b.x+=b.vx;b.y+=b.vy;b.vy+=.6*devicePixelRatio;b.vx*=.98;b.a+=.2;b.life--;cx.save();cx.translate(b.x,b.y);cx.rotate(b.a);cx.fillStyle=b.c;cx.fillRect(-b.r,-b.r/2,b.r*2,b.r);cx.restore()});bits=bits.filter(b=>b.life>0);if(bits.length)requestAnimationFrame(loop);else cx.clearRect(0,0,cv.width,cv.height)}
+
+/* ---------- shapes ---------- */
+const SH={
+ circle:c=>`<circle cx="50" cy="50" r="40" fill="${c}" stroke="#23305A" stroke-width="5"/>`,
+ square:c=>`<rect x="12" y="12" width="76" height="76" fill="${c}" stroke="#23305A" stroke-width="5"/>`,
+ triangle:c=>`<polygon points="50,8 92,88 8,88" fill="${c}" stroke="#23305A" stroke-width="5" stroke-linejoin="round"/>`,
+ rectangle:c=>`<rect x="4" y="26" width="92" height="48" fill="${c}" stroke="#23305A" stroke-width="5"/>`,
+ star:c=>`<polygon points="50,6 61,38 95,38 67,58 78,92 50,72 22,92 33,58 5,38 39,38" fill="${c}" stroke="#23305A" stroke-width="5" stroke-linejoin="round"/>`
+};
+const svg=(k,c)=>`<svg viewBox="0 0 100 100" aria-label="${k}">${SH[k](c)}</svg>`;
+const BRIGHT=['#FF5D8F','#2FA7F5','#3DBB6B','#FFC83D','#8B5CF6','#FF8A3D'];
+
+/* ---------- word banks ---------- */
+const COUNT=[['🍎','apples'],['🐟','fish'],['⭐','stars'],['🚗','cars'],['🐞','ladybirds'],['🎈','balloons'],['🌼','flowers'],['🐥','chicks'],['🍓','strawberries']];
+const SOUNDS={a:[['🍎','apple'],['🐜','ant']],b:[['🍌','banana'],['🐝','bee'],['🎈','balloon']],c:[['🐱','cat'],['🚗','car'],['🎂','cake']],d:[['🐶','dog'],['🦆','duck'],['🥁','drum']],f:[['🐟','fish'],['🐸','frog'],['🦊','fox']],h:[['🎩','hat'],['🏠','house'],['🐴','horse']],m:[['🌙','moon'],['🐒','monkey'],['🥛','milk']],p:[['🐷','pig'],['🍕','pizza'],['🍐','pear']],s:[['☀️','sun'],['⭐','star'],['🐍','snake']],t:[['🌳','tree'],['🐯','tiger'],['🚂','train']]};
+const HOMES=[['🐟','fish','🌊','sea'],['🐪','camel','🏜️','desert'],['🐄','cow','🚜','farm'],['🐧','penguin','❄️','ice'],['🐒','monkey','🌴','jungle'],['🐦','bird','🌳','tree'],['🐝','bee','🌸','flowers'],['🐻','bear','⛰️','cave']];
+
+/* ---------- games ---------- */
+const GAMES=[
+{id:'count',title:'Count with Me',pic:'🍎',c:'#FF5D8F',strand:'Maths · Sense of number',
+ make(){const n=rnd(1,10),[e,name]=pick(COUNT);const set=new Set([n]);while(set.size<3){const m=n+rnd(-3,3);if(m>=1&&m<=10)set.add(m)}
+  return{prompt:'How many?',speak:`Count the ${name}. How many ${name} can you see?`,visual:Array.from({length:n},(_,i)=>`<span class="obj" style="animation-delay:${i*60}ms">${e}</span>`).join(''),
+   options:shuffle([...set]).map(v=>({v,html:`<span class="num">${v}</span>`})),answer:n,good:`Yes! ${n} ${name}!`}}},
+{id:'more',title:'More or Fewer',pic:'⚖️',c:'#2FA7F5',strand:'Maths · Sense of number',
+ make(){let a=rnd(1,8),b;do{b=rnd(1,8)}while(Math.abs(a-b)<1);const more=Math.random()<.6;const e=pick(COUNT)[0];const ans=more?(a>b?0:1):(a<b?0:1);
+  return{prompt:more?'Which has MORE?':'Which has FEWER?',speak:more?'Tap the box that has more.':'Tap the box that has fewer.',visual:'',
+   options:[a,b].map((n,i)=>({v:i,html:`<span class="grp">${e.repeat(n)}</span>`,lbl:`${n}`})),answer:ans,good:more?'Yes, that one has more!':'Yes, that one has fewer!'}}},
+{id:'shape',title:'Shape Hunt',pic:'🔺',c:'#8B5CF6',strand:'Maths · Shape, space & measure',
+ make(){const keys=Object.keys(SH);const t=pick(keys);const others=shuffle(keys.filter(k=>k!==t)).slice(0,2);const cols=shuffle(BRIGHT);
+  return{prompt:`Find the ${t}!`,speak:`Can you find the ${t}?`,visual:'',options:shuffle([t,...others]).map((k,i)=>({v:k,html:svg(k,cols[i])})),answer:t,good:`Well done! That is a ${t}!`}}},
+{id:'sound',title:'First Sounds',pic:'🔤',c:'#FF8A3D',strand:'English · Reading',
+ make(){const letters=Object.keys(SOUNDS);const L=pick(letters);const right=pick(SOUNDS[L]);const others=shuffle(letters.filter(x=>x!==L)).slice(0,2).map(x=>pick(SOUNDS[x]));
+  return{prompt:`What starts with “${L}”?`,speak:`${L}. ${L}. Which picture starts with the ${L} sound?`,visual:`<div class="bigletter">${L.toUpperCase()}<small>${L}</small></div>`,
+   options:shuffle([right,...others]).map(([e,w])=>({v:w,html:`<span class="em">${e}</span>`})),answer:right[1],good:`Yes! ${right[1]} starts with ${L}!`}}},
+{id:'home',title:'Animal Homes',pic:'🐪',c:'#3DBB6B',strand:'Understanding the World',
+ make(){const [ae,an,he,hn]=pick(HOMES);const others=shuffle(HOMES.filter(h=>h[1]!==an)).slice(0,2);
+  return{prompt:`Where does the ${an} live?`,speak:`Where does the ${an} live?`,visual:`<span class="bigpic">${ae}</span>`,
+   options:shuffle([[he,hn],...others.map(o=>[o[2],o[3]])]).map(([e,w])=>({v:w,html:`<span class="em">${e}</span><span class="lb">${w}</span>`})),answer:hn,good:`Yes! The ${an} lives in the ${hn}!`}}}
+];
+
+/* ---------- state & screens ---------- */
+let best=store.get('fs2-best',{}), name=store.get('fs2-name','');
+const total=()=>Object.values(best).reduce((a,b)=>a+b,0);
+const CHEERS=['Super!','Brilliant!','Great job!','Fantastic!','Amazing!'];
+
+function home(){
+  try{speechSynthesis.cancel()}catch(e){}
+  $('#app').innerHTML=`
+  <header>
+    <div><h1>FS2 <span>Star</span> Explorers</h1><p class="sub">Tap a game to play. Every right answer wins a star!</p></div>
+    <div class="bar"><span class="chip" aria-label="Total stars">⭐ ${total()} / ${GAMES.length*ROUNDS}</span>
+    <button class="soundbtn" id="snd">${soundOn?'🔊 Sound on':'🔇 Sound off'}</button></div>
+  </header>
+  <div class="name"><label for="kid">My name is</label><input id="kid" maxlength="24" placeholder="Type your name" value="${name.replace(/"/g,'&quot;')}"></div>
+  <div class="grid">${GAMES.map(g=>`<button class="tile" style="--c:${g.c}" data-g="${g.id}">
+    <span class="pic">${g.pic}</span><span class="t">${g.title}</span><span class="s">${g.strand}</span>
+    <span class="got" aria-label="Best ${best[g.id]||0} stars">${best[g.id]!=null?'⭐'.repeat(best[g.id])+'☆'.repeat(ROUNDS-best[g.id]):'&nbsp;'}</span></button>`).join('')}</div>
+  <div class="note"><h2>For parents</h2>
+    <ul><li>Sit with your child and turn the sound on. Each question is read aloud, and the 🔊 button says it again.</li>
+    <li>Let your child tap the answer by themselves. A wrong tap simply wiggles, so they can try again; a star is only given for a first-try answer.</li>
+    <li>Each game has ${ROUNDS} questions and takes about 3 minutes. Questions change every time, so games can be played again.</li>
+    <li>Stars are saved on this device only.</li></ul></div>`;
+  $('#snd').onclick=()=>{soundOn=!soundOn;store.set('fs2-sound',soundOn);home()};
+  $('#kid').oninput=e=>{name=e.target.value.trim();store.set('fs2-name',name)};
+  document.querySelectorAll('.tile').forEach(t=>t.onclick=()=>start(GAMES.find(g=>g.id===t.dataset.g)));
+}
+
+let G,round,results,q,tries,lock;
+function start(g){G=g;round=0;results=[];next()}
+function next(){
+  if(round>=ROUNDS)return finish();
+  q=G.make();tries=0;lock=false;
+  $('#app').innerHTML=`<div class="game">
+    <div class="gtop"><button class="back" id="bk">← Games</button>
+      <div class="dots">${Array.from({length:ROUNDS},(_,i)=>`<span class="dot ${i<round?(results[i]?'on':'miss'):''} ${i===round?'now':''}"></span>`).join('')}</div></div>
+    <div class="ask"><button class="listen" id="ls" aria-label="Say it again">🔊</button><p>${q.prompt}</p></div>
+    <div class="visual">${q.visual}</div>
+    <div class="opts">${q.options.map((o,i)=>`<button class="opt" data-i="${i}">${o.html}</button>`).join('')}</div>
+    <div class="cheer" id="ch" aria-live="polite"></div></div>`;
+  $('#bk').onclick=home;$('#ls').onclick=()=>say(q.speak);
+  document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>choose(b));
+  setTimeout(()=>say(q.speak),250);
+}
+function choose(b){
+  if(lock)return;const o=q.options[+b.dataset.i];
+  if(o.v===q.answer){lock=true;b.classList.add('right');results[round]=tries===0;
+    document.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+    $('#ch').textContent=(tries===0?'⭐ ':'')+pick(CHEERS);yay();burst(tries===0?70:30);say(q.good);
+    setTimeout(()=>{round++;next()},2200);
+  }else{tries++;b.classList.remove('wrong');void b.offsetWidth;b.classList.add('wrong');oops();$('#ch').textContent='Try again!';say('Try again!')}
+}
+function finish(){
+  const s=results.filter(Boolean).length;best[G.id]=Math.max(best[G.id]||0,s);store.set('fs2-best',best);
+  const who=name?`, ${name}`:'';
+  const msg=s===5?`Wow${who}! All 5 stars!`:s>=3?`Great work${who}!`:`Good try${who}! Play again for more stars.`;
+  $('#app').innerHTML=`<div class="game"><div class="done">
+    <div class="stars">${'⭐'.repeat(s)}${'☆'.repeat(ROUNDS-s)}</div>
+    <h2>${msg}</h2><p>You got ${s} out of ${ROUNDS} stars in <b>${G.title}</b>.</p>
+    <div class="btnrow"><button class="big" id="again">Play again</button><button class="big alt" id="hm">All games</button></div></div></div>`;
+  $('#again').onclick=()=>start(G);$('#hm').onclick=home;
+  burst(140);yay();say(msg.replace('⭐',''));
+}
+try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=()=>{}}catch(e){}
+home();
+</script>
+
+</body></html>
