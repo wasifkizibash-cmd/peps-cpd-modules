@@ -103,7 +103,13 @@ let actx=null;
 function tone(f,d,t0=0,type='sine',vol=.18){if(!soundOn)return;try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const o=actx.createOscillator(),g=actx.createGain(),t=actx.currentTime+t0;o.type=type;o.frequency.value=f;g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g).connect(actx.destination);o.start(t);o.stop(t+d)}catch(e){}}
 const yay=()=>{[523,659,784,1047].forEach((f,i)=>tone(f,.25,i*.09,'triangle'))};
 const oops=()=>{tone(260,.18,0,'square',.08);tone(200,.25,.15,'square',.08)};
-function say(text){if(!soundOn)return;try{const s=window.speechSynthesis;if(!s)return;s.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=.85;u.pitch=1.15;const v=s.getVoices().find(v=>/en-GB/i.test(v.lang))||s.getVoices().find(v=>/^en/i.test(v.lang));if(v)u.voice=v;u.lang=v?v.lang:'en-GB';s.speak(u)}catch(e){}}
+/* say(text, done): done() runs once the voice has finished (or after a safe fallback time) */
+function say(text,done){let fired=false;const fin=()=>{if(fired)return;fired=true;if(done)done()};
+  const s=window.speechSynthesis;
+  if(!soundOn||!s){if(done)setTimeout(fin,1600);return}
+  try{s.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=.85;u.pitch=1.15;const v=s.getVoices().find(v=>/en-GB/i.test(v.lang))||s.getVoices().find(v=>/^en/i.test(v.lang));if(v)u.voice=v;u.lang=v?v.lang:'en-GB';
+    if(done){u.onend=()=>setTimeout(fin,500);u.onerror=()=>setTimeout(fin,500);setTimeout(fin,Math.max(4000,text.length*140))}
+    window._utt=u;s.speak(u)}catch(e){if(done)setTimeout(fin,1600)}}
 
 /* ---------- confetti ---------- */
 const cv=$('#fx'),cx=cv.getContext('2d');let bits=[];
@@ -198,8 +204,8 @@ function choose(b){
   if(lock)return;const o=q.options[+b.dataset.i];
   if(o.v===q.answer){lock=true;b.classList.add('right');results[round]=tries===0;
     document.querySelectorAll('.opt').forEach(x=>x.disabled=true);
-    $('#ch').textContent=(tries===0?'⭐ ':'')+pick(CHEERS);yay();burst(tries===0?70:30);say(q.good);
-    setTimeout(()=>{round++;next()},2200);
+    $('#ch').textContent=(tries===0?'⭐ ':'')+pick(CHEERS);yay();burst(tries===0?70:30);
+    const here=q;setTimeout(()=>say(q.good,()=>{if(q===here){round++;next()}}),700);
   }else{tries++;b.classList.remove('wrong');void b.offsetWidth;b.classList.add('wrong');oops();$('#ch').textContent='Try again!';say('Try again!')}
 }
 function finish(){
